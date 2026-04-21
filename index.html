@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Fund Manager — IRF Rampura</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0d1117;--surface:#161b22;--surface2:#1f2937;--border:#30363d;
+    --accent:#00d9a3;--accent2:#0ea5e9;--accent3:#f59e0b;
+    --text:#e6edf3;--muted:#8b949e;--income:#10b981;--expense:#f43f5e;--sidebar-w:240px;
+  }
+  body.light{--bg:#f0f2f5;--surface:#ffffff;--surface2:#f8f9fa;--border:#e2e8f0;--accent:#0f8b6a;--accent2:#0c6b9e;--accent3:#c97e0a;--text:#1e293b;--muted:#64748b;--income:#10b981;--expense:#ef4444;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;overflow-x:hidden;}
+  body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 20% 30%,rgba(0,217,163,.05) 0%,transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(14,165,233,.05) 0%,transparent 50%);pointer-events:none;z-index:0;}
+  #sync-bar{position:fixed;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));z-index:9999;display:none;animation:syncPulse 1s infinite;}
+  @keyframes syncPulse{0%,100%{opacity:1}50%{opacity:.4}}
+  #sync-status{position:fixed;top:8px;right:14px;font-size:11px;color:var(--muted);z-index:9999;background:var(--surface);padding:3px 10px;border-radius:20px;border:1px solid var(--border);display:none;}
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
+  .modal-bg.open{display:flex;}
+  .modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;width:100%;max-width:460px;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+  .modal-title{font-weight:600;font-size:18px;margin-bottom:18px;color:var(--accent);}
+  .modal-foot{display:flex;gap:10px;margin-top:18px;justify-content:flex-end;}
+  #login-screen{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .login-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:36px 32px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+  .login-logo{text-align:center;margin-bottom:28px;}
+  .login-logo h1{font-weight:700;font-size:22px;color:var(--accent);}
+  .login-logo p{color:var(--muted);font-size:13px;margin-top:5px;}
+  .lg{margin-bottom:14px;}
+  .lg label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px;}
+  .lg input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 13px;color:var(--text);font-size:15px;outline:none;}
+  .lg input:focus{border-color:var(--accent);}
+  .password-wrapper{position:relative;display:flex;align-items:center;}
+  .password-wrapper input{padding-right:40px;}
+  .toggle-password{position:absolute;right:10px;background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:0;line-height:1;}
+  .toggle-password:hover{color:var(--accent);}
+  .login-btn{width:100%;padding:12px;background:var(--accent);color:#0d1117;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;margin-top:6px;transition:all .2s;}
+  .login-btn:hover{background:#00c492;}
+  body.light .login-btn{color:white;}
+  .login-err{color:var(--expense);font-size:13px;text-align:center;margin-top:10px;display:none;}
+  .login-loading{text-align:center;color:var(--muted);font-size:13px;margin-top:10px;display:none;}
+  .app{display:flex;min-height:100vh;position:relative;z-index:1;}
+  .sidebar{width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:200;transition:transform .3s ease;}
+  .sb-head{padding:18px 16px 14px;border-bottom:1px solid var(--border);}
+  .sb-head h1{font-size:17px;color:var(--accent);font-weight:700;}
+  .sb-head p{font-size:11px;color:var(--muted);margin-top:3px;}
+  .user-pill{margin:10px 16px 0;background:var(--surface2);border-radius:8px;padding:8px 12px;font-size:12px;display:flex;align-items:center;gap:8px;}
+  .user-pill .role{color:var(--accent3);font-weight:600;}
+  .nav-items{flex:1;padding:6px 0;overflow-y:auto;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;color:var(--muted);font-size:14px;border-left:3px solid transparent;transition:all .2s;}
+  .nav-item:hover{background:var(--surface2);color:var(--text);}
+  .nav-item.active{border-left-color:var(--accent);color:var(--accent);background:rgba(0,217,163,.08);}
+  .nav-item .icon{font-size:16px;width:20px;text-align:center;}
+  .sb-foot{padding:12px 16px;border-top:1px solid var(--border);}
+  .logout-btn{width:100%;padding:9px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;cursor:pointer;font-size:13px;transition:all .2s;}
+  .logout-btn:hover{border-color:var(--expense);color:var(--expense);}
+  .theme-toggle{width:100%;margin-bottom:8px;padding:8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:12px;color:var(--text);display:flex;align-items:center;gap:8px;justify-content:center;}
+  .theme-toggle:hover{background:var(--border);}
+  .topbar{display:none;position:fixed;top:0;left:0;right:0;height:54px;background:var(--surface);border-bottom:1px solid var(--border);z-index:150;align-items:center;padding:0 14px;gap:10px;}
+  .hamburger{background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;padding:4px;}
+  .topbar-title{font-weight:600;font-size:16px;color:var(--accent);flex:1;}
+  .topbar-user{font-size:11px;color:var(--muted);}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:190;}
+  .overlay.show{display:block;}
+  .main{margin-left:var(--sidebar-w);flex:1;padding:26px;max-width:100%;overflow-x:hidden;}
+  .page{display:none;}
+  .page.active{display:block;animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .page-header{margin-bottom:22px;}
+  .page-header h2{font-weight:700;font-size:22px;}
+  .page-header p{color:var(--muted);font-size:13px;margin-top:4px;}
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative;overflow:hidden;transition:transform .2s;}
+  .stat-card:hover{transform:translateY(-2px);}
+  .stat-card::after{content:'';position:absolute;top:0;right:0;width:50px;height:50px;border-radius:0 12px 0 50px;opacity:.15;}
+  .stat-card.green::after{background:var(--income);}
+  .stat-card.blue::after{background:var(--accent2);}
+  .stat-card.yellow::after{background:var(--accent3);}
+  .stat-card.red::after{background:var(--expense);}
+  .stat-label{font-size:11px;color:var(--muted);margin-bottom:5px;}
+  .stat-value{font-size:21px;font-weight:700;}
+  .stat-card.green .stat-value{color:var(--income);}
+  .stat-card.blue .stat-value{color:var(--accent2);}
+  .stat-card.yellow .stat-value{color:var(--accent3);}
+  .stat-card.red .stat-value{color:var(--expense);}
+  .stat-sub{font-size:11px;color:var(--muted);margin-top:3px;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;}
+  .card-title{font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .form-grid.three{grid-template-columns:1fr 1fr 1fr;}
+  .form-group{display:flex;flex-direction:column;gap:5px;}
+  .form-group.full{grid-column:1/-1;}
+  label{font-size:12px;color:var(--muted);}
+  input,select,textarea{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:14px;outline:none;transition:border-color .2s;width:100%;}
+  input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,217,163,.1);}
+  select option{background:var(--surface2);}
+  .btn{padding:9px 16px;border-radius:8px;border:none;cursor:pointer;font-size:14px;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+  .btn-primary{background:var(--accent);color:#0d1117;}
+  body.light .btn-primary{color:white;}
+  .btn-primary:hover{background:#00c492;}
+  .btn-danger{background:transparent;color:var(--expense);border:1px solid var(--expense);font-size:12px;padding:4px 9px;}
+  .btn-danger:hover{background:var(--expense);color:white;}
+  .btn-edit{background:transparent;color:var(--accent2);border:1px solid var(--accent2);font-size:12px;padding:4px 9px;}
+  .btn-edit:hover{background:var(--accent2);color:white;}
+  .btn-sm{padding:7px 13px;font-size:12px;}
+  .btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
+  .btn-warning{background:transparent;color:var(--accent3);border:1px solid var(--accent3);font-size:12px;padding:4px 9px;}
+  .btn-warning:hover{background:var(--accent3);color:white;}
+  .btn-reset{background:transparent;color:var(--muted);border:1px solid var(--border);font-size:13px;padding:7px 13px;border-radius:8px;cursor:pointer;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+  .btn-reset:hover{border-color:var(--accent3);color:var(--accent3);}
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;}
+  table{width:100%;border-collapse:collapse;}
+  th{text-align:left;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:9px 10px;border-bottom:1px solid var(--border);white-space:nowrap;}
+  td{padding:10px 10px;font-size:13px;border-bottom:1px solid rgba(48,54,61,.5);}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:rgba(255,255,255,.02);}
+  body.light tr:hover td{background:rgba(0,0,0,.02);}
+  .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+  .badge-income{background:rgba(16,185,129,.15);color:var(--income);}
+  .badge-expense{background:rgba(244,63,94,.15);color:var(--expense);}
+  .badge-monthly{background:rgba(0,217,163,.15);color:var(--accent);}
+  .badge-once{background:rgba(245,158,11,.15);color:var(--accent3);}
+  .badge-inactive{background:rgba(100,116,139,.2);color:var(--muted);}
+  .amount-positive{color:var(--income);font-weight:600;}
+  .amount-negative{color:var(--expense);font-weight:600;}
+  .empty{text-align:center;padding:28px;color:var(--muted);}
+  .empty .emoji{font-size:34px;margin-bottom:8px;}
+  .filter-row{display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
+  .filter-row select{width:auto;}
+  .balance-bar{background:var(--surface2);border-radius:6px;height:8px;overflow:hidden;margin-top:8px;}
+  .balance-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:6px;transition:width .6s ease;}
+  .viewer-notice{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:9px 13px;font-size:13px;color:var(--accent3);margin-bottom:14px;display:none;}
+  .r-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px;}
+  .r-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;}
+  .action-btns{display:flex;gap:5px;flex-wrap:wrap;}
+  .toast{position:fixed;bottom:22px;right:22px;background:var(--surface);border:1px solid var(--accent);color:var(--accent);padding:11px 16px;border-radius:10px;font-size:13px;z-index:999;display:none;box-shadow:0 8px 30px rgba(0,217,163,.2);animation:slideUp .3s ease;}
+  @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{opacity:1;transform:translateY(0)}}
+
+  /* Pagination */
+  .pagination{display:flex;gap:6px;align-items:center;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+  .pg-btn{padding:5px 11px;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;font-size:12px;}
+  .pg-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .pg-btn.active{background:var(--accent);color:#0d1117;border-color:var(--accent);}
+  .pg-info{font-size:12px;color:var(--muted);}
+
+  /* Tracker */
+  .tracker-card{background:var(--surface);border:1px solid var(--accent);border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:0 0 0 1px rgba(0,217,163,.08);}
+  .tracker-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:14px 0;}
+  .ts-box{border-radius:10px;padding:12px 14px;text-align:center;}
+  .ts-box.paid-box{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);}
+  .ts-box.unpaid-box{background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.2);}
+  .ts-box.total-box{background:var(--surface2);border:1px solid var(--border);}
+  .ts-num{font-size:28px;font-weight:700;line-height:1;}
+  .ts-label{font-size:11px;color:var(--muted);margin-top:4px;}
+  .ts-box.paid-box .ts-num{color:var(--income);}
+  .ts-box.unpaid-box .ts-num{color:var(--expense);}
+  .progress-wrap{margin:10px 0 4px;}
+  .progress-bar{background:var(--surface2);border-radius:20px;height:10px;overflow:hidden;}
+  .progress-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--income),var(--accent));transition:width .7s cubic-bezier(.4,0,.2,1);}
+  .progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:5px;}
+  .tab-row{display:flex;gap:8px;margin:14px 0 12px;}
+  .tab-btn{padding:7px 16px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;}
+  .tab-btn.active-unpaid{background:var(--expense);color:white;}
+  .tab-btn.active-paid{background:var(--income);color:white;}
+  .tab-btn.inactive{background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
+  .unpaid-row td{background:rgba(244,63,94,.04);}
+  .paid-row td{background:rgba(16,185,129,.03);}
+
+  /* Monthly donation summary */
+  .don-month-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
+  .don-month-label{font-weight:600;font-size:14px;}
+  .don-month-sub{font-size:11px;color:var(--muted);margin-top:3px;}
+  .don-month-amt{font-size:18px;font-weight:700;color:var(--accent2);}
+  .don-month-count{font-size:11px;color:var(--muted);text-align:right;margin-top:2px;}
+
+  /* Mobile card view */
+  .mobile-card-list{display:none;}
+  .m-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:10px;}
+  .m-card-name{font-weight:600;font-size:14px;margin-bottom:6px;}
+  .m-card-row{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:5px;}
+  .m-card-row span:last-child{color:var(--text);}
+  .m-card-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+
+  .sec-notice{background:rgba(0,217,163,.07);border:1px solid rgba(0,217,163,.2);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--muted);margin-top:10px;text-align:center;}
+
+  @media(max-width:768px){
+    .sidebar{transform:translateX(-100%);}
+    .sidebar.open{transform:translateX(0);box-shadow:4px 0 20px rgba(0,0,0,.5);}
+    .topbar{display:flex;}
+    .main{margin-left:0;padding:66px 12px 20px;}
+    .stats-grid{grid-template-columns:1fr 1fr;}
+    .form-grid,.form-grid.three{grid-template-columns:1fr;}
+    .form-group.full{grid-column:1;}
+    .two-col{grid-template-columns:1fr;}
+    .r-grid{grid-template-columns:1fr;}
+    .stat-value{font-size:18px;}
+    .toast{left:14px;right:14px;bottom:14px;text-align:center;}
+    .card{padding:12px;}
+    .modal{padding:18px;}
+    .tracker-summary{grid-template-columns:1fr 1fr 1fr;}
+    .ts-num{font-size:22px;}
+    .desktop-table{display:none !important;}
+    .mobile-card-list{display:block !important;}
+  }
+  @media(max-width:400px){
+    .stats-grid{grid-template-columns:1fr 1fr;}
+    .ts-num{font-size:18px;}
+  }
+  @media print{
+    .sidebar,.topbar,.overlay,#login-screen,.btn,.filter-row button,.btn-danger,.theme-toggle,#sync-bar,#sync-status,.modal-bg,.pagination{display:none!important;}
+    .main{margin:0;padding:20px;}
+    body{background:white;color:black;}
+    .card,.r-box,.stat-card,.tracker-card{border:1px solid #ccc;background:white;}
+    .stat-value,.card-title,.page-header h2,.amount-positive,.amount-negative{color:black!important;}
+    td,th{color:black!important;}
+    .mobile-card-list{display:none!important;}
+    .desktop-table{display:block!important;}
+  }
+
+  /* Audit Log */
+  .audit-action-add{color:var(--income);}
+  .audit-action-edit{color:var(--accent2);}
+  .audit-action-delete{color:var(--expense);}
+  .audit-change{font-size:11px;color:var(--muted);margin-top:3px;}
+  .audit-change .old-val{color:var(--expense);text-decoration:line-through;margin-right:4px;}
+  .audit-change .new-val{color:var(--income);}
+  .badge-add{background:rgba(16,185,129,.15);color:var(--income);}
+  .badge-edit{background:rgba(14,165,233,.15);color:var(--accent2);}
+  .badge-del{background:rgba(244,63,94,.15);color:var(--expense);}
+</style>
+</head>
+<body>
+<div id="sync-bar"></div>
+<div id="sync-status"></div>
+
+<!-- MODALS -->
+<div class="modal-bg" id="editMemberModal">
+  <div class="modal">
+    <div class="modal-title">✏️ Edit Member</div>
+    <input type="hidden" id="em-id">
+    <div class="form-grid">
+      <div class="form-group"><label>Full Name *</label><input type="text" id="em-name" placeholder="Name" maxlength="100"></div>
+      <div class="form-group"><label>Phone Number</label><input type="text" id="em-phone" placeholder="01XXXXXXXXX" maxlength="15" pattern="[0-9+\-\s]*"></div>
+      <div class="form-group"><label>Monthly Contribution (৳) *</label><input type="number" id="em-amount" placeholder="Amount" min="1" max="999999"></div>
+      <div class="form-group"><label>Joining Date</label><input type="date" id="em-date"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('editMemberModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveMemberEdit()">✅ Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="editSubModal">
+  <div class="modal">
+    <div class="modal-title">✏️ Edit Contribution Record</div>
+    <input type="hidden" id="es-id">
+    <div class="form-grid three">
+      <div class="form-group"><label>Member</label><input type="text" id="es-name" readonly style="opacity:.6"></div>
+      <div class="form-group"><label>Month *</label><select id="es-month"><option>January</option><option>February</option><option>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select></div>
+      <div class="form-group"><label>Year *</label><input type="number" id="es-year" min="2020" max="2099"></div>
+      <div class="form-group"><label>Amount (৳) *</label><input type="number" id="es-amount" min="1" max="999999"></div>
+      <div class="form-group"><label>Date</label><input type="date" id="es-date"></div>
+      <div class="form-group"><label>Note</label><input type="text" id="es-note" placeholder="Optional" maxlength="200"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('editSubModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveSubEdit()">✅ Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div style="font-size:42px">⛫</div>
+      <h1>Islamic Revival Front</h1>
+      <p>Financial Management</p>
+    </div>
+    <div class="lg"><label>Username</label><input type="text" id="lu" placeholder="Enter username" autocomplete="off" maxlength="50"></div>
+    <div class="lg">
+      <label>Password</label>
+      <div class="password-wrapper">
+        <input type="password" id="lp" placeholder="Password" maxlength="100" onkeydown="if(event.key==='Enter')doLogin()">
+        <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">👁️</button>
+      </div>
+    </div>
+    <div id="lerr" class="login-err">❌ Invalid username or password!</div>
+    <div id="lloading" class="login-loading">⏳ Connecting...</div>
+    <button class="login-btn" onclick="doLogin()">Sign In →</button>
+    <div class="sec-notice">🔐 এই সিস্টেম শুধুমাত্র অনুমোদিত সদস্যদের জন্য</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app" id="app" style="display:none">
+  <div class="overlay" id="overlay" onclick="closeSB()"></div>
+  <div class="topbar">
+    <button class="hamburger" onclick="toggleSB()">☰</button>
+    <div class="topbar-title">💰 Fund Manager</div>
+    <div class="topbar-user" id="tb-user"></div>
+  </div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-head">
+      <h1>💰 Fund Manager</h1>
+      <p>Organization Accounting</p>
+      <div class="user-pill"><span>👤</span><span id="un"></span><span class="role" id="ur"></span></div>
+    </div>
+    <nav class="nav-items">
+      <div class="nav-item active" onclick="go('dashboard',this)"><span class="icon">📊</span> Dashboard</div>
+      <div class="nav-item" onclick="go('members',this)"><span class="icon">👥</span> Members</div>
+      <div class="nav-item" onclick="go('tracker',this)"><span class="icon">⚠️</span> Payment Tracker</div>
+      <div class="nav-item" onclick="go('donations',this)"><span class="icon">🤝</span> Donations</div>
+      <div class="nav-item" onclick="go('expenses',this)"><span class="icon">💸</span> Expenses</div>
+      <div class="nav-item" onclick="go('report',this)"><span class="icon">📄</span> Reports</div>
+      <div class="nav-item" id="nav-auditlog" onclick="go('auditlog',this)"><span class="icon">🔍</span> Audit Log</div>
+    </nav>
+    <div class="sb-foot">
+      <button class="theme-toggle" onclick="toggleTheme()">🌓 Dark/Light Mode</button>
+      <button class="logout-btn" onclick="doLogout()">🚪 Logout</button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <div id="page-dashboard" class="page active">
+      <div class="page-header"><h2>📊 Dashboard</h2><p>Overall financial status of the organization</p></div>
+      <div class="stats-grid">
+        <div class="stat-card green"><div class="stat-label">Total Fund (Balance)</div><div class="stat-value" id="s-bal">৳0</div><div class="stat-sub">Income − Expense</div></div>
+        <div class="stat-card blue"><div class="stat-label">Total Income</div><div class="stat-value" id="s-inc">৳0</div><div class="stat-sub">Subscriptions + Donations</div></div>
+        <div class="stat-card red"><div class="stat-label">Total Expenses</div><div class="stat-value" id="s-exp">৳0</div><div class="stat-sub">All expenditures</div></div>
+        <div class="stat-card yellow"><div class="stat-label">Active Members</div><div class="stat-value" id="s-mem">0</div><div class="stat-sub">Registered</div></div>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">📈 Income vs Expense Ratio</div>
+          <div style="font-size:13px;color:var(--muted)">Income: <span id="ipct" style="color:var(--income);font-weight:600">0%</span></div>
+          <div class="balance-bar"><div class="balance-fill" id="ibar" style="width:0%"></div></div>
+          <div style="margin-top:9px;font-size:13px;color:var(--muted)">Expense: <span id="epct" style="color:var(--expense);font-weight:600">0%</span></div>
+          <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div style="background:var(--surface2);border-radius:8px;padding:10px"><div style="font-size:11px;color:var(--muted)">Member Subscriptions</div><div style="color:var(--income);font-weight:700;margin-top:4px" id="d-sub">৳0</div></div>
+            <div style="background:var(--surface2);border-radius:8px;padding:10px"><div style="font-size:11px;color:var(--muted)">Donations</div><div style="color:var(--accent2);font-weight:700;margin-top:4px" id="d-don">৳0</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">🕒 Recent Transactions</div>
+          <div id="recent"><div class="empty"><div class="emoji">🗒️</div>No transactions</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEMBERS -->
+    <div id="page-members" class="page">
+      <div class="page-header"><h2>👥 Members & Monthly Contributions</h2><p>Member management and subscription records</p></div>
+      <div class="viewer-notice" id="vn-m">👁️ Viewer mode — view only.</div>
+      <div class="card admin-only" id="add-m">
+        <div class="card-title">➕ Add New Member</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Full Name *</label><input type="text" id="mn" placeholder="e.g., Ikramul Tamim" maxlength="100"></div>
+          <div class="form-group"><label>Phone Number</label><input type="text" id="mph" placeholder="01XXXXXXXXX" maxlength="15"></div>
+          <div class="form-group"><label>Monthly Contribution (৳) *</label><input type="number" id="ma" placeholder="e.g., 200" min="1" max="999999"></div>
+          <div class="form-group"><label>Joining Date</label><input type="date" id="md"></div>
+        </div>
+        <br><button class="btn btn-primary" onclick="addMember()">✅ Add Member</button>
+      </div>
+      <div class="card">
+        <div class="card-title">👥 Active Members List <span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:6px">— sorted A→Z</span></div>
+        <div class="table-wrap desktop-table"><table>
+          <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Contribution</th><th>Joined</th><th class="admin-th">Actions</th></tr></thead>
+          <tbody id="mtb"></tbody>
+        </table></div>
+        <div class="mobile-card-list" id="mtb-mobile"></div>
+        <div id="mtb-pager" class="pagination"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">🚫 Inactive Members List</div>
+        <div class="table-wrap desktop-table"><table>
+          <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Contribution</th><th>Joined</th><th class="admin-th">Actions</th></tr></thead>
+          <tbody id="itb"></tbody>
+        </table></div>
+        <div class="mobile-card-list" id="itb-mobile"></div>
+      </div>
+      <div class="card admin-only" id="pay-form">
+        <div class="card-title">💳 Record Monthly Subscription</div>
+        <div class="form-grid three">
+          <!-- FIX: member dropdown always A→Z -->
+          <div class="form-group"><label>Member * <span style="font-size:10px;color:var(--muted)">(A→Z)</span></label><select id="pm"><option value="">-- Select --</option></select></div>
+          <div class="form-group"><label>Month *</label><select id="pmm"><option>January</option><option>February</option><option>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select></div>
+          <div class="form-group"><label>Year</label><input type="number" id="pmy" value="2026" min="2020" max="2099"></div>
+          <div class="form-group"><label>Amount (৳) *</label><input type="number" id="pma" placeholder="Auto-filled" min="1" max="999999"></div>
+          <div class="form-group"><label>Date</label><input type="date" id="pmd"></div>
+          <div class="form-group"><label>Note</label><input type="text" id="pmn" placeholder="Optional" maxlength="200"></div>
+        </div>
+        <br><button class="btn btn-primary" onclick="paySubscription()">✅ Record Contribution</button>
+      </div>
+      <div class="card">
+        <div class="card-title">📋 Contribution History</div>
+        <div class="table-wrap desktop-table"><table>
+          <thead><tr><th>#</th><th>Member</th><th>Month</th><th>Year</th><th>Amount</th><th>Date</th><th>Note</th><th class="admin-th">Actions</th></tr></thead>
+          <tbody id="stb"></tbody>
+        </table></div>
+        <div class="mobile-card-list" id="stb-mobile"></div>
+        <div id="stb-pager" class="pagination"></div>
+      </div>
+    </div>
+
+    <!-- PAYMENT TRACKER -->
+    <div id="page-tracker" class="page">
+      <div class="page-header"><h2>⚠️ মাসিক পেমেন্ট ট্র্যাকার</h2><p>কে দিয়েছে, কে দেয়নি — মাস অনুযায়ী দেখো</p></div>
+      <div class="tracker-card">
+        <div class="filter-row" style="margin-bottom:0">
+          <select id="um-month">
+            <option>January</option><option>February</option><option>March</option>
+            <option>April</option><option>May</option><option>June</option>
+            <option>July</option><option>August</option><option>September</option>
+            <option>October</option><option>November</option><option>December</option>
+          </select>
+          <input type="number" id="um-year" value="2026" style="width:90px" min="2020" max="2099">
+          <button class="btn btn-primary btn-sm" onclick="checkUnpaid()">🔍 চেক করো</button>
+          <!-- FIX: Reset button added -->
+          <button class="btn-reset" onclick="resetTracker()">🔄 Reset</button>
+        </div>
+        <div id="tracker-body" style="display:none">
+          <div class="tracker-summary">
+            <div class="ts-box paid-box"><div class="ts-num" id="paid-count">0</div><div class="ts-label">✅ দিয়েছে</div></div>
+            <div class="ts-box unpaid-box"><div class="ts-num" id="unpaid-count">0</div><div class="ts-label">❌ দেয়নি</div></div>
+            <div class="ts-box total-box"><div class="ts-num" id="total-count">0</div><div class="ts-label">👥 মোট সদস্য</div></div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar"><div class="progress-fill" id="paid-bar" style="width:0%"></div></div>
+            <div class="progress-label">
+              <span id="paid-pct-label">0% পেমেন্ট সম্পন্ন</span>
+              <span id="unpaid-amt" style="color:var(--expense)"></span>
+            </div>
+          </div>
+          <div class="tab-row">
+            <button class="tab-btn active-unpaid" id="tab-unpaid" onclick="switchTab('unpaid')">❌ দেয়নি</button>
+            <button class="tab-btn inactive" id="tab-paid" onclick="switchTab('paid')">✅ দিয়েছে</button>
+          </div>
+          <div id="unpaid-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DONATIONS -->
+    <div id="page-donations" class="page">
+      <div class="page-header"><h2>🤝 Donation Management</h2><p>Monthly & one-time donations</p></div>
+      <div class="viewer-notice" id="vn-d">👁️ Viewer mode — view only.</div>
+      <div class="card admin-only">
+        <div class="card-title">➕ Add Donation</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Donor Name *</label><input type="text" id="dn" placeholder="e.g., Mahbub Chowdhury" maxlength="100"></div>
+          <div class="form-group"><label>Type *</label><select id="dt"><option value="monthly">Monthly Donation</option><option value="once">One-time Donation</option></select></div>
+          <div class="form-group"><label>Amount (৳) *</label><input type="number" id="da" placeholder="e.g., 1000" min="1" max="9999999"></div>
+          <div class="form-group"><label>Date *</label><input type="date" id="dd"></div>
+          <div class="form-group"><label>Phone</label><input type="text" id="dph" placeholder="Optional" maxlength="15"></div>
+          <div class="form-group"><label>Purpose / Note</label><input type="text" id="dno" placeholder="e.g., Ramadan Fund" maxlength="200"></div>
+        </div>
+        <br><button class="btn btn-primary" onclick="addDonation()">✅ Add Donation</button>
+      </div>
+
+      <!-- FIX: Monthly Donation Summary -->
+      <div class="card">
+        <div class="card-title">📅 Monthly Donation Summary</div>
+        <div id="don-monthly-summary"><div class="empty"><div class="emoji">📅</div>No monthly donations yet</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🤝 All Donations List</div>
+        <div class="table-wrap desktop-table"><table>
+          <thead><tr><th>#</th><th>Donor Name</th><th>Type</th><th>Amount</th><th>Date</th><th>Note</th><th class="admin-th">Actions</th></tr></thead>
+          <tbody id="dtb"></tbody>
+        </table></div>
+        <div class="mobile-card-list" id="dtb-mobile"></div>
+        <div id="dtb-pager" class="pagination"></div>
+      </div>
+    </div>
+
+    <!-- EXPENSES -->
+    <div id="page-expenses" class="page">
+      <div class="page-header"><h2>💸 Expense Tracking</h2><p>Record all expenditures</p></div>
+      <div class="viewer-notice" id="vn-e">👁️ Viewer mode — view only.</div>
+      <div class="card admin-only">
+        <div class="card-title">➕ Add Expense</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Description *</label><input type="text" id="ed" placeholder="e.g., Iftar party snacks" maxlength="200"></div>
+          <div class="form-group"><label>Category *</label><select id="ec"><option>Food &amp; Meals</option><option>Campaign Costs</option><option>Travel</option><option>Stationery</option><option>Banner &amp; Print</option><option>Office Expenses</option><option>Others</option></select></div>
+          <div class="form-group"><label>Amount (৳) *</label><input type="number" id="ea" placeholder="e.g., 3500" min="1" max="9999999"></div>
+          <div class="form-group"><label>Date *</label><input type="date" id="edt"></div>
+          <div class="form-group"><label>Responsible Person</label><input type="text" id="ep" placeholder="Who spent?" maxlength="100"></div>
+          <div class="form-group"><label>Additional Note</label><input type="text" id="en" placeholder="Optional" maxlength="200"></div>
+        </div>
+        <br><button class="btn btn-primary" onclick="addExpense()">✅ Add Expense</button>
+      </div>
+      <div class="card">
+        <div class="card-title">💸 Expense List</div>
+        <div class="filter-row">
+          <select id="ef" onchange="renderExpenses()"><option value="">All Categories</option><option>Food &amp; Meals</option><option>Campaign Costs</option><option>Travel</option><option>Stationery</option><option>Banner &amp; Print</option><option>Office Expenses</option><option>Others</option></select>
+        </div>
+        <div class="table-wrap desktop-table"><table>
+          <thead><tr><th>#</th><th>Description</th><th>Category</th><th>Amount</th><th>Date</th><th>Responsible</th><th class="admin-th">Actions</th></tr></thead>
+          <tbody id="etb"></tbody>
+        </table></div>
+        <div class="mobile-card-list" id="etb-mobile"></div>
+        <div id="etb-pager" class="pagination"></div>
+      </div>
+    </div>
+
+    <!-- REPORT -->
+    <div id="page-report" class="page">
+      <div class="page-header"><h2>📄 Income &amp; Expense Report</h2><p>Monthly, yearly, or full summary</p></div>
+      <!-- FIX: CSV Export button removed -->
+      <div class="filter-row">
+        <select id="rm"><option value="">All Months</option><option>January</option><option>February</option><option>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select>
+        <input type="number" id="ry" placeholder="Year" value="2026" style="width:100px" min="2020" max="2099">
+        <button class="btn btn-primary btn-sm" onclick="genReport()">🔍 View</button>
+        <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨️ Print</button>
+        <button class="btn btn-ghost btn-sm" onclick="resetReportFilter()">🗑️ Reset</button>
+      </div>
+      <div class="r-grid">
+        <div class="r-box"><div style="font-size:12px;color:var(--muted)">📥 Total Income</div><div style="font-size:26px;font-weight:700;color:var(--income);margin-top:5px" id="ri">৳0</div><div style="font-size:12px;color:var(--muted);margin-top:4px" id="rid"></div></div>
+        <div class="r-box"><div style="font-size:12px;color:var(--muted)">📤 Total Expense</div><div style="font-size:26px;font-weight:700;color:var(--expense);margin-top:5px" id="re">৳0</div><div style="font-size:12px;color:var(--muted);margin-top:4px" id="red"></div></div>
+        <div class="r-box" style="border-color:var(--accent)"><div style="font-size:12px;color:var(--muted)">💰 Net Balance</div><div style="font-size:26px;font-weight:700;margin-top:5px" id="rb">৳0</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">📋 All Transactions</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Income</th><th>Expense</th></tr></thead>
+          <tbody id="rtb"><tr><td colspan="5"><div class="empty"><div class="emoji">📋</div>No data</div></td></tr></tbody>
+        </table></div>
+      </div>
+    </div>
+
+
+    <!-- AUDIT LOG -->
+    <div id="page-auditlog" class="page">
+      <div class="page-header"><h2>🔍 Audit Log</h2><p>কে কখন কী করেছে — সম্পূর্ণ ইতিহাস</p></div>
+      <div class="filter-row">
+        <select id="al-filter" onchange="renderAudit()">
+          <option value="">All Actions</option>
+          <option value="add">✅ Added</option>
+          <option value="edit">✏️ Edited</option>
+          <option value="delete">🗑️ Deleted</option>
+        </select>
+        <select id="al-section" onchange="renderAudit()">
+          <option value="">All Sections</option>
+          <option value="Subscription">Subscription</option>
+          <option value="Member">Member</option>
+          <option value="Donation">Donation</option>
+          <option value="Expense">Expense</option>
+        </select>
+        <select id="al-user" onchange="renderAudit()">
+          <option value="">All Users</option>
+          <option value="Tamim">Tamim</option>
+          <option value="Rifat">Rifat</option>
+          <option value="Zishan">Zishan</option>
+          <option value="Admin">Admin</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('al-filter').value='';document.getElementById('al-section').value='';document.getElementById('al-user').value='';renderAudit()">🗑️ Reset</button>
+      </div>
+      <div class="card">
+        <div class="card-title">🔍 Activity History</div>
+        <div class="table-wrap desktop-table"><table>
+          <thead><tr><th>#</th><th>Time</th><th>User</th><th>Action</th><th>Section</th><th>Details</th><th>Change</th></tr></thead>
+          <tbody id="al-tb"></tbody>
+        </table></div>
+        <div class="mobile-card-list" id="al-mobile"></div>
+        <div id="al-pager" class="pagination"></div>
+      </div>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, onSnapshot, serverTimestamp,
+  query, orderBy, limit
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const REAL_CREDS = [
+  {u:'admin1', p:'tamimirf@123',  role:'admin', label:'Tamim'},
+  {u:'admin2', p:'rifatirf@123',  role:'admin', label:'Rifat'},
+  {u:'admin3', p:'zishanirf@123', role:'admin', label:'Zishan'},
+  {u:'admin4', p:'adminirf@123',  role:'admin', label:'Admin'},
+  {u:'viewer', p:'view123',       role:'viewer', label:'Viewer'}
+];
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDtZfaNTmZt0RpMKNrT6oP-ioyTVdhB6dg",
+  authDomain: "irf-rampura.firebaseapp.com",
+  projectId: "irf-rampura",
+  storageBucket: "irf-rampura.firebasestorage.app",
+  messagingSenderId: "533981772753",
+  appId: "1:533981772753:web:8ffd1c354e41b3a6b3fef0"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let loginAttempts = 0;
+let lockUntil = 0;
+
+function esc(str) {
+  if (str == null) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
+}
+function fmt(n) {
+  const num = Number(n);
+  if (isNaN(num)) return '৳0';
+  return '৳' + num.toLocaleString('en-IN');
+}
+function validYear(y) { return Number.isInteger(y) && y >= 2020 && y <= 2099; }
+
+// ── FIX 1 & 2: Central sort helper — always A→Z by name ──
+function sortAZ(arr) {
+  return [...arr].sort((a, b) => (a.name || '').localeCompare(b.name || '', 'en', {sensitivity:'base'}));
+}
+
+window.toggleTheme = () => {
+  document.body.classList.toggle('light');
+  localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+};
+if (localStorage.getItem('theme') === 'light') document.body.classList.add('light');
+
+let CU = null;
+let D = {members:[], subscriptions:[], donations:[], expenses:[]};
+let unsubscribers = [];
+let _auditLogs = [];
+const _auditPages = {al:1};
+const AUDIT_PAGE_SIZE = 20;
+
+// ── AUDIT LOG HELPER ──
+async function logAudit(action, section, details, changes = null) {
+  if (!CU) return;
+  try {
+    await addDoc(collection(db, 'audit_logs'), {
+      action,        // 'add' | 'edit' | 'delete'
+      section,       // 'Subscription' | 'Member' | 'Donation' | 'Expense'
+      details,       // human-readable description
+      changes,       // {field, oldVal, newVal} or null
+      user: CU.label,
+      userId: CU.u,
+      timestamp: serverTimestamp(),
+      ts: new Date().toISOString()
+    });
+  } catch(e) { console.warn('Audit log failed:', e); }
+}
+let _unpaidData = {unpaid:[], paid:[], month:'', year:0};
+
+const PAGE_SIZE = 15;
+const _pages = {mtb:1, stb:1, dtb:1, etb:1};
+
+function buildPager(totalItems, currentPage, key, onPageFn) {
+  const el = document.getElementById(key + '-pager');
+  if (!el) return;
+  const total = Math.ceil(totalItems / PAGE_SIZE);
+  if (total <= 1) { el.innerHTML = ''; return; }
+  let html = '';
+  if (currentPage > 1) html += `<button class="pg-btn" onclick="${onPageFn}(${currentPage-1})">‹</button>`;
+  for (let i = 1; i <= total; i++) {
+    if (i === 1 || i === total || Math.abs(i - currentPage) <= 1) {
+      html += `<button class="pg-btn ${i===currentPage?'active':''}" onclick="${onPageFn}(${i})">${i}</button>`;
+    } else if (Math.abs(i - currentPage) === 2) {
+      html += `<span class="pg-info">…</span>`;
+    }
+  }
+  if (currentPage < total) html += `<button class="pg-btn" onclick="${onPageFn}(${currentPage+1})">›</button>`;
+  html += `<span class="pg-info">${totalItems} টি রেকর্ড</span>`;
+  el.innerHTML = html;
+}
+
+window.goPageM = (p) => { _pages.mtb = p; renderM(); };
+window.goPageS = (p) => { _pages.stb = p; renderS(); };
+window.goPageD = (p) => { _pages.dtb = p; renderDon(); };
+window.goPageE = (p) => { _pages.etb = p; renderExp(); };
+
+function showSync(on) { document.getElementById('sync-bar').style.display = on ? 'block' : 'none'; }
+function setSyncStatus(msg) {
+  const el = document.getElementById('sync-status');
+  el.style.display = msg ? 'block' : 'none';
+  el.textContent = msg;
+}
+window.closeModal = (id) => document.getElementById(id).classList.remove('open');
+
+// LOGIN
+window.doLogin = async () => {
+  const now = Date.now();
+  if (now < lockUntil) {
+    const secs = Math.ceil((lockUntil - now) / 1000);
+    return toast(`🔒 অনেকবার ভুল হয়েছে। ${secs} সেকেন্ড অপেক্ষা করো।`, 1);
+  }
+  const u = document.getElementById('lu').value.trim();
+  const p = document.getElementById('lp').value;
+  if (!u || !p) { document.getElementById('lerr').style.display = 'block'; return; }
+  document.getElementById('lloading').style.display = 'block';
+  document.getElementById('lerr').style.display = 'none';
+  const acc = REAL_CREDS.find(a => a.u === u && a.p === p);
+  if (!acc) {
+    loginAttempts++;
+    if (loginAttempts >= 5) {
+      lockUntil = Date.now() + 30000;
+      loginAttempts = 0;
+      document.getElementById('lloading').style.display = 'none';
+      return toast('🔒 ৫ বার ভুল! ৩০ সেকেন্ড অপেক্ষা করো।', 1);
+    }
+    document.getElementById('lloading').style.display = 'none';
+    document.getElementById('lerr').style.display = 'block';
+    return;
+  }
+  loginAttempts = 0;
+  CU = acc;
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('un').textContent = esc(acc.label);
+  document.getElementById('ur').textContent = acc.role === 'admin' ? '🔐 Admin' : '👁️ Viewer';
+  document.getElementById('tb-user').textContent = esc(acc.label);
+  applyRole();
+  startListeners();
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('um-month').value = months[new Date().getMonth()];
+  document.getElementById('um-year').value = new Date().getFullYear();
+  document.getElementById('lloading').style.display = 'none';
+};
+
+window.doLogout = () => {
+  unsubscribers.forEach(u => u());
+  unsubscribers = [];
+  CU = null;
+  D = {members:[], subscriptions:[], donations:[], expenses:[]};
+  _unpaidData = {unpaid:[], paid:[], month:'', year:0};
+  document.getElementById('tracker-body').style.display = 'none';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('lu').value = '';
+  document.getElementById('lp').value = '';
+  document.getElementById('lloading').style.display = 'none';
+  setSyncStatus('');
+};
+
+function isA() { return CU && CU.role === 'admin'; }
+
+function applyRole() {
+  const a = isA();
+  document.querySelectorAll('.admin-only').forEach(el => el.style.display = a ? 'block' : 'none');
+  document.querySelectorAll('.admin-th').forEach(el => el.style.display = a ? '' : 'none');
+  ['vn-m','vn-d','vn-e'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = a ? 'none' : 'block';
+  });
+  // Hide audit log nav from viewer
+  const auditNav = document.getElementById('nav-auditlog');
+  if (auditNav) auditNav.style.display = a ? 'flex' : 'none';
+}
+
+function startListeners() {
+  setSyncStatus('🔄 Loading data...');
+  showSync(true);
+  const u1 = onSnapshot(collection(db, 'members'), snap => {
+    D.members = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    renderM(); renderMSel(); updateDB();
+    if (document.getElementById('tracker-body').style.display !== 'none') checkUnpaid();
+    setSyncStatus('✅ Connected'); showSync(false);
+    setTimeout(() => setSyncStatus(''), 2000);
+  }, () => { setSyncStatus('❌ Disconnected'); });
+  const u2 = onSnapshot(collection(db, 'subscriptions'), snap => {
+    D.subscriptions = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    renderS(); updateDB();
+    if (document.getElementById('tracker-body').style.display !== 'none') checkUnpaid();
+  });
+  const u3 = onSnapshot(collection(db, 'donations'), snap => {
+    D.donations = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    renderDon(); updateDB();
+  });
+  const u4 = onSnapshot(collection(db, 'expenses'), snap => { D.expenses = snap.docs.map(d => ({id: d.id, ...d.data()})); renderExp(); updateDB(); });
+  const u5 = onSnapshot(
+    query(collection(db, 'audit_logs'), orderBy('timestamp','desc'), limit(200)),
+    snap => {
+      _auditLogs = snap.docs.map(d => ({id: d.id, ...d.data()}));
+      if (document.getElementById('page-auditlog').classList.contains('active')) renderAudit();
+    }
+  );
+  unsubscribers = [u1, u2, u3, u4, u5];
+}
+
+window.toggleSB = () => { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); };
+window.closeSB = () => { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); };
+window.go = (id, el) => {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  closeSB();
+  if (id === 'dashboard') updateDB();
+  if (id === 'report') genReport();
+  if (id === 'auditlog') renderAudit();
+};
+
+function toast(msg, err) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.borderColor = err ? 'var(--expense)' : 'var(--accent)';
+  t.style.color = err ? 'var(--expense)' : 'var(--accent)';
+  t.style.display = 'block';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.style.display = 'none', 2800);
+}
+function td() { return new Date().toISOString().split('T')[0]; }
+
+window.togglePasswordVisibility = () => {
+  const pwField = document.getElementById('lp');
+  const toggleBtn = event.currentTarget;
+  if (pwField.type === 'password') {
+    pwField.type = 'text';
+    toggleBtn.textContent = '🙈';
+  } else {
+    pwField.type = 'password';
+    toggleBtn.textContent = '👁️';
+  }
+};
+
+// ── FIX 5: Tracker Reset ──
+window.resetTracker = () => {
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('um-month').value = months[new Date().getMonth()];
+  document.getElementById('um-year').value = new Date().getFullYear();
+  document.getElementById('tracker-body').style.display = 'none';
+  _unpaidData = {unpaid:[], paid:[], month:'', year:0};
+  toast('🔄 Tracker reset!');
+};
+
+// TRACKER
+window.checkUnpaid = () => {
+  const month = document.getElementById('um-month').value;
+  const year = parseInt(document.getElementById('um-year').value);
+  if (!validYear(year)) return toast('⚠️ সঠিক সাল দাও (২০২০–২০৯৯)!', 1);
+  const active = D.members.filter(m => m.active !== false);
+  _unpaidData.unpaid = active.filter(m => !D.subscriptions.some(s => s.memberId === m.id && s.month === month && s.year === year));
+  _unpaidData.paid = active.filter(m => D.subscriptions.some(s => s.memberId === m.id && s.month === month && s.year === year));
+  _unpaidData.month = month; _unpaidData.year = year;
+  const total = active.length, paidN = _unpaidData.paid.length, unpaidN = _unpaidData.unpaid.length;
+  const pct = total > 0 ? Math.round(paidN / total * 100) : 0;
+  const unpaidAmt = _unpaidData.unpaid.reduce((a, m) => a + (m.amount || 0), 0);
+  document.getElementById('tracker-body').style.display = 'block';
+  document.getElementById('paid-count').textContent = paidN;
+  document.getElementById('unpaid-count').textContent = unpaidN;
+  document.getElementById('total-count').textContent = total;
+  document.getElementById('paid-bar').style.width = pct + '%';
+  document.getElementById('paid-pct-label').textContent = `${pct}% পেমেন্ট সম্পন্ন`;
+  document.getElementById('unpaid-amt').textContent = unpaidN > 0 ? `বাকি: ${fmt(unpaidAmt)}` : '';
+  switchTab('unpaid');
+};
+
+window.switchTab = (tab) => {
+  const list = tab === 'unpaid' ? _unpaidData.unpaid : _unpaidData.paid;
+  const el = document.getElementById('unpaid-result');
+  document.getElementById('tab-unpaid').className = 'tab-btn ' + (tab === 'unpaid' ? 'active-unpaid' : 'inactive');
+  document.getElementById('tab-paid').className = 'tab-btn ' + (tab === 'paid' ? 'active-paid' : 'inactive');
+  if (list.length === 0) {
+    el.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted);font-size:14px">${tab==='unpaid'?'🎉 <strong style="color:var(--income)">সবাই পেমেন্ট করেছে!</strong>':'😔 এখনো কেউ পেমেন্ট করেনি'}</div>`;
+    return;
+  }
+  const isUnpaid = tab === 'unpaid';
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile) {
+    el.innerHTML = list.map((m, i) => `
+      <div class="m-card" style="border-left:3px solid ${isUnpaid?'var(--expense)':'var(--income)'}">
+        <div class="m-card-name">${i+1}. ${esc(m.name)}</div>
+        <div class="m-card-row"><span>${isUnpaid?'বাকি চাঁদা:':'পরিশোধিত:'}</span><span class="${isUnpaid?'amount-negative':'amount-positive'}">${fmt(m.amount)}</span></div>
+        ${m.phone?`<div class="m-card-row"><span>ফোন:</span><span><a href="tel:${esc(m.phone)}" style="color:var(--accent2)">${esc(m.phone)}</a></span></div>`:''}
+      </div>`).join('');
+  } else {
+    el.innerHTML = `<div class="table-wrap"><table>
+      <thead><tr><th>#</th><th>নাম</th><th>ফোন</th><th>${isUnpaid?'বাকি চাঁদা':'পরিশোধিত'}</th></tr></thead>
+      <tbody>${list.map((m, i) => `
+        <tr class="${isUnpaid?'unpaid-row':'paid-row'}">
+          <td>${i+1}</td><td><strong>${esc(m.name)}</strong></td>
+          <td>${m.phone?`<a href="tel:${esc(m.phone)}" style="color:var(--accent2);text-decoration:none">${esc(m.phone)}</a>`:'—'}</td>
+          <td class="${isUnpaid?'amount-negative':'amount-positive'}">${fmt(m.amount)}</td>
+        </tr>`).join('')}</tbody>
+    </table></div>`;
+  }
+};
+
+// MEMBERS
+window.addMember = async () => {
+  if (!isA()) return;
+  const n = document.getElementById('mn').value.trim();
+  const a = parseFloat(document.getElementById('ma').value);
+  if (!n || !a || a <= 0) return toast('⚠️ নাম এবং চাঁদার পরিমাণ দিতে হবে!', 1);
+  if (n.length > 100) return toast('⚠️ নাম সর্বোচ্চ ১০০ অক্ষরের হতে হবে!', 1);
+  showSync(true);
+  try {
+    await addDoc(collection(db, 'members'), { name:n, phone:document.getElementById('mph').value.trim(), amount:a, date:document.getElementById('md').value||td(), active:true, createdAt:serverTimestamp() });
+    ['mn','mph','ma'].forEach(id => document.getElementById(id).value = '');
+    await logAudit('add', 'Member', `সদস্য যোগ: ${n} (${fmt(a)}/মাস)`);
+    toast('✅ Member added!');
+  } catch(e) { toast('❌ Error: ' + e.message, 1); }
+  showSync(false);
+};
+
+window.openEditMember = (id) => {
+  const m = D.members.find(x => x.id === id); if (!m) return;
+  document.getElementById('em-id').value = id;
+  document.getElementById('em-name').value = m.name;
+  document.getElementById('em-phone').value = m.phone || '';
+  document.getElementById('em-amount').value = m.amount;
+  document.getElementById('em-date').value = m.date || '';
+  document.getElementById('editMemberModal').classList.add('open');
+};
+
+window.saveMemberEdit = async () => {
+  const id = document.getElementById('em-id').value;
+  const n = document.getElementById('em-name').value.trim();
+  const a = parseFloat(document.getElementById('em-amount').value);
+  if (!n || !a || a <= 0) return toast('⚠️ নাম ও পরিমাণ দিতে হবে!', 1);
+  showSync(true);
+  try {
+    await updateDoc(doc(db,'members',id), {name:n, phone:document.getElementById('em-phone').value.trim(), amount:a, date:document.getElementById('em-date').value||td()});
+    for (const s of D.subscriptions.filter(s=>s.memberId===id)) await updateDoc(doc(db,'subscriptions',s.id),{memberName:n});
+    const oldM = D.members.find(x=>x.id===id);
+    await logAudit('edit', 'Member', `সদস্য সম্পাদনা: ${n}`, oldM ? {field:'amount', oldVal:fmt(oldM.amount), newVal:fmt(a)} : null);
+    closeModal('editMemberModal'); toast('✅ Member updated!');
+  } catch(e) { toast('❌ Error!', 1); }
+  showSync(false);
+};
+
+window.deactivateMember = async (id) => {
+  if (!isA()||!confirm('Deactivate this member?')) return;
+  showSync(true);
+  try {
+    const m = D.members.find(x=>x.id===id);
+    await updateDoc(doc(db,'members',id),{active:false});
+    await logAudit('edit', 'Member', `সদস্য নিষ্ক্রিয়: ${m?m.name:id}`);
+    toast('🚫 Deactivated');
+  } catch(e) { toast('❌ Error!',1); }
+  showSync(false);
+};
+window.activateMember = async (id) => { if (!isA()) return; showSync(true); try { await updateDoc(doc(db,'members',id),{active:true}); toast('✅ Activated'); } catch(e) { toast('❌ Error!',1); } showSync(false); };
+
+function memberCard(m, i, isInactive) {
+  return `<div class="m-card">
+    <div class="m-card-name">${i+1}. ${esc(m.name)}${isInactive?' <span class="badge badge-inactive">Inactive</span>':''}</div>
+    <div class="m-card-row"><span>চাঁদা:</span><span class="${isInactive?'':'amount-positive'}">${fmt(m.amount)}/month</span></div>
+    ${m.phone?`<div class="m-card-row"><span>ফোন:</span><span><a href="tel:${esc(m.phone)}" style="color:var(--accent2)">${esc(m.phone)}</a></span></div>`:''}
+    <div class="m-card-row"><span>যোগদান:</span><span>${esc(m.date)||'—'}</span></div>
+    ${isA()?`<div class="m-card-actions">
+      <button class="btn btn-edit btn-sm" onclick="openEditMember('${esc(m.id)}')">✏️ Edit</button>
+      ${isInactive
+        ?`<button class="btn btn-primary btn-sm" onclick="activateMember('${esc(m.id)}')">🔄 Activate</button>`
+        :`<button class="btn btn-warning btn-sm" onclick="deactivateMember('${esc(m.id)}')">🚫 Deactivate</button>`}
+    </div>`:''}
+  </div>`;
+}
+
+// ── FIX 1: Members always rendered A→Z, serial resets properly ──
+function renderM() {
+  // Always sort A→Z — ignore the old sort dropdown (removed)
+  const active = sortAZ(D.members.filter(m => m.active !== false));
+  const inactive = sortAZ(D.members.filter(m => m.active === false));
+
+  const p = _pages.mtb;
+  const start = (p-1)*PAGE_SIZE, end = start+PAGE_SIZE;
+  const pageActive = active.slice(start, end);
+
+  document.getElementById('mtb').innerHTML = pageActive.length
+    ? pageActive.map((m,i)=>`<tr>
+        <td>${start+i+1}</td>
+        <td><strong>${esc(m.name)}</strong></td>
+        <td>${esc(m.phone)||'—'}</td>
+        <td class="amount-positive">${fmt(m.amount)}/mo</td>
+        <td>${esc(m.date)||'—'}</td>
+        <td>${isA()?`<div class="action-btns"><button class="btn btn-edit" onclick="openEditMember('${m.id}')">✏️</button><button class="btn btn-warning" onclick="deactivateMember('${m.id}')">🚫</button></div>`:'—'}</td>
+      </tr>`).join('')
+    : '<tr><td colspan="6"><div class="empty"><div class="emoji">👥</div>No active members</div></td></tr>';
+
+  document.getElementById('itb').innerHTML = inactive.length
+    ? inactive.map((m,i)=>`<tr>
+        <td>${i+1}</td>
+        <td><strong>${esc(m.name)}</strong></td>
+        <td>${esc(m.phone)||'—'}</td>
+        <td>${fmt(m.amount)}/mo</td>
+        <td>${esc(m.date)||'—'}</td>
+        <td>${isA()?`<div class="action-btns"><button class="btn btn-edit" onclick="openEditMember('${m.id}')">✏️</button><button class="btn btn-primary btn-sm" onclick="activateMember('${m.id}')">🔄</button></div>`:'—'}</td>
+      </tr>`).join('')
+    : '<tr><td colspan="6"><div class="empty"><div class="emoji">🚫</div>No inactive members</div></td></tr>';
+
+  document.getElementById('mtb-mobile').innerHTML = pageActive.length
+    ? pageActive.map((m,i)=>memberCard(m,start+i,false)).join('')
+    : '<div class="empty"><div class="emoji">👥</div>No active members</div>';
+  document.getElementById('itb-mobile').innerHTML = inactive.length
+    ? inactive.map((m,i)=>memberCard(m,i,true)).join('')
+    : '<div class="empty"><div class="emoji">🚫</div>No inactive members</div>';
+
+  buildPager(active.length, p, 'mtb', 'goPageM');
+}
+
+// ── FIX 2: Member dropdown in subscription form always A→Z ──
+function renderMSel() {
+  const sel = document.getElementById('pm');
+  // Sort active members A→Z before populating dropdown
+  const active = sortAZ(D.members.filter(m => m.active !== false));
+  sel.innerHTML = '<option value="">-- Select --</option>' +
+    active.map(m=>`<option value="${m.id}">${esc(m.name)} (${fmt(m.amount)}/month)</option>`).join('');
+  sel.onchange = function() {
+    const m = D.members.find(x => x.id === this.value);
+    if (m) document.getElementById('pma').value = m.amount;
+  };
+}
+
+window.paySubscription = async () => {
+  if (!isA()) return;
+  const mid = document.getElementById('pm').value;
+  const a = parseFloat(document.getElementById('pma').value);
+  const year = parseInt(document.getElementById('pmy').value);
+  if (!mid||!a||a<=0) return toast('⚠️ সদস্য বাছাই করো এবং পরিমাণ দাও!',1);
+  if (!validYear(year)) return toast('⚠️ সঠিক সাল দাও (২০২০–২০৯৯)!',1);
+  const m = D.members.find(x=>x.id===mid); if (!m) return toast('⚠️ Member not found!',1);
+  const month = document.getElementById('pmm').value;
+  if (D.subscriptions.some(s=>s.memberId===mid&&s.month===month&&s.year===year)) return toast(`⚠️ ${esc(m.name)} ইতিমধ্যে ${month} ${year} রেকর্ড করা হয়েছে!`,1);
+  showSync(true);
+  try {
+    await addDoc(collection(db,'subscriptions'),{memberId:mid,memberName:m.name,month,year,amount:a,date:document.getElementById('pmd').value||td(),note:document.getElementById('pmn').value,createdAt:serverTimestamp()});
+    ['pma','pmn'].forEach(id=>document.getElementById(id).value='');
+    await logAudit('add', 'Subscription', `চাঁদা যোগ: ${m.name} — ${month} ${year}`, {field:'amount', oldVal:'—', newVal:fmt(a)});
+    toast(`✅ ${esc(m.name)}-এর চাঁদা রেকর্ড হয়েছে!`);
+  } catch(e) { toast('❌ Error!',1); }
+  showSync(false);
+};
+
+window.openEditSub = (id) => {
+  const s = D.subscriptions.find(x=>x.id===id); if (!s) return;
+  document.getElementById('es-id').value=id; document.getElementById('es-name').value=s.memberName;
+  document.getElementById('es-month').value=s.month; document.getElementById('es-year').value=s.year;
+  document.getElementById('es-amount').value=s.amount; document.getElementById('es-date').value=s.date||'';
+  document.getElementById('es-note').value=s.note||''; document.getElementById('editSubModal').classList.add('open');
+};
+
+window.saveSubEdit = async () => {
+  const id=document.getElementById('es-id').value, a=parseFloat(document.getElementById('es-amount').value), year=parseInt(document.getElementById('es-year').value);
+  if (!a||a<=0) return toast('⚠️ সঠিক পরিমাণ দাও!',1);
+  if (!validYear(year)) return toast('⚠️ সঠিক সাল দাও (২০২০–২০৯৯)!',1);
+  showSync(true);
+  try {
+    const oldSub = D.subscriptions.find(x=>x.id===id);
+    await updateDoc(doc(db,'subscriptions',id),{month:document.getElementById('es-month').value,year,amount:a,date:document.getElementById('es-date').value||td(),note:document.getElementById('es-note').value});
+    await logAudit('edit', 'Subscription',
+      `চাঁদা সম্পাদনা: ${oldSub?oldSub.memberName:id} — ${document.getElementById('es-month').value} ${year}`,
+      oldSub && oldSub.amount !== a ? {field:'amount', oldVal:fmt(oldSub.amount), newVal:fmt(a)} : null
+    );
+    closeModal('editSubModal'); toast('✅ Contribution updated!');
+  } catch(e) { toast('❌ Error!',1); }
+  showSync(false);
+};
+
+window.delS = async (id) => {
+  if (!isA()||!confirm('Delete this record?')) return;
+  showSync(true);
+  try {
+    const s = D.subscriptions.find(x=>x.id===id);
+    await deleteDoc(doc(db,'subscriptions',id));
+    await logAudit('delete', 'Subscription', `চাঁদা মুছে ফেলা: ${s?s.memberName:id} — ${s?s.month+' '+s.year:''}`, s?{field:'amount',oldVal:fmt(s.amount),newVal:'মুছে ফেলা'}:null);
+    toast('🗑️ Record deleted');
+  } catch(e) { toast('❌ Error!',1); }
+  showSync(false);
+};
+
+function renderS() {
+  const list = [...D.subscriptions].reverse();
+  const p = _pages.stb;
+  const start = (p-1)*PAGE_SIZE, end = start+PAGE_SIZE;
+  const page = list.slice(start, end);
+
+  document.getElementById('stb').innerHTML = page.length
+    ? page.map((s,i)=>`<tr>
+        <td>${list.length-start-i}</td>
+        <td><strong>${esc(s.memberName)}</strong></td>
+        <td>${esc(s.month)}</td>
+        <td>${esc(String(s.year))}</td>
+        <td class="amount-positive">${fmt(s.amount)}</td>
+        <td>${esc(s.date)||'—'}</td>
+        <td>${esc(s.note)||'—'}</td>
+        <td>${isA()?`<div class="action-btns"><button class="btn btn-edit" onclick="openEditSub('${s.id}')">✏️</button><button class="btn btn-danger" onclick="delS('${s.id}')">🗑️</button></div>`:'—'}</td>
+      </tr>`).join('')
+    : '<tr><td colspan="8"><div class="empty"><div class="emoji">📋</div>No records</div></td></tr>';
+
+  document.getElementById('stb-mobile').innerHTML = page.length
+    ? page.map((s)=>`<div class="m-card">
+        <div class="m-card-name">${esc(s.memberName)}</div>
+        <div class="m-card-row"><span>মাস:</span><span>${esc(s.month)} ${esc(String(s.year))}</span></div>
+        <div class="m-card-row"><span>পরিমাণ:</span><span class="amount-positive">${fmt(s.amount)}</span></div>
+        <div class="m-card-row"><span>তারিখ:</span><span>${esc(s.date)||'—'}</span></div>
+        ${s.note?`<div class="m-card-row"><span>নোট:</span><span>${esc(s.note)}</span></div>`:''}
+        ${isA()?`<div class="m-card-actions"><button class="btn btn-edit btn-sm" onclick="openEditSub('${s.id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="delS('${s.id}')">🗑️</button></div>`:''}
+      </div>`).join('')
+    : '<div class="empty"><div class="emoji">📋</div>No records</div>';
+
+  buildPager(list.length, p, 'stb', 'goPageS');
+}
+
+window.addDonation = async () => {
+  if (!isA()) return;
+  const n=document.getElementById('dn').value.trim(), a=parseFloat(document.getElementById('da').value);
+  if (!n||!a||a<=0) return toast('⚠️ নাম ও পরিমাণ দিতে হবে!',1);
+  showSync(true);
+  try {
+    await addDoc(collection(db,'donations'),{name:n,type:document.getElementById('dt').value,amount:a,date:document.getElementById('dd').value||td(),phone:document.getElementById('dph').value.trim(),note:document.getElementById('dno').value.trim(),createdAt:serverTimestamp()});
+    ['dn','da','dph','dno'].forEach(id=>document.getElementById(id).value='');
+    await logAudit('add', 'Donation', `ডোনেশন যোগ: ${n} (${document.getElementById('dt').value==='monthly'?'Monthly':'One-time'})`, {field:'amount', oldVal:'—', newVal:fmt(a)});
+    toast('✅ Donation added!');
+  } catch(e) { toast('❌ Error!',1); }
+  showSync(false);
+};
+window.delDon = async (id) => {
+  if (!isA()||!confirm('Delete donation?')) return;
+  showSync(true);
+  try {
+    const d = D.donations.find(x=>x.id===id);
+    await deleteDoc(doc(db,'donations',id));
+    await logAudit('delete', 'Donation', `ডোনেশন মুছে ফেলা: ${d?d.name:id}`, d?{field:'amount',oldVal:fmt(d.amount),newVal:'মুছে ফেলা'}:null);
+    toast('🗑️ Donation deleted');
+  } catch(e) { toast('❌ Error!',1); }
+  showSync(false);
+};
+
+// ── FIX 4: Monthly donation summary ──
+function renderMonthlyDonationSummary() {
+  const monthly = D.donations.filter(d => d.type === 'monthly');
+  const el = document.getElementById('don-monthly-summary');
+  if (!monthly.length) {
+    el.innerHTML = '<div class="empty"><div class="emoji">📅</div>No monthly donations yet</div>';
+    return;
+  }
+  // Group by donor name
+  const byDonor = {};
+  monthly.forEach(d => {
+    const key = d.name || 'Unknown';
+    if (!byDonor[key]) byDonor[key] = {name:key, phone:d.phone||'', total:0, count:0, lastDate:d.date||''};
+    byDonor[key].total += (d.amount||0);
+    byDonor[key].count += 1;
+    if ((d.date||'') > byDonor[key].lastDate) byDonor[key].lastDate = d.date;
+  });
+  const donors = Object.values(byDonor).sort((a,b) => b.total - a.total);
+  const grandTotal = donors.reduce((s,d) => s + d.total, 0);
+
+  el.innerHTML = `
+    <div style="background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);border-radius:10px;padding:12px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+      <div><div style="font-size:12px;color:var(--muted)">Total Monthly Donations</div><div style="font-size:20px;font-weight:700;color:var(--accent2);margin-top:2px">${fmt(grandTotal)}</div></div>
+      <div style="text-align:right"><div style="font-size:12px;color:var(--muted)">Donors</div><div style="font-size:20px;font-weight:700;color:var(--accent)">${donors.length}</div></div>
+    </div>
+    ${donors.map((d,i) => `
+      <div class="don-month-card">
+        <div>
+          <div class="don-month-label">${i+1}. ${esc(d.name)}</div>
+          <div class="don-month-sub">${d.phone?'📞 '+esc(d.phone)+' &nbsp;|&nbsp; ':''} Last: ${esc(d.lastDate)||'—'}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="don-month-amt">${fmt(d.total)}</div>
+          <div class="don-month-count">${d.count} payment${d.count>1?'s':''}</div>
+        </div>
+      </div>`).join('')}`;
+}
+
+function renderDon() {
+  renderMonthlyDonationSummary();
+
+  const list = [...D.donations].reverse();
+  const p = _pages.dtb;
+  const start = (p-1)*PAGE_SIZE, end = start+PAGE_SIZE;
+  const page = list.slice(start, end);
+
+  document.getElementById('dtb').innerHTML = page.length
+    ? page.map((d,i)=>`<tr>
+        <td>${list.length-start-i}</td>
+        <td><strong>${esc(d.name)}</strong>${d.phone?'<br><small style="color:var(--muted)">'+esc(d.phone)+'</small>':''}</td>
+        <td><span class="badge ${d.type==='monthly'?'badge-monthly':'badge-once'}">${d.type==='monthly'?'Monthly':'One-time'}</span></td>
+        <td class="amount-positive">${fmt(d.amount)}</td>
+        <td>${esc(d.date)||'—'}</td>
+        <td>${esc(d.note)||'—'}</td>
+        <td>${isA()?`<button class="btn btn-danger" onclick="delDon('${d.id}')">🗑️</button>`:'—'}</td>
+      </tr>`).join('')
+    : '<tr><td colspan="7"><div class="empty"><div class="emoji">🤝</div>No donations</div></td></tr>';
+
+  document.getElementById('dtb-mobile').innerHTML = page.length
+    ? page.map((d)=>`<div class="m-card">
+        <div class="m-card-name">${esc(d.name)}</div>
+        <div class="m-card-row"><span>ধরন:</span><span><span class="badge ${d.type==='monthly'?'badge-monthly':'badge-once'}">${d.type==='monthly'?'Monthly':'One-time'}</span></span></div>
+        <div class="m-card-row"><span>পরিমাণ:</span><span class="amount-positive">${fmt(d.amount)}</span></div>
+        <div class="m-card-row"><span>তারিখ:</span><span>${esc(d.date)||'—'}</span></div>
+        ${d.note?`<div class="m-card-row"><span>নোট:</span><span>${esc(d.note)}</span></div>`:''}
+        ${d.phone?`<div class="m-card-row"><span>ফোন:</span><span><a href="tel:${esc(d.phone)}" style="color:var(--accent2)">${esc(d.phone)}</a></span></div>`:''}
+        ${isA()?`<div class="m-card-actions"><button class="btn btn-danger btn-sm" onclick="delDon('${d.id}')">🗑️ Delete</button></div>`:''}
+      </div>`).join('')
+    : '<div class="empty"><div class="emoji">🤝</div>No donations</div>';
+
+  buildPager(list.length, p, 'dtb', 'goPageD');
+}
+
+window.addExpense = async () => {
+  if (!isA()) return;
+  const d=document.getElementById('ed').value.trim(), a=parseFloat(document.getElementById('ea').value);
+  if (!d||!a||a<=0) return toast('⚠️ বিবরণ ও পরিমাণ দিতে হবে!',1);
+  showSync(true);
+  try {
+    await addDoc(collection(db,'expenses'),{desc:d,cat:document.getElementById('ec').value,amount:a,date:document.getElementById('edt').value||td(),person:document.getElementById('ep').value.trim(),note:document.getElementById('en').value.trim(),createdAt:serverTimestamp()});
+    ['ed','ea','ep','en'].forEach(id=>document.getElementById(id).value='');
+    await logAudit('add', 'Expense', `খরচ যোগ: ${d} [${document.getElementById('ec').value}]`, {field:'amount', oldVal:'—', newVal:fmt(a)});
+    toast('✅ Expense added!');
+  } catch(e) { toast('❌ Error!',1); }
+  showSync(false);
+};
+window.delExp = async (id) => {
+  if (!isA()||!confirm('Delete expense?')) return;
+  showSync(true);
+  try {
+    const e = D.expenses.find(x=>x.id===id);
+    await deleteDoc(doc(db,'expenses',id));
+    await logAudit('delete', 'Expense', `খরচ মুছে ফেলা: ${e?e.desc:id}`, e?{field:'amount',oldVal:fmt(e.amount),newVal:'মুছে ফেলা'}:null);
+    toast('🗑️ Expense deleted');
+  } catch(e2) { toast('❌ Error!',1); }
+  showSync(false);
+};
+window.renderExpenses = () => { _pages.etb = 1; renderExp(); };
+
+function renderExp() {
+  const f = document.getElementById('ef')?.value||'';
+  const list = (f?D.expenses.filter(e=>e.cat===f):[...D.expenses]).reverse();
+  const p = _pages.etb;
+  const start = (p-1)*PAGE_SIZE, end = start+PAGE_SIZE;
+  const page = list.slice(start, end);
+
+  document.getElementById('etb').innerHTML = page.length
+    ? page.map((e,i)=>`<tr>
+        <td>${list.length-start-i}</td>
+        <td><strong>${esc(e.desc)}</strong>${e.note?'<br><small style="color:var(--muted)">'+esc(e.note)+'</small>':''}</td>
+        <td><span class="badge badge-expense">${esc(e.cat)}</span></td>
+        <td class="amount-negative">${fmt(e.amount)}</td>
+        <td>${esc(e.date)||'—'}</td>
+        <td>${esc(e.person)||'—'}</td>
+        <td>${isA()?`<button class="btn btn-danger" onclick="delExp('${e.id}')">🗑️</button>`:'—'}</td>
+      </tr>`).join('')
+    : '<tr><td colspan="7"><div class="empty"><div class="emoji">💸</div>No expenses</div></td></tr>';
+
+  document.getElementById('etb-mobile').innerHTML = page.length
+    ? page.map((e)=>`<div class="m-card">
+        <div class="m-card-name">${esc(e.desc)}</div>
+        <div class="m-card-row"><span>ক্যাটাগরি:</span><span><span class="badge badge-expense">${esc(e.cat)}</span></span></div>
+        <div class="m-card-row"><span>পরিমাণ:</span><span class="amount-negative">${fmt(e.amount)}</span></div>
+        <div class="m-card-row"><span>তারিখ:</span><span>${esc(e.date)||'—'}</span></div>
+        ${e.person?`<div class="m-card-row"><span>দায়িত্বশীল:</span><span>${esc(e.person)}</span></div>`:''}
+        ${e.note?`<div class="m-card-row"><span>নোট:</span><span>${esc(e.note)}</span></div>`:''}
+        ${isA()?`<div class="m-card-actions"><button class="btn btn-danger btn-sm" onclick="delExp('${e.id}')">🗑️ Delete</button></div>`:''}
+      </div>`).join('')
+    : '<div class="empty"><div class="emoji">💸</div>No expenses</div>';
+
+  buildPager(list.length, p, 'etb', 'goPageE');
+}
+
+function tots() {
+  const s=D.subscriptions.reduce((a,x)=>a+(x.amount||0),0);
+  const don=D.donations.reduce((a,x)=>a+(x.amount||0),0);
+  const exp=D.expenses.reduce((a,x)=>a+(x.amount||0),0);
+  return {s,don,income:s+don,exp,bal:s+don-exp};
+}
+
+function updateDB() {
+  const t=tots(), activeCnt=D.members.filter(m=>m.active!==false).length;
+  document.getElementById('s-bal').textContent=fmt(t.bal);
+  document.getElementById('s-bal').style.color=t.bal>=0?'var(--income)':'var(--expense)';
+  document.getElementById('s-inc').textContent=fmt(t.income);
+  document.getElementById('s-exp').textContent=fmt(t.exp);
+  document.getElementById('s-mem').textContent=activeCnt;
+  document.getElementById('d-sub').textContent=fmt(t.s);
+  document.getElementById('d-don').textContent=fmt(t.don);
+  const total=t.income+t.exp, ip=total>0?Math.round(t.income/total*100):0;
+  document.getElementById('ipct').textContent=ip+'%';
+  document.getElementById('epct').textContent=(100-ip)+'%';
+  document.getElementById('ibar').style.width=ip+'%';
+  const all=[
+    ...D.subscriptions.map(s=>({date:s.date,desc:esc(s.memberName)+' — '+esc(s.month)+' contribution',amount:s.amount,t:'income'})),
+    ...D.donations.map(d=>({date:d.date,desc:esc(d.name)+' — Donation',amount:d.amount,t:'income'})),
+    ...D.expenses.map(e=>({date:e.date,desc:esc(e.desc),amount:e.amount,t:'expense'}))
+  ].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,6);
+  document.getElementById('recent').innerHTML=all.length
+    ? all.map(r=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
+        <div style="flex:1;min-width:0"><div style="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.desc}</div><div style="font-size:11px;color:var(--muted)">${esc(r.date)||''}</div></div>
+        <div class="${r.t==='income'?'amount-positive':'amount-negative'}" style="white-space:nowrap;margin-left:10px">${r.t==='income'?'+':'-'}${fmt(r.amount)}</div>
+      </div>`).join('')
+    : '<div class="empty"><div class="emoji">🗒️</div>No transactions</div>';
+}
+
+const MN={January:0,February:1,March:2,April:3,May:4,June:5,July:6,August:7,September:8,October:9,November:10,December:11};
+window.resetReportFilter=()=>{document.getElementById('rm').value='';document.getElementById('ry').value='2026';genReport();};
+
+window.genReport=()=>{
+  const m=document.getElementById('rm').value, year=parseInt(document.getElementById('ry').value);
+  let subs=D.subscriptions,dons=D.donations,exps=D.expenses;
+  if(m&&!isNaN(year)&&validYear(year)){
+    subs=subs.filter(s=>s.month===m&&s.year===year);
+    dons=dons.filter(d=>{const dd=new Date(d.date);return dd.getMonth()===MN[m]&&dd.getFullYear()===year;});
+    exps=exps.filter(e=>{const ed=new Date(e.date);return ed.getMonth()===MN[m]&&ed.getFullYear()===year;});
+  } else if(!m&&!isNaN(year)&&validYear(year)){
+    subs=subs.filter(s=>s.year===year);
+    dons=dons.filter(d=>new Date(d.date).getFullYear()===year);
+    exps=exps.filter(e=>new Date(e.date).getFullYear()===year);
+  }
+  const s=subs.reduce((a,x)=>a+(x.amount||0),0),don=dons.reduce((a,x)=>a+(x.amount||0),0),exp=exps.reduce((a,x)=>a+(x.amount||0),0);
+  const inc=s+don,bal=inc-exp;
+  document.getElementById('ri').textContent=fmt(inc);
+  document.getElementById('re').textContent=fmt(exp);
+  document.getElementById('rid').innerHTML=`Subscriptions: ${fmt(s)} &nbsp;|&nbsp; Donations: ${fmt(don)}`;
+  document.getElementById('red').textContent=`${exps.length} expenses`;
+  const rb=document.getElementById('rb');rb.textContent=fmt(bal);rb.style.color=bal>=0?'var(--income)':'var(--expense)';
+  const reportData=[
+    ...subs.map(s=>({date:s.date,desc:s.memberName+' — '+s.month+' contribution',type:'Subscription',inc:s.amount,exp:0})),
+    ...dons.map(d=>({date:d.date,desc:d.name+(d.note?' ('+d.note+')':''),type:d.type==='monthly'?'Monthly Donation':'One-time Donation',inc:d.amount,exp:0})),
+    ...exps.map(e=>({date:e.date,desc:e.desc+' ['+e.cat+']',type:'Expense',inc:0,exp:e.amount}))
+  ].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  document.getElementById('rtb').innerHTML=reportData.length
+    ? reportData.map(r=>`<tr>
+        <td>${esc(r.date)||'—'}</td>
+        <td>${esc(r.desc)}</td>
+        <td><span class="badge ${r.inc>0?'badge-income':'badge-expense'}">${esc(r.type)}</span></td>
+        <td class="amount-positive">${r.inc>0?fmt(r.inc):'—'}</td>
+        <td class="amount-negative">${r.exp>0?fmt(r.exp):'—'}</td>
+      </tr>`).join('')
+    : '<tr><td colspan="5"><div class="empty"><div class="emoji">📋</div>No data</div></td></tr>';
+};
+
+
+// ── AUDIT LOG RENDER ──
+window.goPageAL = (p) => { _auditPages.al = p; renderAudit(); };
+
+window.renderAudit = () => {
+  if (!isA()) return;
+  const actionF = document.getElementById('al-filter')?.value || '';
+  const sectionF = document.getElementById('al-section')?.value || '';
+  const userF = document.getElementById('al-user')?.value || '';
+
+  let list = _auditLogs;
+  if (actionF) list = list.filter(l => l.action === actionF);
+  if (sectionF) list = list.filter(l => l.section === sectionF);
+  if (userF) list = list.filter(l => l.user === userF);
+
+  const p = _auditPages.al;
+  const start = (p-1)*AUDIT_PAGE_SIZE, end = start+AUDIT_PAGE_SIZE;
+  const page = list.slice(start, end);
+
+  const actionBadge = (a) => {
+    if (a==='add') return '<span class="badge badge-add">✅ Added</span>';
+    if (a==='edit') return '<span class="badge badge-edit">✏️ Edited</span>';
+    if (a==='delete') return '<span class="badge badge-del">🗑️ Deleted</span>';
+    return a;
+  };
+
+  const changeHtml = (c) => {
+    if (!c) return '—';
+    return `<div class="audit-change">${esc(c.field)}: <span class="old-val">${esc(c.oldVal)}</span>→ <span class="new-val">${esc(c.newVal)}</span></div>`;
+  };
+
+  const formatTs = (log) => {
+    if (log.ts) {
+      const d = new Date(log.ts);
+      return d.toLocaleDateString('en-GB') + ' ' + d.toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit'});
+    }
+    return '—';
+  };
+
+  document.getElementById('al-tb').innerHTML = page.length
+    ? page.map((l,i) => `<tr>
+        <td>${list.length - start - i}</td>
+        <td style="white-space:nowrap;font-size:12px">${esc(formatTs(l))}</td>
+        <td><strong style="color:var(--accent3)">${esc(l.user||'?')}</strong></td>
+        <td>${actionBadge(l.action)}</td>
+        <td><span class="badge badge-inactive">${esc(l.section||'')}</span></td>
+        <td style="font-size:12px">${esc(l.details||'')}</td>
+        <td>${changeHtml(l.changes)}</td>
+      </tr>`).join('')
+    : '<tr><td colspan="7"><div class="empty"><div class="emoji">🔍</div>কোনো লগ নেই</div></td></tr>';
+
+  // Mobile
+  document.getElementById('al-mobile').innerHTML = page.length
+    ? page.map((l) => `<div class="m-card" style="border-left:3px solid ${l.action==='add'?'var(--income)':l.action==='edit'?'var(--accent2)':'var(--expense)'}">
+        <div class="m-card-name">${actionBadge(l.action)} <span style="color:var(--accent3);margin-left:6px">${esc(l.user||'?')}</span></div>
+        <div class="m-card-row"><span>সময়:</span><span>${esc(formatTs(l))}</span></div>
+        <div class="m-card-row"><span>Section:</span><span>${esc(l.section||'')}</span></div>
+        <div class="m-card-row"><span>বিস্তারিত:</span><span>${esc(l.details||'')}</span></div>
+        ${l.changes ? `<div class="m-card-row"><span>পরিবর্তন:</span><span><span style="color:var(--expense);text-decoration:line-through">${esc(l.changes.oldVal)}</span> → <span style="color:var(--income)">${esc(l.changes.newVal)}</span></span></div>` : ''}
+      </div>`).join('')
+    : '<div class="empty"><div class="emoji">🔍</div>কোনো লগ নেই</div>';
+
+  // Pager
+  const el = document.getElementById('al-pager');
+  const total = Math.ceil(list.length / AUDIT_PAGE_SIZE);
+  if (total <= 1) { el.innerHTML = ''; return; }
+  let html = '';
+  if (p > 1) html += `<button class="pg-btn" onclick="goPageAL(${p-1})">‹</button>`;
+  for (let i=1; i<=total; i++) {
+    if (i===1||i===total||Math.abs(i-p)<=1) html += `<button class="pg-btn ${i===p?'active':''}" onclick="goPageAL(${i})">${i}</button>`;
+    else if (Math.abs(i-p)===2) html += `<span class="pg-info">…</span>`;
+  }
+  if (p < total) html += `<button class="pg-btn" onclick="goPageAL(${p+1})">›</button>`;
+  html += `<span class="pg-info">${list.length} টি লগ</span>`;
+  el.innerHTML = html;
+};
+
+document.querySelectorAll('input[type="date"]').forEach(el=>{if(!el.value)el.value=td();});
+</script>
+</body>
+</html>
