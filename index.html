@@ -79,12 +79,14 @@
   .stat-card.blue::after{background:var(--accent2);}
   .stat-card.yellow::after{background:var(--accent3);}
   .stat-card.red::after{background:var(--expense);}
+  .stat-card.purple::after{background:#a855f7;}
   .stat-label{font-size:11px;color:var(--muted);margin-bottom:5px;}
   .stat-value{font-size:21px;font-weight:700;}
   .stat-card.green .stat-value{color:var(--income);}
   .stat-card.blue .stat-value{color:var(--accent2);}
   .stat-card.yellow .stat-value{color:var(--accent3);}
   .stat-card.red .stat-value{color:var(--expense);}
+  .stat-card.purple .stat-value{color:#a855f7;}
   .stat-sub{font-size:11px;color:var(--muted);margin-top:3px;}
   .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;}
   .card-title{font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
@@ -111,6 +113,8 @@
   .btn-warning:hover{background:var(--accent3);color:white;}
   .btn-reset{background:transparent;color:var(--muted);border:1px solid var(--border);font-size:13px;padding:7px 13px;border-radius:8px;cursor:pointer;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
   .btn-reset:hover{border-color:var(--accent3);color:var(--accent3);}
+  .btn-complete{background:transparent;color:var(--income);border:1px solid var(--income);font-size:12px;padding:4px 9px;}
+  .btn-complete:hover{background:var(--income);color:white;}
   .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;}
   table{width:100%;border-collapse:collapse;}
   th{text-align:left;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:9px 10px;border-bottom:1px solid var(--border);white-space:nowrap;}
@@ -125,6 +129,9 @@
   .badge-once{background:rgba(245,158,11,.15);color:var(--accent3);}
   .badge-inactive{background:rgba(100,116,139,.2);color:var(--muted);}
   .badge-advance{background:rgba(245,158,11,.15);color:var(--accent3);font-size:10px;}
+  .badge-active{background:rgba(16,185,129,.15);color:var(--income);}
+  .badge-completed{background:rgba(14,165,233,.15);color:var(--accent2);}
+  .badge-cancelled{background:rgba(244,63,94,.15);color:var(--expense);}
   .amount-positive{color:var(--income);font-weight:600;}
   .amount-negative{color:var(--expense);font-weight:600;}
   .empty{text-align:center;padding:28px;color:var(--muted);}
@@ -177,9 +184,39 @@
   .m-card-row span:last-child{color:var(--text);}
   .m-card-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
   .sec-notice{background:rgba(0,217,163,.07);border:1px solid rgba(0,217,163,.2);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--muted);margin-top:10px;text-align:center;}
-  /* অ্যাডভান্স পেমেন্ট ইনফো বক্স */
   .advance-info{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--accent3);margin-top:10px;display:none;}
   .advance-info.show{display:block;}
+
+  /* ===== CAMPAIGN STYLES ===== */
+  .campaign-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;}
+  .campaign-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2);}
+  .campaign-card.active-camp{border-color:rgba(0,217,163,.3);box-shadow:0 0 0 1px rgba(0,217,163,.1);}
+  .campaign-card.completed-camp{border-color:rgba(14,165,233,.3);opacity:.85;}
+  .campaign-card.cancelled-camp{border-color:rgba(244,63,94,.2);opacity:.7;}
+  .camp-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+  .camp-name{font-weight:700;font-size:16px;}
+  .camp-meta{font-size:11px;color:var(--muted);margin-top:4px;display:flex;gap:12px;flex-wrap:wrap;}
+  .camp-budget-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .camp-budget-label{font-size:12px;color:var(--muted);}
+  .camp-budget-val{font-size:13px;font-weight:600;}
+  .camp-progress{background:var(--surface2);border-radius:20px;height:8px;overflow:hidden;margin-bottom:4px;}
+  .camp-progress-fill{height:100%;border-radius:20px;transition:width .7s ease;}
+  .camp-progress-fill.safe{background:linear-gradient(90deg,var(--income),var(--accent));}
+  .camp-progress-fill.warn{background:linear-gradient(90deg,var(--accent3),#f97316);}
+  .camp-progress-fill.over{background:linear-gradient(90deg,var(--expense),#ff6b6b);}
+  .camp-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
+  .camp-days{font-size:12px;color:var(--muted);}
+  .camp-days.urgent{color:var(--expense);}
+  .camp-days.done{color:var(--accent2);}
+  .camp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .dashboard-camp-mini{background:var(--surface2);border-radius:10px;padding:12px;margin-bottom:8px;border-left:3px solid var(--accent);}
+  .dashboard-camp-mini.completed{border-left-color:var(--accent2);}
+  .dashboard-camp-mini.cancelled{border-left-color:var(--expense);opacity:.7;}
+  .dcm-name{font-weight:600;font-size:13px;}
+  .dcm-meta{font-size:11px;color:var(--muted);margin-top:3px;}
+  .dcm-progress{background:var(--border);border-radius:10px;height:5px;margin-top:8px;overflow:hidden;}
+  .dcm-progress-fill{height:100%;border-radius:10px;background:var(--accent);}
+
   @media(max-width:768px){
     .sidebar{transform:translateX(-100%);}
     .sidebar.open{transform:translateX(0);box-shadow:4px 0 20px rgba(0,0,0,.5);}
@@ -198,6 +235,7 @@
     .ts-num{font-size:22px;}
     .desktop-table{display:none !important;}
     .mobile-card-list{display:block !important;}
+    .camp-grid{grid-template-columns:1fr;}
   }
   @media(max-width:400px){
     .stats-grid{grid-template-columns:1fr 1fr;}
@@ -265,6 +303,40 @@
   </div>
 </div>
 
+<!-- Edit Campaign Modal -->
+<div class="modal-bg" id="editCampModal">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-title">✏️ Edit Campaign</div>
+    <input type="hidden" id="ec-id">
+    <div class="form-grid">
+      <div class="form-group full"><label>Campaign Name *</label><input type="text" id="ec-name" placeholder="e.g., Ramadan Food Drive" maxlength="150"></div>
+      <div class="form-group"><label>Category *</label><select id="ec-cat">
+        <option>শিক্ষা ও দক্ষতা উন্নয়ন</option>
+        <option>ফান্ডরেইজিং</option>
+        <option>সদস্য সংগ্রহ</option>
+        <option>অ্যাডভোকেসি</option>
+        <option>প্রচার ও ব্র্যান্ডিং</option>
+        <option>ইভেন্ট-ভিত্তিক</option>
+        <option>অন্যান্য</option>
+      </select></div>
+      <div class="form-group"><label>Status</label><select id="ec-status">
+        <option value="active">চলমান</option>
+        <option value="completed">সম্পন্ন</option>
+        <option value="cancelled">বাতিল</option>
+      </select></div>
+      <div class="form-group"><label>Start Date *</label><input type="date" id="ec-start"></div>
+      <div class="form-group"><label>End Date *</label><input type="date" id="ec-end"></div>
+      <div class="form-group"><label>Budget / Target (৳) *</label><input type="number" id="ec-budget" placeholder="e.g., 10000" min="1" max="99999999"></div>
+      <div class="form-group"><label>Responsible Person</label><input type="text" id="ec-person" placeholder="Name" maxlength="100"></div>
+      <div class="form-group full"><label>Description</label><input type="text" id="ec-desc" placeholder="Brief description" maxlength="300"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('editCampModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEditCamp()">✅ Save Changes</button>
+    </div>
+  </div>
+</div>
+
 <!-- LOGIN SCREEN -->
 <div id="login-screen">
   <div class="login-box">
@@ -308,6 +380,7 @@
       <div class="nav-item" onclick="go('tracker',this)"><span class="icon">⚠️</span> Payment Tracker</div>
       <div class="nav-item" onclick="go('donations',this)"><span class="icon">🤝</span> Donations</div>
       <div class="nav-item" onclick="go('expenses',this)"><span class="icon">💸</span> Expenses</div>
+      <div class="nav-item" onclick="go('campaigns',this)"><span class="icon">📢</span> Campaigns</div>
       <div class="nav-item" onclick="go('report',this)"><span class="icon">📄</span> Reports</div>
       <div class="nav-item" id="nav-auditlog" onclick="go('auditlog',this)"><span class="icon">🔍</span> Audit Log</div>
     </nav>
@@ -318,6 +391,7 @@
   </aside>
 
   <main class="main">
+    <!-- DASHBOARD -->
     <div id="page-dashboard" class="page active">
       <div class="page-header"><h2>📊 Dashboard</h2><p>Overall financial status of the organization</p></div>
       <div class="stats-grid">
@@ -327,11 +401,25 @@
         <div class="stat-card yellow"><div class="stat-label">Active Members</div><div class="stat-value" id="s-mem">0</div><div class="stat-sub">Registered</div></div>
       </div>
       <div class="two-col">
-        <div class="card"><div class="card-title">📈 Income vs Expense Ratio</div><div style="font-size:13px;color:var(--muted)">Income: <span id="ipct" style="color:var(--income);font-weight:600">0%</span></div><div class="balance-bar"><div class="balance-fill" id="ibar" style="width:0%"></div></div><div style="margin-top:9px;font-size:13px;color:var(--muted)">Expense: <span id="epct" style="color:var(--expense);font-weight:600">0%</span></div><div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px"><div style="background:var(--surface2);border-radius:8px;padding:10px"><div style="font-size:11px;color:var(--muted)">Member Subscriptions</div><div style="color:var(--income);font-weight:700;margin-top:4px" id="d-sub">৳0</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px"><div style="font-size:11px;color:var(--muted)">Donations</div><div style="color:var(--accent2);font-weight:700;margin-top:4px" id="d-don">৳0</div></div></div></div>
+        <div class="card">
+          <div class="card-title">📈 Income vs Expense Ratio</div>
+          <div style="font-size:13px;color:var(--muted)">Income: <span id="ipct" style="color:var(--income);font-weight:600">0%</span></div>
+          <div class="balance-bar"><div class="balance-fill" id="ibar" style="width:0%"></div></div>
+          <div style="margin-top:9px;font-size:13px;color:var(--muted)">Expense: <span id="epct" style="color:var(--expense);font-weight:600">0%</span></div>
+          <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div style="background:var(--surface2);border-radius:8px;padding:10px"><div style="font-size:11px;color:var(--muted)">Member Subscriptions</div><div style="color:var(--income);font-weight:700;margin-top:4px" id="d-sub">৳0</div></div>
+            <div style="background:var(--surface2);border-radius:8px;padding:10px"><div style="font-size:11px;color:var(--muted)">Donations</div><div style="color:var(--accent2);font-weight:700;margin-top:4px" id="d-don">৳0</div></div>
+          </div>
+          <div style="margin-top:14px" id="dash-campaigns-wrap">
+            <div style="font-size:12px;color:var(--muted);font-weight:600;margin-bottom:8px">📢 চলমান ক্যাম্পেইন</div>
+            <div id="dash-campaigns"><div style="font-size:12px;color:var(--muted)">কোনো চলমান ক্যাম্পেইন নেই</div></div>
+          </div>
+        </div>
         <div class="card"><div class="card-title">🕒 Recent Transactions</div><div id="recent"><div class="empty"><div class="emoji">🗒️</div>No transactions</div></div></div>
       </div>
     </div>
 
+    <!-- MEMBERS -->
     <div id="page-members" class="page">
       <div class="page-header"><h2>👥 Members & Monthly Contributions</h2><p>Member management and subscription records</p></div>
       <div class="viewer-notice" id="vn-m">👁️ Viewer mode — view only.</div>
@@ -339,7 +427,6 @@
       <div class="card"><div class="card-title">👥 Active Members List <span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:6px">— sorted A→Z</span></div><div class="table-wrap desktop-table"><table><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Contribution</th><th>Joined</th><th class="admin-th">Actions</th></tr></thead><tbody id="mtb"></tbody></table></div><div class="mobile-card-list" id="mtb-mobile"></div><div id="mtb-pager" class="pagination"></div></div>
       <div class="card"><div class="card-title">🚫 Inactive Members List</div><div class="table-wrap desktop-table"><table><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Contribution</th><th>Joined</th><th class="admin-th">Actions</th></tr></thead><tbody id="itb"></tbody></table></div><div class="mobile-card-list" id="itb-mobile"></div></div>
 
-      <!-- চাঁদা রেকর্ড ফর্ম — অ্যাডভান্স পেমেন্ট সাপোর্ট সহ -->
       <div class="card admin-only" id="pay-form">
         <div class="card-title">💳 Record Monthly Subscription</div>
         <div class="form-grid three">
@@ -350,9 +437,8 @@
           <div class="form-group"><label>Date</label><input type="date" id="pmd"></div>
           <div class="form-group"><label>Note</label><input type="text" id="pmn" placeholder="Optional" maxlength="200"></div>
         </div>
-        <!-- অ্যাডভান্স পেমেন্ট ইনফো বক্স -->
         <div class="advance-info" id="advance-info-box">
-          ⚡ <strong>অ্যাডভান্স পেমেন্ট!</strong> — এটি ভবিষ্যতের মাসের পেমেন্ট। রেকর্ড করা হবে কিন্তু সেই মাস না আসা পর্যন্ত "পেইড" হিসেবে দেখাবে।
+          ⚡ <strong>অ্যাডভান্স পেমেন্ট!</strong> — এটি ভবিষ্যতের মাসের পেমেন্ট।
         </div>
         <br>
         <button class="btn btn-primary" onclick="paySubscription()">✅ Record Contribution</button>
@@ -361,11 +447,13 @@
       <div class="card"><div class="card-title">📋 Contribution History</div><div class="table-wrap desktop-table"><table><thead><tr><th>#</th><th>Member</th><th>Month</th><th>Year</th><th>Amount</th><th>Date</th><th>Note</th><th class="admin-th">Actions</th></tr></thead><tbody id="stb"></tbody></table></div><div class="mobile-card-list" id="stb-mobile"></div><div id="stb-pager" class="pagination"></div></div>
     </div>
 
+    <!-- TRACKER -->
     <div id="page-tracker" class="page">
       <div class="page-header"><h2>⚠️ মাসিক পেমেন্ট ট্র্যাকার</h2><p>কে দিয়েছে, কে দেয়নি — মাস অনুযায়ী দেখো</p></div>
       <div class="tracker-card"><div class="filter-row" style="margin-bottom:0"><select id="um-month"><option>January</option><option>February</option><option>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select><input type="number" id="um-year" value="2026" style="width:90px" min="2020" max="2099"><button class="btn btn-primary btn-sm" onclick="checkUnpaid()">🔍 চেক করো</button><button class="btn-reset" onclick="resetTracker()">🔄 Reset</button></div><div id="tracker-body" style="display:none"><div class="tracker-summary"><div class="ts-box paid-box"><div class="ts-num" id="paid-count">0</div><div class="ts-label">✅ দিয়েছে</div></div><div class="ts-box unpaid-box"><div class="ts-num" id="unpaid-count">0</div><div class="ts-label">❌ দেয়নি</div></div><div class="ts-box total-box"><div class="ts-num" id="total-count">0</div><div class="ts-label">👥 মোট সদস্য</div></div></div><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="paid-bar" style="width:0%"></div></div><div class="progress-label"><span id="paid-pct-label">0% পেমেন্ট সম্পন্ন</span><span id="unpaid-amt" style="color:var(--expense)"></span></div></div><div class="tab-row"><button class="tab-btn active-unpaid" id="tab-unpaid" onclick="switchTab('unpaid')">❌ দেয়নি</button><button class="tab-btn inactive" id="tab-paid" onclick="switchTab('paid')">✅ দিয়েছে</button></div><div id="unpaid-result"></div></div></div>
     </div>
 
+    <!-- DONATIONS -->
     <div id="page-donations" class="page">
       <div class="page-header"><h2>🤝 Donation Management</h2><p>Monthly & one-time donations</p></div>
       <div class="viewer-notice" id="vn-d">👁️ Viewer mode — view only.</div>
@@ -374,13 +462,65 @@
       <div class="card"><div class="card-title">🤝 All Donations List</div><div class="table-wrap desktop-table"><table><thead><tr><th>#</th><th>Donor Name</th><th>Type</th><th>Amount</th><th>Date</th><th>Note</th><th class="admin-th">Actions</th></tr></thead><tbody id="dtb"></tbody></table></div><div class="mobile-card-list" id="dtb-mobile"></div><div id="dtb-pager" class="pagination"></div></div>
     </div>
 
+    <!-- EXPENSES -->
     <div id="page-expenses" class="page">
       <div class="page-header"><h2>💸 Expense Tracking</h2><p>Record all expenditures</p></div>
       <div class="viewer-notice" id="vn-e">👁️ Viewer mode — view only.</div>
-      <div class="card admin-only"><div class="card-title">➕ Add Expense</div><div class="form-grid"><div class="form-group"><label>Description *</label><input type="text" id="ed" placeholder="e.g., Iftar party snacks" maxlength="200"></div><div class="form-group"><label>Category *</label><select id="ec"><option>Food &amp; Meals</option><option>Campaign Costs</option><option>Travel</option><option>Stationery</option><option>Banner &amp; Print</option><option>Office Expenses</option><option>Others</option></select></div><div class="form-group"><label>Amount (৳) *</label><input type="number" id="ea" placeholder="e.g., 3500" min="1" max="9999999"></div><div class="form-group"><label>Date *</label><input type="date" id="edt"></div><div class="form-group"><label>Responsible Person</label><input type="text" id="ep" placeholder="Who spent?" maxlength="100"></div><div class="form-group"><label>Additional Note</label><input type="text" id="en" placeholder="Optional" maxlength="200"></div></div><br><button class="btn btn-primary" onclick="addExpense()">✅ Add Expense</button></div>
-      <div class="card"><div class="card-title">💸 Expense List</div><div class="filter-row"><select id="ef" onchange="renderExpenses()"><option value="">All Categories</option><option>Food &amp; Meals</option><option>Campaign Costs</option><option>Travel</option><option>Stationery</option><option>Banner &amp; Print</option><option>Office Expenses</option><option>Others</option></select></div><div class="table-wrap desktop-table"><table><thead><tr><th>#</th><th>Description</th><th>Category</th><th>Amount</th><th>Date</th><th>Responsible</th><th class="admin-th">Actions</th></tr></thead><tbody id="etb"></tbody></table></div><div class="mobile-card-list" id="etb-mobile"></div><div id="etb-pager" class="pagination"></div></div>
+      <div class="card admin-only"><div class="card-title">➕ Add Expense</div><div class="form-grid"><div class="form-group"><label>Description *</label><input type="text" id="ed" placeholder="e.g., Iftar party snacks" maxlength="200"></div><div class="form-group"><label>Category *</label><select id="ec"><option>Food &amp; Meals</option><option>Campaign Costs</option><option>Travel</option><option>Stationery</option><option>Banner &amp; Print</option><option>Office Expenses</option><option>Others</option></select></div><div class="form-group"><label>Amount (৳) *</label><input type="number" id="ea" placeholder="e.g., 3500" min="1" max="9999999"></div><div class="form-group"><label>Date *</label><input type="date" id="edt"></div><div class="form-group"><label>Responsible Person</label><input type="text" id="ep" placeholder="Who spent?" maxlength="100"></div><div class="form-group"><label>Campaign <span style="font-size:10px;color:var(--muted)">(Optional — link to a campaign)</span></label><select id="exp-camp-sel"><option value="">-- কোনো ক্যাম্পেইন নয় --</option></select></div><div class="form-group full"><label>Additional Note</label><input type="text" id="en" placeholder="Optional" maxlength="200"></div></div><br><button class="btn btn-primary" onclick="addExpense()">✅ Add Expense</button></div>
+      <div class="card"><div class="card-title">💸 Expense List</div><div class="filter-row"><select id="ef" onchange="renderExpenses()"><option value="">All Categories</option><option>Food &amp; Meals</option><option>Campaign Costs</option><option>Travel</option><option>Stationery</option><option>Banner &amp; Print</option><option>Office Expenses</option><option>Others</option></select></div><div class="table-wrap desktop-table"><table><thead><tr><th>#</th><th>Description</th><th>Category</th><th>Amount</th><th>Date</th><th>Responsible</th><th>Campaign</th><th class="admin-th">Actions</th></tr></thead><tbody id="etb"></tbody></table></div><div class="mobile-card-list" id="etb-mobile"></div><div id="etb-pager" class="pagination"></div></div>
     </div>
 
+    <!-- CAMPAIGNS -->
+    <div id="page-campaigns" class="page">
+      <div class="page-header"><h2>📢 Campaigns</h2><p>ক্যাম্পেইন পরিচালনা ও বাজেট ট্র্যাকিং</p></div>
+      <div class="viewer-notice" id="vn-c">👁️ Viewer mode — view only.</div>
+
+      <!-- Add Campaign Form -->
+      <div class="card admin-only" id="add-camp-form">
+        <div class="card-title">➕ নতুন ক্যাম্পেইন তৈরি করো</div>
+        <div class="form-grid">
+          <div class="form-group full"><label>Campaign Name *</label><input type="text" id="camp-name" placeholder="e.g., Ramadan Food Drive 2026" maxlength="150"></div>
+          <div class="form-group"><label>Category *</label><select id="camp-cat">
+            <option>Service</option>
+            <option>Awareness</option>
+            <option>Education & Skill Development</option>
+            <option>Fundraising</option>
+            <option>Membership Recruitment</option>
+            <option>Advocacy</option>
+            <option>Promotional</option>
+            <option>Event</option>
+          </select></div>
+          <div class="form-group"><label>Responsible Person</label><input type="text" id="camp-person" placeholder="দায়িত্বশীল ব্যক্তির নাম" maxlength="100"></div>
+          <div class="form-group"><label>Start Date *</label><input type="date" id="camp-start"></div>
+          <div class="form-group"><label>End Date *</label><input type="date" id="camp-end"></div>
+          <div class="form-group"><label>Budget / Target (৳) *</label><input type="number" id="camp-budget" placeholder="e.g., 15000" min="1" max="99999999"></div>
+          <div class="form-group full"><label>Description</label><input type="text" id="camp-desc" placeholder="সংক্ষিপ্ত বিবরণ (optional)" maxlength="300"></div>
+        </div>
+        <br>
+        <button class="btn btn-primary" onclick="addCampaign()">✅ ক্যাম্পেইন তৈরি করো</button>
+      </div>
+
+      <!-- Campaign Stats -->
+      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat-card blue"><div class="stat-label">চলমান ক্যাম্পেইন</div><div class="stat-value" id="camp-stat-active">0</div><div class="stat-sub">Active now</div></div>
+        <div class="stat-card green"><div class="stat-label">সম্পন্ন</div><div class="stat-value" id="camp-stat-done">0</div><div class="stat-sub">Completed</div></div>
+        <div class="stat-card yellow"><div class="stat-label">মোট বাজেট</div><div class="stat-value" id="camp-stat-budget">৳0</div><div class="stat-sub">All campaigns</div></div>
+      </div>
+
+      <!-- Active Campaigns -->
+      <div class="card">
+        <div class="card-title">🟢 চলমান ক্যাম্পেইন</div>
+        <div id="camp-active-list"><div class="empty"><div class="emoji">📢</div>কোনো চলমান ক্যাম্পেইন নেই</div></div>
+      </div>
+
+      <!-- Completed / Cancelled -->
+      <div class="card">
+        <div class="card-title">📁 সম্পন্ন / বাতিল ক্যাম্পেইন</div>
+        <div id="camp-done-list"><div class="empty"><div class="emoji">📁</div>কোনো রেকর্ড নেই</div></div>
+      </div>
+    </div>
+
+    <!-- REPORT -->
     <div id="page-report" class="page">
       <div class="page-header"><h2>📄 Income &amp; Expense Report</h2><p>Monthly, yearly, or full summary</p></div>
       <div class="filter-row"><select id="rm"><option value="">All Months</option><option>January</option><option>February</option><option>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select><input type="number" id="ry" placeholder="Year" value="2026" style="width:100px" min="2020" max="2099"><button class="btn btn-primary btn-sm" onclick="genReport()">🔍 View</button><button class="btn btn-ghost btn-sm" onclick="window.print()">🖨️ Print</button><button class="btn btn-ghost btn-sm" onclick="resetReportFilter()">🗑️ Reset</button></div>
@@ -388,9 +528,10 @@
       <div class="card"><div class="card-title">📋 All Transactions</div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Income</th><th>Expense</th></tr></thead><tbody id="rtb"><tr><td colspan="5"><div class="empty"><div class="emoji">📋</div>No data</div></td></tr></tbody></table></div></div>
     </div>
 
+    <!-- AUDIT LOG -->
     <div id="page-auditlog" class="page">
       <div class="page-header"><h2>🔍 Audit Log</h2><p>কে কখন কী করেছে — সম্পূর্ণ ইতিহাস</p></div>
-      <div class="filter-row"><select id="al-filter" onchange="renderAudit()"><option value="">All Actions</option><option value="add">✅ Added</option><option value="edit">✏️ Edited</option><option value="delete">🗑️ Deleted</option></select><select id="al-section" onchange="renderAudit()"><option value="">All Sections</option><option value="Subscription">Subscription</option><option value="Member">Member</option><option value="Donation">Donation</option><option value="Expense">Expense</option></select><select id="al-user" onchange="renderAudit()"><option value="">All Users</option><option value="Tamim">Tamim</option><option value="Rifat">Rifat</option><option value="Zishan">Zishan</option><option value="Admin">Admin</option></select><button class="btn btn-ghost btn-sm" onclick="document.getElementById('al-filter').value='';document.getElementById('al-section').value='';document.getElementById('al-user').value='';renderAudit()">🗑️ Reset</button></div>
+      <div class="filter-row"><select id="al-filter" onchange="renderAudit()"><option value="">All Actions</option><option value="add">✅ Added</option><option value="edit">✏️ Edited</option><option value="delete">🗑️ Deleted</option></select><select id="al-section" onchange="renderAudit()"><option value="">All Sections</option><option value="Subscription">Subscription</option><option value="Member">Member</option><option value="Donation">Donation</option><option value="Expense">Expense</option><option value="Campaign">Campaign</option></select><select id="al-user" onchange="renderAudit()"><option value="">All Users</option><option value="Tamim">Tamim</option><option value="Rifat">Rifat</option><option value="Zishan">Zishan</option><option value="Admin">Admin</option></select><button class="btn btn-ghost btn-sm" onclick="document.getElementById('al-filter').value='';document.getElementById('al-section').value='';document.getElementById('al-user').value='';renderAudit()">🗑️ Reset</button></div>
       <div class="card"><div class="card-title">🔍 Activity History</div><div class="table-wrap desktop-table"><table><thead><tr><th>#</th><th>Time</th><th>User</th><th>Action</th><th>Section</th><th>Details</th><th>Change</th></tr></thead><tbody id="al-tb"></tbody></table></div><div class="mobile-card-list" id="al-mobile"></div><div id="al-pager" class="pagination"></div></div>
     </div>
   </main>
@@ -433,7 +574,7 @@ window.toggleTheme = () => { document.body.classList.toggle('light'); localStora
 if(localStorage.getItem('theme')==='light') document.body.classList.add('light');
 
 let CU = null;
-let D = {members:[], subscriptions:[], donations:[], expenses:[]};
+let D = {members:[], subscriptions:[], donations:[], expenses:[], campaigns:[]};
 let unsubscribers = [];
 let _auditLogs = [];
 const _auditPages = {al:1};
@@ -451,12 +592,12 @@ function buildPager(totalItems, currentPage, key, onPageFn){
   const total = Math.ceil(totalItems/PAGE_SIZE);
   if(total<=1){ el.innerHTML=''; return; }
   let html='';
-  if(currentPage>1) html+=`<button class="pg-btn" onclick="${onPageFn}(${currentPage-1})">‹</button>`;
+  if(currentPage>1) html+=`<button class="pg-btn" onclick="${onPageFn}(${currentPage-1})">&#8249;</button>`;
   for(let i=1;i<=total;i++){
     if(i===1||i===total||Math.abs(i-currentPage)<=1) html+=`<button class="pg-btn ${i===currentPage?'active':''}" onclick="${onPageFn}(${i})">${i}</button>`;
-    else if(Math.abs(i-currentPage)===2) html+=`<span class="pg-info">…</span>`;
+    else if(Math.abs(i-currentPage)===2) html+=`<span class="pg-info">&#8230;</span>`;
   }
-  if(currentPage<total) html+=`<button class="pg-btn" onclick="${onPageFn}(${currentPage+1})">›</button>`;
+  if(currentPage<total) html+=`<button class="pg-btn" onclick="${onPageFn}(${currentPage+1})">&#8250;</button>`;
   html+=`<span class="pg-info">${totalItems} টি রেকর্ড</span>`;
   el.innerHTML = html;
 }
@@ -490,14 +631,19 @@ window.doLogin = async () => {
   document.getElementById('ur').textContent=acc.role==='admin'?'🔐 Admin':'👁️ Viewer';
   document.getElementById('tb-user').textContent=esc(acc.label);
   applyRole(); startListeners();
+
   document.getElementById('um-month').value=MONTHS[new Date().getMonth()];
   document.getElementById('um-year').value=new Date().getFullYear();
+  document.getElementById('pmm').value=MONTHS[new Date().getMonth()];
+  document.getElementById('pmy').value=new Date().getFullYear();
+  document.getElementById('pmd').value=td();
+
   document.getElementById('lloading').style.display='none';
 };
 
 window.doLogout = () => {
   unsubscribers.forEach(u=>u()); unsubscribers=[];
-  CU=null; D={members:[], subscriptions:[], donations:[], expenses:[]};
+  CU=null; D={members:[], subscriptions:[], donations:[], expenses:[], campaigns:[]};
   _unpaidData={unpaid:[], paid:[], month:'', year:0};
   document.getElementById('tracker-body').style.display='none';
   document.getElementById('app').style.display='none';
@@ -512,7 +658,7 @@ function applyRole(){
   const a=isA();
   document.querySelectorAll('.admin-only').forEach(el=>el.style.display=a?'block':'none');
   document.querySelectorAll('.admin-th').forEach(el=>el.style.display=a?'':'none');
-  ['vn-m','vn-d','vn-e'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display=a?'none':'block'; });
+  ['vn-m','vn-d','vn-e','vn-c'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display=a?'none':'block'; });
   const auditNav=document.getElementById('nav-auditlog'); if(auditNav) auditNav.style.display=a?'flex':'none';
 }
 
@@ -521,21 +667,19 @@ function startListeners(){
   const u1=onSnapshot(collection(db,'members'), snap=>{ D.members=snap.docs.map(d=>({id:d.id,...d.data()})); renderM(); renderMSel(); updateDB(); if(document.getElementById('tracker-body').style.display!=='none') checkUnpaid(); setSyncStatus('✅ Connected'); showSync(false); setTimeout(()=>setSyncStatus(''),2000); });
   const u2=onSnapshot(collection(db,'subscriptions'), snap=>{ D.subscriptions=snap.docs.map(d=>({id:d.id,...d.data()})); renderS(); updateDB(); if(document.getElementById('tracker-body').style.display!=='none') checkUnpaid(); });
   const u3=onSnapshot(collection(db,'donations'), snap=>{ D.donations=snap.docs.map(d=>({id:d.id,...d.data()})); renderDon(); updateDB(); });
-  const u4=onSnapshot(collection(db,'expenses'), snap=>{ D.expenses=snap.docs.map(d=>({id:d.id,...d.data()})); renderExp(); updateDB(); });
+  const u4=onSnapshot(collection(db,'expenses'), snap=>{ D.expenses=snap.docs.map(d=>({id:d.id,...d.data()})); renderExp(); updateDB(); renderCampExpSel(); });
   const u5=onSnapshot(query(collection(db,'audit_logs'),orderBy('timestamp','desc'),limit(200)), snap=>{ _auditLogs=snap.docs.map(d=>({id:d.id,...d.data()})); if(document.getElementById('page-auditlog').classList.contains('active')) renderAudit(); });
-  unsubscribers=[u1,u2,u3,u4,u5];
+  const u6=onSnapshot(collection(db,'campaigns'), snap=>{ D.campaigns=snap.docs.map(d=>({id:d.id,...d.data()})); renderCampaigns(); renderCampExpSel(); updateDB(); });
+  unsubscribers=[u1,u2,u3,u4,u5,u6];
 }
 
 window.toggleSB=()=>{ document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); };
 window.closeSB=()=>{ document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); };
-window.go=(id,el)=>{ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); document.getElementById('page-'+id).classList.add('active'); if(el) el.classList.add('active'); closeSB(); if(id==='dashboard') updateDB(); if(id==='report') genReport(); if(id==='auditlog') renderAudit(); };
+window.go=(id,el)=>{ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); document.getElementById('page-'+id).classList.add('active'); if(el) el.classList.add('active'); closeSB(); if(id==='dashboard') updateDB(); if(id==='report') genReport(); if(id==='auditlog') renderAudit(); if(id==='campaigns') renderCampaigns(); };
 function toast(msg,err){ const t=document.getElementById('toast'); t.textContent=msg; t.style.borderColor=err?'var(--expense)':'var(--accent)'; t.style.color=err?'var(--expense)':'var(--accent)'; t.style.display='block'; clearTimeout(t._t); t._t=setTimeout(()=>t.style.display='none',2800); }
 function td(){ return new Date().toISOString().split('T')[0]; }
 window.togglePasswordVisibility=()=>{ const pw=document.getElementById('lp'), btn=event.currentTarget; if(pw.type==='password'){ pw.type='text'; btn.textContent='🙈'; }else{ pw.type='password'; btn.textContent='👁️'; } };
 
-// =============================================
-// অ্যাডভান্স পেমেন্ট স্ট্যাটাস চেক (ফর্মে)
-// =============================================
 window.checkAdvanceStatus = () => {
   const month = document.getElementById('pmm').value;
   const year = parseInt(document.getElementById('pmy').value);
@@ -546,14 +690,13 @@ window.checkAdvanceStatus = () => {
   const currentDate = new Date(now.getFullYear(), now.getMonth(), 1);
   const diffMonths = (selectedDate.getFullYear()-currentDate.getFullYear())*12 + (selectedDate.getMonth()-currentDate.getMonth());
   if(diffMonths > 0){
-    infoBox.innerHTML = `⚡ <strong>অ্যাডভান্স পেমেন্ট!</strong> — এটি ${diffMonths === 1 ? 'আগামী মাসের' : diffMonths + ' মাস আগের'} পেমেন্ট। সেই মাস আসলে ট্র্যাকারে "পেইড" দেখাবে।`;
+    infoBox.innerHTML = `⚡ <strong>অ্যাডভান্স পেমেন্ট!</strong> — এটি ${diffMonths === 1 ? 'আগামী মাসের' : diffMonths + ' মাস আগের'} পেমেন্ট।`;
     infoBox.classList.add('show');
   } else {
     infoBox.classList.remove('show');
   }
 };
 
-// Permanent Delete Function
 window.deleteMemberPermanently = async (id) => {
   if(!isA()){ toast("⛔ শুধু অ্যাডমিন ডিলিট করতে পারেন!",1); return; }
   if(!confirm("⚠️ সতর্কতা: এই সদস্যকে সম্পূর্ণ ডিলিট করলে তার সব চাঁদার রেকর্ডও মুছে যাবে।\n\nআপনি কি নিশ্চিত?")) return;
@@ -584,84 +727,38 @@ function memberCard(m,i,isInactive){ return `<div class="m-card"><div class="m-c
 function renderM(){ const active=sortAZ(D.members.filter(m=>m.active!==false)); const inactive=sortAZ(D.members.filter(m=>m.active===false)); const p=_pages.mtb, start=(p-1)*PAGE_SIZE, end=start+PAGE_SIZE, pageActive=active.slice(start,end); document.getElementById('mtb').innerHTML=pageActive.length?pageActive.map((m,i)=>`<tr><td>${start+i+1}</td><td><strong>${esc(m.name)}</strong></td><td>${esc(m.phone)||'—'}</td><td class="amount-positive">${fmt(m.amount)}/mo</td><td>${esc(m.date)||'—'}</td><td>${isA()?`<div class="action-btns"><button class="btn btn-edit" onclick="openEditMember('${m.id}')">✏️</button><button class="btn btn-warning" onclick="deactivateMember('${m.id}')">🚫 Deactivate</button></div>`:'—'}</td></tr>`).join(''):'<tr><td colspan="6"><div class="empty"><div class="emoji">👥</div>No active members</div></td></tr>'; document.getElementById('itb').innerHTML=inactive.length?inactive.map((m,i)=>`<tr><td>${i+1}</td><td><strong>${esc(m.name)}</strong></td><td>${esc(m.phone)||'—'}</td><td>${fmt(m.amount)}/mo</td><td>${esc(m.date)||'—'}</td><td>${isA()?`<div class="action-btns"><button class="btn btn-edit" onclick="openEditMember('${m.id}')">✏️</button><button class="btn btn-primary btn-sm" onclick="activateMember('${m.id}')">🔄 Activate</button><button class="btn btn-danger btn-sm" onclick="deleteMemberPermanently('${m.id}')" style="background:transparent; border-color:var(--expense); color:var(--expense);">🗑️ Delete</button></div>`:'—'}</td></tr>`).join(''):'<tr><td colspan="6"><div class="empty"><div class="emoji">🚫</div>No inactive members</div></td></tr>'; document.getElementById('mtb-mobile').innerHTML=pageActive.length?pageActive.map((m,i)=>memberCard(m,start+i,false)).join(''):'<div class="empty"><div class="emoji">👥</div>No active members</div>'; document.getElementById('itb-mobile').innerHTML=inactive.length?inactive.map((m,i)=>memberCard(m,i,true)).join(''):'<div class="empty"><div class="emoji">🚫</div>No inactive members</div>'; buildPager(active.length,p,'mtb','goPageM'); }
 function renderMSel(){ const active=sortAZ(D.members.filter(m=>m.active!==false)); const sel=document.getElementById('pm'); sel.innerHTML='<option value="">-- Select --</option>'+active.map(m=>`<option value="${m.id}">${esc(m.name)} (${fmt(m.amount)}/month)</option>`).join(''); sel.onchange=function(){ const m=D.members.find(x=>x.id===this.value); if(m) document.getElementById('pma').value=m.amount; }; }
 
-// =============================================
-// অ্যাডভান্স পেমেন্ট সহ paySubscription ফাংশন
-// =============================================
 window.paySubscription = async () => {
   if(!isA()) return;
   const mid = document.getElementById('pm').value;
   const a = parseFloat(document.getElementById('pma').value);
   const year = parseInt(document.getElementById('pmy').value);
-
   if(!mid || !a || a <= 0) return toast('⚠️ সদস্য বাছাই করো এবং পরিমাণ দাও!', 1);
   if(!validYear(year)) return toast('⚠️ সঠিক সাল দাও (২০২০–২০৯৯)!', 1);
-
   const m = D.members.find(x => x.id === mid);
   if(!m) return toast('⚠️ Member not found!', 1);
-
   const month = document.getElementById('pmm').value;
-
-  // ডুপ্লিকেট চেক
   if(D.subscriptions.some(s => s.memberId === mid && s.month === month && s.year === year))
     return toast(`⚠️ ${esc(m.name)}-এর ${month} ${year} ইতিমধ্যে রেকর্ড করা হয়েছে!`, 1);
-
-  // অ্যাডভান্স পেমেন্ট যাচাই
   const now = new Date();
   const selectedDate = new Date(year, MONTHS.indexOf(month), 1);
   const currentDate = new Date(now.getFullYear(), now.getMonth(), 1);
-  const diffMonths = (selectedDate.getFullYear() - currentDate.getFullYear()) * 12
-                   + (selectedDate.getMonth() - currentDate.getMonth());
-
-  let isAdvance = false;
-  let advanceLabel = '';
-
+  const diffMonths = (selectedDate.getFullYear() - currentDate.getFullYear()) * 12 + (selectedDate.getMonth() - currentDate.getMonth());
+  let isAdvance = false, advanceLabel = '';
   if(diffMonths > 0) {
     isAdvance = true;
     advanceLabel = diffMonths === 1 ? 'আগামী মাসের পেমেন্ট' : `${diffMonths} মাস আগাম পেমেন্ট`;
-
-    const confirmed = confirm(
-      `⚡ অ্যাডভান্স পেমেন্ট!\n\n` +
-      `সদস্য: ${m.name}\n` +
-      `মাস: ${month} ${year}\n` +
-      `এটি ${advanceLabel}।\n\n` +
-      `নিশ্চিত করতে OK চাপুন।`
-    );
+    const confirmed = confirm(`⚡ অ্যাডভান্স পেমেন্ট!\n\nসদস্য: ${m.name}\nমাস: ${month} ${year}\nএটি ${advanceLabel}।\n\nনিশ্চিত করতে OK চাপুন।`);
     if(!confirmed) return;
   }
-
   showSync(true);
   try {
-    await addDoc(collection(db, 'subscriptions'), {
-      memberId: mid,
-      memberName: m.name,
-      month,
-      year,
-      amount: a,
-      date: document.getElementById('pmd').value || td(),
-      note: document.getElementById('pmn').value,
-      isAdvance,
-      advanceMonths: diffMonths,
-      createdAt: serverTimestamp()
-    });
-
+    await addDoc(collection(db, 'subscriptions'), { memberId: mid, memberName: m.name, month, year, amount: a, date: document.getElementById('pmd').value || td(), note: document.getElementById('pmn').value, isAdvance, advanceMonths: diffMonths, createdAt: serverTimestamp() });
     document.getElementById('pma').value = '';
     document.getElementById('pmn').value = '';
     document.getElementById('advance-info-box').classList.remove('show');
-
-    await logAudit(
-      'add',
-      'Subscription',
-      `${isAdvance ? '⚡ অ্যাডভান্স ' : ''}চাঁদা যোগ: ${m.name} — ${month} ${year}${isAdvance ? ' (' + advanceLabel + ')' : ''}`,
-      { field: 'amount', oldVal: '—', newVal: fmt(a) }
-    );
-
-    toast(isAdvance
-      ? `⚡ অ্যাডভান্স পেমেন্ট রেকর্ড হয়েছে! (${advanceLabel})`
-      : `✅ ${esc(m.name)}-এর চাঁদা রেকর্ড হয়েছে!`
-    );
-  } catch(e) {
-    toast('❌ সমস্যা হয়েছে!', 1);
-  }
+    await logAudit('add','Subscription',`${isAdvance?'⚡ অ্যাডভান্স ':''}চাঁদা যোগ: ${m.name} — ${month} ${year}${isAdvance?' ('+advanceLabel+')':''}`, {field:'amount',oldVal:'—',newVal:fmt(a)});
+    toast(isAdvance ? `⚡ অ্যাডভান্স পেমেন্ট রেকর্ড হয়েছে! (${advanceLabel})` : `✅ ${esc(m.name)}-এর চাঁদা রেকর্ড হয়েছে!`);
+  } catch(e) { toast('❌ সমস্যা হয়েছে!', 1); }
   showSync(false);
 };
 
@@ -669,55 +766,11 @@ window.openEditSub=(id)=>{ const s=D.subscriptions.find(x=>x.id===id); if(!s)ret
 window.saveSubEdit=async()=>{ const id=document.getElementById('es-id').value, a=parseFloat(document.getElementById('es-amount').value), year=parseInt(document.getElementById('es-year').value); if(!a||a<=0) return toast('⚠️ সঠিক পরিমাণ দাও!',1); if(!validYear(year)) return toast('⚠️ সঠিক সাল দাও (২০২০–২০৯৯)!',1); showSync(true); try{ const oldSub=D.subscriptions.find(x=>x.id===id); await updateDoc(doc(db,'subscriptions',id),{month:document.getElementById('es-month').value, year, amount:a, date:document.getElementById('es-date').value||td(), note:document.getElementById('es-note').value}); await logAudit('edit','Subscription',`চাঁদা সম্পাদনা: ${oldSub?oldSub.memberName:id} — ${document.getElementById('es-month').value} ${year}`, oldSub&&oldSub.amount!==a?{field:'amount',oldVal:fmt(oldSub.amount),newVal:fmt(a)}:null); closeModal('editSubModal'); toast('✅ Contribution updated!'); } catch(e){ toast('❌ Error!',1); } showSync(false); };
 window.delS=async(id)=>{ if(!isA()||!confirm('Delete this record?'))return; showSync(true); try{ const s=D.subscriptions.find(x=>x.id===id); await deleteDoc(doc(db,'subscriptions',id)); await logAudit('delete','Subscription',`চাঁদা মুছে ফেলা: ${s?s.memberName:id} — ${s?s.month+' '+s.year:''}`, s?{field:'amount',oldVal:fmt(s.amount),newVal:'মুছে ফেলা'}:null); toast('🗑️ Record deleted'); } catch(e){ toast('❌ Error!',1); } showSync(false); };
 
-// =============================================
-// renderS — অ্যাডভান্স ব্যাজ সহ
-// =============================================
 function renderS(){
   const list=[...D.subscriptions].reverse();
   const p=_pages.stb, start=(p-1)*PAGE_SIZE, end=start+PAGE_SIZE, page=list.slice(start,end);
-
-  document.getElementById('stb').innerHTML = page.length
-    ? page.map((s,i) => `<tr>
-        <td>${list.length-start-i}</td>
-        <td><strong>${esc(s.memberName)}</strong></td>
-        <td>
-          ${esc(s.month)}
-          ${s.isAdvance ? '<span class="badge badge-advance">⚡ অ্যাডভান্স</span>' : ''}
-        </td>
-        <td>${esc(String(s.year))}</td>
-        <td class="amount-positive">${fmt(s.amount)}</td>
-        <td>${esc(s.date)||'—'}</td>
-        <td>${esc(s.note)||'—'}</td>
-        <td>${isA()
-          ? `<div class="action-btns">
-               <button class="btn btn-edit" onclick="openEditSub('${s.id}')">✏️</button>
-               <button class="btn btn-danger" onclick="delS('${s.id}')">🗑️</button>
-             </div>`
-          : '—'
-        }</td>
-      </tr>`).join('')
-    : '<tr><td colspan="8"><div class="empty"><div class="emoji">📋</div>No records</div></td></tr>';
-
-  document.getElementById('stb-mobile').innerHTML = page.length
-    ? page.map(s => `<div class="m-card">
-        <div class="m-card-name">
-          ${esc(s.memberName)}
-          ${s.isAdvance ? '<span class="badge badge-advance">⚡ অ্যাডভান্স</span>' : ''}
-        </div>
-        <div class="m-card-row"><span>মাস:</span><span>${esc(s.month)} ${esc(String(s.year))}</span></div>
-        <div class="m-card-row"><span>পরিমাণ:</span><span class="amount-positive">${fmt(s.amount)}</span></div>
-        <div class="m-card-row"><span>তারিখ:</span><span>${esc(s.date)||'—'}</span></div>
-        ${s.note ? `<div class="m-card-row"><span>নোট:</span><span>${esc(s.note)}</span></div>` : ''}
-        ${isA()
-          ? `<div class="m-card-actions">
-               <button class="btn btn-edit btn-sm" onclick="openEditSub('${s.id}')">✏️</button>
-               <button class="btn btn-danger btn-sm" onclick="delS('${s.id}')">🗑️</button>
-             </div>`
-          : ''
-        }
-      </div>`).join('')
-    : '<div class="empty"><div class="emoji">📋</div>No records</div>';
-
+  document.getElementById('stb').innerHTML = page.length ? page.map((s,i) => `<tr><td>${list.length-start-i}</td><td><strong>${esc(s.memberName)}</strong></td><td>${esc(s.month)}${s.isAdvance ? ' <span class="badge badge-advance">⚡ অ্যাডভান্স</span>' : ''}</td><td>${esc(String(s.year))}</td><td class="amount-positive">${fmt(s.amount)}</td><td>${esc(s.date)||'—'}</td><td>${esc(s.note)||'—'}</td><td>${isA()?`<div class="action-btns"><button class="btn btn-edit" onclick="openEditSub('${s.id}')">✏️</button><button class="btn btn-danger" onclick="delS('${s.id}')">🗑️</button></div>`:'—'}</td></tr>`).join('') : '<tr><td colspan="8"><div class="empty"><div class="emoji">📋</div>No records</div></td></tr>';
+  document.getElementById('stb-mobile').innerHTML = page.length ? page.map(s => `<div class="m-card"><div class="m-card-name">${esc(s.memberName)}${s.isAdvance?' <span class="badge badge-advance">⚡ অ্যাডভান্স</span>':''}</div><div class="m-card-row"><span>মাস:</span><span>${esc(s.month)} ${esc(String(s.year))}</span></div><div class="m-card-row"><span>পরিমাণ:</span><span class="amount-positive">${fmt(s.amount)}</span></div><div class="m-card-row"><span>তারিখ:</span><span>${esc(s.date)||'—'}</span></div>${s.note?`<div class="m-card-row"><span>নোট:</span><span>${esc(s.note)}</span></div>`:''}${isA()?`<div class="m-card-actions"><button class="btn btn-edit btn-sm" onclick="openEditSub('${s.id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="delS('${s.id}')">🗑️</button></div>`:''}</div>`).join('') : '<div class="empty"><div class="emoji">📋</div>No records</div>';
   buildPager(list.length, p, 'stb', 'goPageS');
 }
 
@@ -725,16 +778,259 @@ window.addDonation=async()=>{ if(!isA())return; const n=document.getElementById(
 window.delDon=async(id)=>{ if(!isA()||!confirm('Delete donation?'))return; showSync(true); try{ const d=D.donations.find(x=>x.id===id); await deleteDoc(doc(db,'donations',id)); await logAudit('delete','Donation',`ডোনেশন মুছে ফেলা: ${d?d.name:id}`, d?{field:'amount',oldVal:fmt(d.amount),newVal:'মুছে ফেলা'}:null); toast('🗑️ Donation deleted'); } catch(e){ toast('❌ Error!',1); } showSync(false); };
 function renderMonthlyDonationSummary(){ const monthly=D.donations.filter(d=>d.type==='monthly'); const el=document.getElementById('don-monthly-summary'); if(!monthly.length){ el.innerHTML='<div class="empty"><div class="emoji">📅</div>No monthly donations yet</div>'; return; } const byDonor={}; monthly.forEach(d=>{ const key=d.name||'Unknown'; if(!byDonor[key]) byDonor[key]={name:key, phone:d.phone||'', total:0, count:0, lastDate:d.date||''}; byDonor[key].total+=(d.amount||0); byDonor[key].count+=1; if((d.date||'')>byDonor[key].lastDate) byDonor[key].lastDate=d.date; }); const donors=Object.values(byDonor).sort((a,b)=>b.total-a.total); const grandTotal=donors.reduce((s,d)=>s+d.total,0); el.innerHTML=`<div style="background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);border-radius:10px;padding:12px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:12px;color:var(--muted)">Total Monthly Donations</div><div style="font-size:20px;font-weight:700;color:var(--accent2);margin-top:2px">${fmt(grandTotal)}</div></div><div style="text-align:right"><div style="font-size:12px;color:var(--muted)">Donors</div><div style="font-size:20px;font-weight:700;color:var(--accent)">${donors.length}</div></div></div>${donors.map((d,i)=>`<div class="don-month-card"><div><div class="don-month-label">${i+1}. ${esc(d.name)}</div><div class="don-month-sub">${d.phone?'📞 '+esc(d.phone)+' &nbsp;|&nbsp; ':''}Last: ${esc(d.lastDate)||'—'}</div></div><div style="text-align:right"><div class="don-month-amt">${fmt(d.total)}</div><div class="don-month-count">${d.count} payment${d.count>1?'s':''}</div></div></div>`).join('')}`; }
 function renderDon(){ renderMonthlyDonationSummary(); const list=[...D.donations].reverse(); const p=_pages.dtb, start=(p-1)*PAGE_SIZE, end=start+PAGE_SIZE, page=list.slice(start,end); document.getElementById('dtb').innerHTML=page.length?page.map((d,i)=>`<tr><td>${list.length-start-i}</td><td><strong>${esc(d.name)}</strong>${d.phone?'<br><small style="color:var(--muted)">'+esc(d.phone)+'</small>':''}</td><td><span class="badge ${d.type==='monthly'?'badge-monthly':'badge-once'}">${d.type==='monthly'?'Monthly':'One-time'}</span></td><td class="amount-positive">${fmt(d.amount)}</td><td>${esc(d.date)||'—'}</td><td>${esc(d.note)||'—'}</td><td>${isA()?`<button class="btn btn-danger" onclick="delDon('${d.id}')">🗑️</button>`:'—'}</td></tr>`).join(''):'<tr><td colspan="7"><div class="empty"><div class="emoji">🤝</div>No donations</div></td></tr>'; document.getElementById('dtb-mobile').innerHTML=page.length?page.map((d)=>`<div class="m-card"><div class="m-card-name">${esc(d.name)}</div><div class="m-card-row"><span>ধরন:</span><span><span class="badge ${d.type==='monthly'?'badge-monthly':'badge-once'}">${d.type==='monthly'?'Monthly':'One-time'}</span></span></div><div class="m-card-row"><span>পরিমাণ:</span><span class="amount-positive">${fmt(d.amount)}</span></div><div class="m-card-row"><span>তারিখ:</span><span>${esc(d.date)||'—'}</span></div>${d.note?`<div class="m-card-row"><span>নোট:</span><span>${esc(d.note)}</span></div>`:''}${d.phone?`<div class="m-card-row"><span>ফোন:</span><span><a href="tel:${esc(d.phone)}" style="color:var(--accent2)">${esc(d.phone)}</a></span></div>`:''}${isA()?`<div class="m-card-actions"><button class="btn btn-danger btn-sm" onclick="delDon('${d.id}')">🗑️ Delete</button></div>`:''}</div>`).join(''):'<div class="empty"><div class="emoji">🤝</div>No donations</div>'; buildPager(list.length,p,'dtb','goPageD'); }
-window.addExpense=async()=>{ if(!isA())return; const d=document.getElementById('ed').value.trim(), a=parseFloat(document.getElementById('ea').value); if(!d||!a||a<=0) return toast('⚠️ বিবরণ ও পরিমাণ দিতে হবে!',1); showSync(true); try{ await addDoc(collection(db,'expenses'),{desc:d, cat:document.getElementById('ec').value, amount:a, date:document.getElementById('edt').value||td(), person:document.getElementById('ep').value.trim(), note:document.getElementById('en').value.trim(), createdAt:serverTimestamp()}); document.getElementById('ed').value=''; document.getElementById('ea').value=''; document.getElementById('ep').value=''; document.getElementById('en').value=''; await logAudit('add','Expense',`খরচ যোগ: ${d} [${document.getElementById('ec').value}]`, {field:'amount', oldVal:'—', newVal:fmt(a)}); toast('✅ Expense added!'); } catch(e){ toast('❌ Error!',1); } showSync(false); };
+
+function renderCampExpSel(){
+  const sel = document.getElementById('exp-camp-sel');
+  if(!sel) return;
+  const active = D.campaigns.filter(c=>c.status==='active'||!c.status);
+  sel.innerHTML = '<option value="">-- কোনো ক্যাম্পেইন নয় --</option>' + active.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
+}
+
+window.addExpense=async()=>{ if(!isA())return; const d=document.getElementById('ed').value.trim(), a=parseFloat(document.getElementById('ea').value); if(!d||!a||a<=0) return toast('⚠️ বিবরণ ও পরিমাণ দিতে হবে!',1); const campId=document.getElementById('exp-camp-sel').value; const camp=campId?D.campaigns.find(c=>c.id===campId):null; showSync(true); try{ await addDoc(collection(db,'expenses'),{desc:d, cat:document.getElementById('ec').value, amount:a, date:document.getElementById('edt').value||td(), person:document.getElementById('ep').value.trim(), note:document.getElementById('en').value.trim(), campaignId:campId||'', campaignName:camp?camp.name:'', createdAt:serverTimestamp()}); document.getElementById('ed').value=''; document.getElementById('ea').value=''; document.getElementById('ep').value=''; document.getElementById('en').value=''; document.getElementById('exp-camp-sel').value=''; await logAudit('add','Expense',`খরচ যোগ: ${d} [${document.getElementById('ec').value}]${camp?' (ক্যাম্পেইন: '+camp.name+')':''}`, {field:'amount', oldVal:'—', newVal:fmt(a)}); toast('✅ Expense added!'); } catch(e){ toast('❌ Error!',1); } showSync(false); };
 window.delExp=async(id)=>{ if(!isA()||!confirm('Delete expense?'))return; showSync(true); try{ const e=D.expenses.find(x=>x.id===id); await deleteDoc(doc(db,'expenses',id)); await logAudit('delete','Expense',`খরচ মুছে ফেলা: ${e?e.desc:id}`, e?{field:'amount',oldVal:fmt(e.amount),newVal:'মুছে ফেলা'}:null); toast('🗑️ Expense deleted'); } catch(e2){ toast('❌ Error!',1); } showSync(false); };
 window.renderExpenses=()=>{ _pages.etb=1; renderExp(); };
-function renderExp(){ const f=document.getElementById('ef')?.value||''; const list=(f?D.expenses.filter(e=>e.cat===f):[...D.expenses]).reverse(); const p=_pages.etb, start=(p-1)*PAGE_SIZE, end=start+PAGE_SIZE, page=list.slice(start,end); document.getElementById('etb').innerHTML=page.length?page.map((e,i)=>`<tr><td>${list.length-start-i}</td><td><strong>${esc(e.desc)}</strong>${e.note?'<br><small style="color:var(--muted)">'+esc(e.note)+'</small>':''}</td><td><span class="badge badge-expense">${esc(e.cat)}</span></td><td class="amount-negative">${fmt(e.amount)}</td><td>${esc(e.date)||'—'}</td><td>${esc(e.person)||'—'}</td><td>${isA()?`<button class="btn btn-danger" onclick="delExp('${e.id}')">🗑️</button>`:'—'}</td></tr>`).join(''):'<tr><td colspan="7"><div class="empty"><div class="emoji">💸</div>No expenses</div></td></tr>'; document.getElementById('etb-mobile').innerHTML=page.length?page.map((e)=>`<div class="m-card"><div class="m-card-name">${esc(e.desc)}</div><div class="m-card-row"><span>ক্যাটাগরি:</span><span><span class="badge badge-expense">${esc(e.cat)}</span></span></div><div class="m-card-row"><span>পরিমাণ:</span><span class="amount-negative">${fmt(e.amount)}</span></div><div class="m-card-row"><span>তারিখ:</span><span>${esc(e.date)||'—'}</span></div>${e.person?`<div class="m-card-row"><span>দায়িত্বশীল:</span><span>${esc(e.person)}</span></div>`:''}${e.note?`<div class="m-card-row"><span>নোট:</span><span>${esc(e.note)}</span></div>`:''}${isA()?`<div class="m-card-actions"><button class="btn btn-danger btn-sm" onclick="delExp('${e.id}')">🗑️ Delete</button></div>`:''}</div>`).join(''):'<div class="empty"><div class="emoji">💸</div>No expenses</div>'; buildPager(list.length,p,'etb','goPageE'); }
+function renderExp(){ const f=document.getElementById('ef')?.value||''; const list=(f?D.expenses.filter(e=>e.cat===f):[...D.expenses]).reverse(); const p=_pages.etb, start=(p-1)*PAGE_SIZE, end=start+PAGE_SIZE, page=list.slice(start,end); document.getElementById('etb').innerHTML=page.length?page.map((e,i)=>`<tr><td>${list.length-start-i}</td><td><strong>${esc(e.desc)}</strong>${e.note?'<br><small style="color:var(--muted)">'+esc(e.note)+'</small>':''}</td><td><span class="badge badge-expense">${esc(e.cat)}</span></td><td class="amount-negative">${fmt(e.amount)}</td><td>${esc(e.date)||'—'}</td><td>${esc(e.person)||'—'}</td><td>${e.campaignName?`<span style="font-size:11px;color:var(--accent3)">📢 ${esc(e.campaignName)}</span>`:'—'}</td><td>${isA()?`<button class="btn btn-danger" onclick="delExp('${e.id}')">🗑️</button>`:'—'}</td></tr>`).join(''):'<tr><td colspan="8"><div class="empty"><div class="emoji">💸</div>No expenses</div></td></tr>'; document.getElementById('etb-mobile').innerHTML=page.length?page.map((e)=>`<div class="m-card"><div class="m-card-name">${esc(e.desc)}</div><div class="m-card-row"><span>ক্যাটাগরি:</span><span><span class="badge badge-expense">${esc(e.cat)}</span></span></div><div class="m-card-row"><span>পরিমাণ:</span><span class="amount-negative">${fmt(e.amount)}</span></div><div class="m-card-row"><span>তারিখ:</span><span>${esc(e.date)||'—'}</span></div>${e.person?`<div class="m-card-row"><span>দায়িত্বশীল:</span><span>${esc(e.person)}</span></div>`:''}${e.campaignName?`<div class="m-card-row"><span>ক্যাম্পেইন:</span><span style="color:var(--accent3)">📢 ${esc(e.campaignName)}</span></div>`:''}${e.note?`<div class="m-card-row"><span>নোট:</span><span>${esc(e.note)}</span></div>`:''}${isA()?`<div class="m-card-actions"><button class="btn btn-danger btn-sm" onclick="delExp('${e.id}')">🗑️ Delete</button></div>`:''}</div>`).join(''):'<div class="empty"><div class="emoji">💸</div>No expenses</div>'; buildPager(list.length,p,'etb','goPageE'); }
+
+// =============================================
+// CAMPAIGN FUNCTIONS
+// =============================================
+window.addCampaign = async () => {
+  if(!isA()) return;
+  const name = document.getElementById('camp-name').value.trim();
+  const budget = parseFloat(document.getElementById('camp-budget').value);
+  const start = document.getElementById('camp-start').value;
+  const end = document.getElementById('camp-end').value;
+  if(!name || !budget || budget<=0) return toast('⚠️ নাম ও বাজেট দিতে হবে!', 1);
+  if(!start || !end) return toast('⚠️ শুরু ও শেষ তারিখ দিতে হবে!', 1);
+  if(end < start) return toast('⚠️ শেষ তারিখ শুরুর পরে হতে হবে!', 1);
+  showSync(true);
+  try {
+    await addDoc(collection(db,'campaigns'), {
+      name, budget,
+      cat: document.getElementById('camp-cat').value,
+      person: document.getElementById('camp-person').value.trim(),
+      start, end,
+      desc: document.getElementById('camp-desc').value.trim(),
+      status: 'active',
+      createdAt: serverTimestamp()
+    });
+    document.getElementById('camp-name').value='';
+    document.getElementById('camp-budget').value='';
+    document.getElementById('camp-person').value='';
+    document.getElementById('camp-desc').value='';
+    await logAudit('add','Campaign',`ক্যাম্পেইন তৈরি: ${name} (বাজেট: ${fmt(budget)})`, {field:'budget',oldVal:'—',newVal:fmt(budget)});
+    toast('✅ ক্যাম্পেইন তৈরি হয়েছে!');
+  } catch(e) { toast('❌ সমস্যা হয়েছে!', 1); }
+  showSync(false);
+};
+
+window.openEditCamp = (id) => {
+  const c = D.campaigns.find(x=>x.id===id); if(!c) return;
+  document.getElementById('ec-id').value = id;
+  document.getElementById('ec-name').value = c.name;
+  document.getElementById('ec-cat').value = c.cat||'অন্যান্য';
+  document.getElementById('ec-status').value = c.status||'active';
+  document.getElementById('ec-start').value = c.start||'';
+  document.getElementById('ec-end').value = c.end||'';
+  document.getElementById('ec-budget').value = c.budget||'';
+  document.getElementById('ec-person').value = c.person||'';
+  document.getElementById('ec-desc').value = c.desc||'';
+  document.getElementById('editCampModal').classList.add('open');
+};
+
+window.saveEditCamp = async () => {
+  const id = document.getElementById('ec-id').value;
+  const name = document.getElementById('ec-name').value.trim();
+  const budget = parseFloat(document.getElementById('ec-budget').value);
+  if(!name||!budget||budget<=0) return toast('⚠️ নাম ও বাজেট দিতে হবে!',1);
+  showSync(true);
+  try {
+    await updateDoc(doc(db,'campaigns',id),{
+      name, budget,
+      cat: document.getElementById('ec-cat').value,
+      status: document.getElementById('ec-status').value,
+      start: document.getElementById('ec-start').value,
+      end: document.getElementById('ec-end').value,
+      person: document.getElementById('ec-person').value.trim(),
+      desc: document.getElementById('ec-desc').value.trim()
+    });
+    await logAudit('edit','Campaign',`ক্যাম্পেইন সম্পাদনা: ${name}`);
+    closeModal('editCampModal');
+    toast('✅ ক্যাম্পেইন আপডেট হয়েছে!');
+  } catch(e){ toast('❌ Error!',1); }
+  showSync(false);
+};
+
+window.deleteCampaign = async (id) => {
+  if(!isA()||!confirm('এই ক্যাম্পেইন ডিলিট করবো?')) return;
+  showSync(true);
+  try {
+    const c = D.campaigns.find(x=>x.id===id);
+    await deleteDoc(doc(db,'campaigns',id));
+    await logAudit('delete','Campaign',`ক্যাম্পেইন মুছে ফেলা: ${c?c.name:id}`);
+    toast('🗑️ ক্যাম্পেইন মুছে ফেলা হয়েছে');
+  } catch(e){ toast('❌ Error!',1); }
+  showSync(false);
+};
+
+window.completeCampaign = async (id) => {
+  if(!isA()) return;
+  showSync(true);
+  try {
+    const c = D.campaigns.find(x=>x.id===id);
+    await updateDoc(doc(db,'campaigns',id),{status:'completed'});
+    await logAudit('edit','Campaign',`ক্যাম্পেইন সম্পন্ন: ${c?c.name:id}`);
+    toast('✅ ক্যাম্পেইন সম্পন্ন হিসেবে চিহ্নিত!');
+  } catch(e){ toast('❌ Error!',1); }
+  showSync(false);
+};
+
+function getCampSpent(campId){
+  return D.expenses.filter(e=>e.campaignId===campId).reduce((a,e)=>a+(e.amount||0),0);
+}
+
+function campDaysLeft(endDate){
+  if(!endDate) return null;
+  const diff = Math.ceil((new Date(endDate) - new Date()) / (1000*60*60*24));
+  return diff;
+}
+
+function renderCampaignCard(c){
+  const spent = getCampSpent(c.id);
+  const budget = c.budget||0;
+  const pct = budget>0 ? Math.min(Math.round(spent/budget*100),100) : 0;
+  const overBudget = spent > budget;
+  const daysLeft = campDaysLeft(c.end);
+  const isActive = c.status==='active';
+
+  let fillClass = 'safe';
+  if(pct>=90) fillClass='over';
+  else if(pct>=70) fillClass='warn';
+
+  let daysHtml = '';
+  if(daysLeft !== null){
+    if(daysLeft < 0) daysHtml = `<span class="camp-days done">✅ শেষ হয়েছে</span>`;
+    else if(daysLeft <= 3) daysHtml = `<span class="camp-days urgent">🔴 ${daysLeft} দিন বাকি</span>`;
+    else if(daysLeft <= 7) daysHtml = `<span class="camp-days urgent">⚠️ ${daysLeft} দিন বাকি</span>`;
+    else daysHtml = `<span class="camp-days">📅 ${daysLeft} দিন বাকি</span>`;
+  }
+
+  const statusBadge = c.status==='completed'
+    ? '<span class="badge badge-completed">✅ সম্পন্ন</span>'
+    : c.status==='cancelled'
+    ? '<span class="badge badge-cancelled">❌ বাতিল</span>'
+    : '<span class="badge badge-active">🟢 চলমান</span>';
+
+  return `<div class="campaign-card ${c.status==='active'?'active-camp':c.status==='completed'?'completed-camp':'cancelled-camp'}">
+    <div class="camp-header">
+      <div>
+        <div class="camp-name">${esc(c.name)}</div>
+        <div class="camp-meta">
+          <span>📂 ${esc(c.cat||'অন্যান্য')}</span>
+          ${c.person?`<span>👤 ${esc(c.person)}</span>`:''}
+          <span>📅 ${esc(c.start||'—')} → ${esc(c.end||'—')}</span>
+        </div>
+        ${c.desc?`<div style="font-size:12px;color:var(--muted);margin-top:5px">${esc(c.desc)}</div>`:''}
+      </div>
+      <div>${statusBadge}</div>
+    </div>
+    <div class="camp-budget-row">
+      <span class="camp-budget-label">খরচ হয়েছে</span>
+      <span class="camp-budget-val ${overBudget?'amount-negative':'amount-positive'}">${fmt(spent)} / ${fmt(budget)}</span>
+    </div>
+    <div class="camp-progress">
+      <div class="camp-progress-fill ${fillClass}" style="width:${pct}%"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px">
+      <span>${overBudget?'⚠️ বাজেট অতিক্রম!':pct+'% ব্যবহার'}</span>
+      <span>বাকি: ${fmt(Math.max(0,budget-spent))}</span>
+    </div>
+    <div class="camp-footer">
+      ${daysHtml}
+      ${isA()?`<div class="action-btns">
+        <button class="btn btn-edit" onclick="openEditCamp('${c.id}')">✏️</button>
+        ${isActive?`<button class="btn btn-complete" onclick="completeCampaign('${c.id}')">✅ সম্পন্ন</button>`:''}
+        <button class="btn btn-danger" onclick="deleteCampaign('${c.id}')">🗑️</button>
+      </div>`:''}
+    </div>
+  </div>`;
+}
+
+function renderCampaigns(){
+  const active = D.campaigns.filter(c=>c.status==='active'||!c.status);
+  const done = D.campaigns.filter(c=>c.status==='completed'||c.status==='cancelled');
+
+  document.getElementById('camp-stat-active').textContent = active.length;
+  document.getElementById('camp-stat-done').textContent = done.length;
+  const totalBudget = D.campaigns.reduce((a,c)=>a+(c.budget||0),0);
+  document.getElementById('camp-stat-budget').textContent = fmt(totalBudget);
+
+  document.getElementById('camp-active-list').innerHTML = active.length
+    ? `<div class="camp-grid">${active.map(c=>renderCampaignCard(c)).join('')}</div>`
+    : '<div class="empty"><div class="emoji">📢</div>কোনো চলমান ক্যাম্পেইন নেই</div>';
+
+  document.getElementById('camp-done-list').innerHTML = done.length
+    ? `<div class="camp-grid">${done.map(c=>renderCampaignCard(c)).join('')}</div>`
+    : '<div class="empty"><div class="emoji">📁</div>কোনো রেকর্ড নেই</div>';
+
+  const dashEl = document.getElementById('dash-campaigns');
+  if(dashEl){
+    if(active.length===0){
+      dashEl.innerHTML = '<div style="font-size:12px;color:var(--muted)">কোনো চলমান ক্যাম্পেইন নেই</div>';
+    } else {
+      dashEl.innerHTML = active.slice(0,3).map(c=>{
+        const spent = getCampSpent(c.id);
+        const pct = c.budget>0 ? Math.min(Math.round(spent/c.budget*100),100) : 0;
+        const daysLeft = campDaysLeft(c.end);
+        return `<div class="dashboard-camp-mini">
+          <div class="dcm-name">${esc(c.name)}</div>
+          <div class="dcm-meta">${fmt(spent)} / ${fmt(c.budget)} &nbsp;•&nbsp; ${daysLeft!==null?(daysLeft<0?'শেষ হয়েছে':daysLeft+' দিন বাকি'):'—'}</div>
+          <div class="dcm-progress"><div class="dcm-progress-fill" style="width:${pct}%;background:${pct>=90?'var(--expense)':pct>=70?'var(--accent3)':'var(--accent)'}"></div></div>
+        </div>`;
+      }).join('');
+    }
+  }
+}
+
 function tots(){ const s=D.subscriptions.reduce((a,x)=>a+(x.amount||0),0), don=D.donations.reduce((a,x)=>a+(x.amount||0),0), exp=D.expenses.reduce((a,x)=>a+(x.amount||0),0); return {s,don,income:s+don,exp,bal:s+don-exp}; }
-function updateDB(){ const t=tots(), activeCnt=D.members.filter(m=>m.active!==false).length; document.getElementById('s-bal').textContent=fmt(t.bal); document.getElementById('s-bal').style.color=t.bal>=0?'var(--income)':'var(--expense)'; document.getElementById('s-inc').textContent=fmt(t.income); document.getElementById('s-exp').textContent=fmt(t.exp); document.getElementById('s-mem').textContent=activeCnt; document.getElementById('d-sub').textContent=fmt(t.s); document.getElementById('d-don').textContent=fmt(t.don); const total=t.income+t.exp, ip=total>0?Math.round(t.income/total*100):0; document.getElementById('ipct').textContent=ip+'%'; document.getElementById('epct').textContent=(100-ip)+'%'; document.getElementById('ibar').style.width=ip+'%'; const all=[...D.subscriptions.map(s=>({date:s.date, desc:esc(s.memberName)+' — '+esc(s.month)+' contribution'+(s.isAdvance?' ⚡':''), amount:s.amount, t:'income'})), ...D.donations.map(d=>({date:d.date, desc:esc(d.name)+' — Donation', amount:d.amount, t:'income'})), ...D.expenses.map(e=>({date:e.date, desc:esc(e.desc), amount:e.amount, t:'expense'}))].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,6); document.getElementById('recent').innerHTML=all.length?all.map(r=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><div style="flex:1;min-width:0"><div style="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.desc}</div><div style="font-size:11px;color:var(--muted)">${esc(r.date)||''}</div></div><div class="${r.t==='income'?'amount-positive':'amount-negative'}" style="white-space:nowrap;margin-left:10px">${r.t==='income'?'+':'-'}${fmt(r.amount)}</div></div>`).join(''):'<div class="empty"><div class="emoji">🗒️</div>No transactions</div>'; }
+
+function updateDB(){
+  const t=tots(), activeCnt=D.members.filter(m=>m.active!==false).length;
+  document.getElementById('s-bal').textContent=fmt(t.bal);
+  document.getElementById('s-bal').style.color=t.bal>=0?'var(--income)':'var(--expense)';
+  document.getElementById('s-inc').textContent=fmt(t.income);
+  document.getElementById('s-exp').textContent=fmt(t.exp);
+  document.getElementById('s-mem').textContent=activeCnt;
+  document.getElementById('d-sub').textContent=fmt(t.s);
+  document.getElementById('d-don').textContent=fmt(t.don);
+  const total=t.income+t.exp, ip=total>0?Math.round(t.income/total*100):0;
+  document.getElementById('ipct').textContent=ip+'%';
+  document.getElementById('epct').textContent=(100-ip)+'%';
+  document.getElementById('ibar').style.width=ip+'%';
+
+  const all=[
+    ...D.subscriptions.map(s=>({date:s.date, createdAt:s.createdAt, desc:esc(s.memberName)+' — '+esc(s.month)+' contribution'+(s.isAdvance?' ⚡':''), amount:s.amount, t:'income'})),
+    ...D.donations.map(d=>({date:d.date, createdAt:d.createdAt, desc:esc(d.name)+' — Donation', amount:d.amount, t:'income'})),
+    ...D.expenses.map(e=>({date:e.date, createdAt:e.createdAt, desc:esc(e.desc), amount:e.amount, t:'expense'}))
+  ].sort((a,b)=>{
+    const ta = a.createdAt?.toMillis?.() || new Date(a.date||0).getTime();
+    const tb = b.createdAt?.toMillis?.() || new Date(b.date||0).getTime();
+    return tb - ta;
+  }).slice(0,6);
+
+  document.getElementById('recent').innerHTML=all.length
+    ?all.map(r=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><div style="flex:1;min-width:0"><div style="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.desc}</div><div style="font-size:11px;color:var(--muted)">${esc(r.date)||''}</div></div><div class="${r.t==='income'?'amount-positive':'amount-negative'}" style="white-space:nowrap;margin-left:10px">${r.t==='income'?'+':'-'}${fmt(r.amount)}</div></div>`).join('')
+    :'<div class="empty"><div class="emoji">🗒️</div>No transactions</div>';
+
+  renderCampaigns();
+}
+
 const MN={January:0,February:1,March:2,April:3,May:4,June:5,July:6,August:7,September:8,October:9,November:10,December:11};
-window.resetReportFilter=()=>{ document.getElementById('rm').value=''; document.getElementById('ry').value='2026'; genReport(); };
-window.genReport=()=>{ const m=document.getElementById('rm').value, year=parseInt(document.getElementById('ry').value); let subs=D.subscriptions, dons=D.donations, exps=D.expenses; if(m&&!isNaN(year)&&validYear(year)){ subs=subs.filter(s=>s.month===m&&s.year===year); dons=dons.filter(d=>{const dd=new Date(d.date); return dd.getMonth()===MN[m]&&dd.getFullYear()===year;}); exps=exps.filter(e=>{const ed=new Date(e.date); return ed.getMonth()===MN[m]&&ed.getFullYear()===year;}); } else if(!m&&!isNaN(year)&&validYear(year)){ subs=subs.filter(s=>s.year===year); dons=dons.filter(d=>new Date(d.date).getFullYear()===year); exps=exps.filter(e=>new Date(e.date).getFullYear()===year); } const s=subs.reduce((a,x)=>a+(x.amount||0),0), don=dons.reduce((a,x)=>a+(x.amount||0),0), exp=exps.reduce((a,x)=>a+(x.amount||0),0), inc=s+don, bal=inc-exp; document.getElementById('ri').textContent=fmt(inc); document.getElementById('re').textContent=fmt(exp); document.getElementById('rid').innerHTML=`Subscriptions: ${fmt(s)} &nbsp;|&nbsp; Donations: ${fmt(don)}`; document.getElementById('red').textContent=`${exps.length} expenses`; const rb=document.getElementById('rb'); rb.textContent=fmt(bal); rb.style.color=bal>=0?'var(--income)':'var(--expense)'; const reportData=[...subs.map(s=>({date:s.date, desc:s.memberName+' — '+s.month+' contribution'+(s.isAdvance?' ⚡ অ্যাডভান্স':''), type:'Subscription', inc:s.amount, exp:0})), ...dons.map(d=>({date:d.date, desc:d.name+(d.note?' ('+d.note+')':''), type:d.type==='monthly'?'Monthly Donation':'One-time Donation', inc:d.amount, exp:0})), ...exps.map(e=>({date:e.date, desc:e.desc+' ['+e.cat+']', type:'Expense', inc:0, exp:e.amount}))].sort((a,b)=>new Date(a.date)-new Date(b.date)); document.getElementById('rtb').innerHTML=reportData.length?reportData.map(r=>`<tr><td>${esc(r.date)||'—'}</td><td>${esc(r.desc)}</td><td><span class="badge ${r.inc>0?'badge-income':'badge-expense'}">${esc(r.type)}</span></td><td class="amount-positive">${r.inc>0?fmt(r.inc):'—'}</td><td class="amount-negative">${r.exp>0?fmt(r.exp):'—'}</td></tr>`).join(''):'<tr><td colspan="5"><div class="empty"><div class="emoji">📋</div>No data</div></td></tr>'; };
-window.renderAudit=()=>{ if(!isA())return; const actionF=document.getElementById('al-filter')?.value||'', sectionF=document.getElementById('al-section')?.value||'', userF=document.getElementById('al-user')?.value||''; let list=_auditLogs; if(actionF) list=list.filter(l=>l.action===actionF); if(sectionF) list=list.filter(l=>l.section===sectionF); if(userF) list=list.filter(l=>l.user===userF); const p=_auditPages.al, start=(p-1)*AUDIT_PAGE_SIZE, end=start+AUDIT_PAGE_SIZE, page=list.slice(start,end); const actionBadge=(a)=>{ if(a==='add') return '<span class="badge badge-add">✅ Added</span>'; if(a==='edit') return '<span class="badge badge-edit">✏️ Edited</span>'; if(a==='delete') return '<span class="badge badge-del">🗑️ Deleted</span>'; return a; }; const changeHtml=(c)=>{ if(!c) return '—'; return `<div class="audit-change">${esc(c.field)}: <span class="old-val">${esc(c.oldVal)}</span>→ <span class="new-val">${esc(c.newVal)}</span></div>`; }; const formatTs=(log)=>{ if(log.ts){ const d=new Date(log.ts); return d.toLocaleDateString('en-GB')+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); } return '—'; }; document.getElementById('al-tb').innerHTML=page.length?page.map((l,i)=>`<tr><td>${list.length-start-i}</td><td style="white-space:nowrap;font-size:12px">${esc(formatTs(l))}</td><td><strong style="color:var(--accent3)">${esc(l.user||'?')}</strong></td><td>${actionBadge(l.action)}</td><td><span class="badge badge-inactive">${esc(l.section||'')}</span></td><td style="font-size:12px">${esc(l.details||'')}</td><td>${changeHtml(l.changes)}</td></tr>`).join(''):'<tr><td colspan="7"><div class="empty"><div class="emoji">🔍</div>কোনো লগ নেই</div></td></tr>'; document.getElementById('al-mobile').innerHTML=page.length?page.map((l)=>`<div class="m-card" style="border-left:3px solid ${l.action==='add'?'var(--income)':l.action==='edit'?'var(--accent2)':'var(--expense)'}"><div class="m-card-name">${actionBadge(l.action)} <span style="color:var(--accent3);margin-left:6px">${esc(l.user||'?')}</span></div><div class="m-card-row"><span>সময়:</span><span>${esc(formatTs(l))}</span></div><div class="m-card-row"><span>Section:</span><span>${esc(l.section||'')}</span></div><div class="m-card-row"><span>বিস্তারিত:</span><span>${esc(l.details||'')}</span></div>${l.changes?`<div class="m-card-row"><span>পরিবর্তন:</span><span><span style="color:var(--expense);text-decoration:line-through">${esc(l.changes.oldVal)}</span> → <span style="color:var(--income)">${esc(l.changes.newVal)}</span></span></div>`:''}</div>`).join(''):'<div class="empty"><div class="emoji">🔍</div>কোনো লগ নেই</div>'; const el=document.getElementById('al-pager'); const total=Math.ceil(list.length/AUDIT_PAGE_SIZE); if(total<=1){ el.innerHTML=''; return; } let html=''; if(p>1) html+=`<button class="pg-btn" onclick="goPageAL(${p-1})">‹</button>`; for(let i=1;i<=total;i++){ if(i===1||i===total||Math.abs(i-p)<=1) html+=`<button class="pg-btn ${i===p?'active':''}" onclick="goPageAL(${i})">${i}</button>`; else if(Math.abs(i-p)===2) html+=`<span class="pg-info">…</span>`; } if(p<total) html+=`<button class="pg-btn" onclick="goPageAL(${p+1})">›</button>`; html+=`<span class="pg-info">${list.length} টি লগ</span>`; el.innerHTML=html; };
+window.resetReportFilter=()=>{ document.getElementById('rm').value=''; document.getElementById('ry').value=new Date().getFullYear(); genReport(); };
+window.genReport=()=>{ const m=document.getElementById('rm').value, year=parseInt(document.getElementById('ry').value); let subs=D.subscriptions, dons=D.donations, exps=D.expenses; if(m&&!isNaN(year)&&validYear(year)){ subs=subs.filter(s=>s.month===m&&s.year===year); dons=dons.filter(d=>{const dd=new Date(d.date); return dd.getMonth()===MN[m]&&dd.getFullYear()===year;}); exps=exps.filter(e=>{const ed=new Date(e.date); return ed.getMonth()===MN[m]&&ed.getFullYear()===year;}); } else if(!m&&!isNaN(year)&&validYear(year)){ subs=subs.filter(s=>s.year===year); dons=dons.filter(d=>new Date(d.date).getFullYear()===year); exps=exps.filter(e=>new Date(e.date).getFullYear()===year); } const s=subs.reduce((a,x)=>a+(x.amount||0),0), don=dons.reduce((a,x)=>a+(x.amount||0),0), exp=exps.reduce((a,x)=>a+(x.amount||0),0), inc=s+don, bal=inc-exp; document.getElementById('ri').textContent=fmt(inc); document.getElementById('re').textContent=fmt(exp); document.getElementById('rid').innerHTML=`Subscriptions: ${fmt(s)} &nbsp;|&nbsp; Donations: ${fmt(don)}`; document.getElementById('red').textContent=`${exps.length} expenses`; const rb=document.getElementById('rb'); rb.textContent=fmt(bal); rb.style.color=bal>=0?'var(--income)':'var(--expense)'; const reportData=[...subs.map(s=>({date:s.date, desc:s.memberName+' — '+s.month+' contribution'+(s.isAdvance?' ⚡ অ্যাডভান্স':''), type:'Subscription', inc:s.amount, exp:0})), ...dons.map(d=>({date:d.date, desc:d.name+(d.note?' ('+d.note+')':''), type:d.type==='monthly'?'Monthly Donation':'One-time Donation', inc:d.amount, exp:0})), ...exps.map(e=>({date:e.date, desc:e.desc+' ['+e.cat+']'+(e.campaignName?' 📢'+e.campaignName:''), type:'Expense', inc:0, exp:e.amount}))].sort((a,b)=>new Date(a.date)-new Date(b.date)); document.getElementById('rtb').innerHTML=reportData.length?reportData.map(r=>`<tr><td>${esc(r.date)||'—'}</td><td>${esc(r.desc)}</td><td><span class="badge ${r.inc>0?'badge-income':'badge-expense'}">${esc(r.type)}</span></td><td class="amount-positive">${r.inc>0?fmt(r.inc):'—'}</td><td class="amount-negative">${r.exp>0?fmt(r.exp):'—'}</td></tr>`).join(''):'<tr><td colspan="5"><div class="empty"><div class="emoji">📋</div>No data</div></td></tr>'; };
+
+window.renderAudit=()=>{ if(!isA())return; const actionF=document.getElementById('al-filter')?.value||'', sectionF=document.getElementById('al-section')?.value||'', userF=document.getElementById('al-user')?.value||''; let list=_auditLogs; if(actionF) list=list.filter(l=>l.action===actionF); if(sectionF) list=list.filter(l=>l.section===sectionF); if(userF) list=list.filter(l=>l.user===userF); const p=_auditPages.al, start=(p-1)*AUDIT_PAGE_SIZE, end=start+AUDIT_PAGE_SIZE, page=list.slice(start,end); const actionBadge=(a)=>{ if(a==='add') return '<span class="badge badge-add">✅ Added</span>'; if(a==='edit') return '<span class="badge badge-edit">✏️ Edited</span>'; if(a==='delete') return '<span class="badge badge-del">🗑️ Deleted</span>'; return a; }; const changeHtml=(c)=>{ if(!c) return '—'; return `<div class="audit-change">${esc(c.field)}: <span class="old-val">${esc(c.oldVal)}</span>→ <span class="new-val">${esc(c.newVal)}</span></div>`; }; const formatTs=(log)=>{ if(log.ts){ const d=new Date(log.ts); return d.toLocaleDateString('en-GB')+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); } return '—'; }; document.getElementById('al-tb').innerHTML=page.length?page.map((l,i)=>`<tr><td>${list.length-start-i}</td><td style="white-space:nowrap;font-size:12px">${esc(formatTs(l))}</td><td><strong style="color:var(--accent3)">${esc(l.user||'?')}</strong></td><td>${actionBadge(l.action)}</td><td><span class="badge badge-inactive">${esc(l.section||'')}</span></td><td style="font-size:12px">${esc(l.details||'')}</td><td>${changeHtml(l.changes)}</td></tr>`).join(''):'<tr><td colspan="7"><div class="empty"><div class="emoji">🔍</div>কোনো লগ নেই</div></td></tr>'; document.getElementById('al-mobile').innerHTML=page.length?page.map((l)=>`<div class="m-card" style="border-left:3px solid ${l.action==='add'?'var(--income)':l.action==='edit'?'var(--accent2)':'var(--expense)'}"><div class="m-card-name">${actionBadge(l.action)} <span style="color:var(--accent3);margin-left:6px">${esc(l.user||'?')}</span></div><div class="m-card-row"><span>সময়:</span><span>${esc(formatTs(l))}</span></div><div class="m-card-row"><span>Section:</span><span>${esc(l.section||'')}</span></div><div class="m-card-row"><span>বিস্তারিত:</span><span>${esc(l.details||'')}</span></div>${l.changes?`<div class="m-card-row"><span>পরিবর্তন:</span><span><span style="color:var(--expense);text-decoration:line-through">${esc(l.changes.oldVal)}</span> → <span style="color:var(--income)">${esc(l.changes.newVal)}</span></span></div>`:''}</div>`).join(''):'<div class="empty"><div class="emoji">🔍</div>কোনো লগ নেই</div>'; const el=document.getElementById('al-pager'); const total=Math.ceil(list.length/AUDIT_PAGE_SIZE); if(total<=1){ el.innerHTML=''; return; } let html=''; if(p>1) html+=`<button class="pg-btn" onclick="goPageAL(${p-1})">&#8249;</button>`; for(let i=1;i<=total;i++){ if(i===1||i===total||Math.abs(i-p)<=1) html+=`<button class="pg-btn ${i===p?'active':''}" onclick="goPageAL(${i})">${i}</button>`; else if(Math.abs(i-p)===2) html+=`<span class="pg-info">&#8230;</span>`; } if(p<total) html+=`<button class="pg-btn" onclick="goPageAL(${p+1})">&#8250;</button>`; html+=`<span class="pg-info">${list.length} টি লগ</span>`; el.innerHTML=html; };
+
 document.querySelectorAll('input[type="date"]').forEach(el=>{ if(!el.value) el.value=td(); });
 </script>
 </body>
