@@ -88,6 +88,16 @@
   .stat-card.red .stat-value{color:var(--expense);}
   .stat-card.purple .stat-value{color:#a855f7;}
   .stat-sub{font-size:11px;color:var(--muted);margin-top:3px;}
+  .stat-total-hint{font-size:10px;color:var(--muted);margin-top:5px;padding-top:5px;border-top:1px solid var(--border);opacity:.8;}
+
+  /* ===== DASHBOARD TAB SWITCH ===== */
+  .dash-tab-row{display:flex;gap:0;margin-bottom:18px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:3px;}
+  .dash-tab-btn{flex:1;padding:8px 0;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:all .22s;background:transparent;color:var(--muted);}
+  .dash-tab-btn.active{background:var(--accent);color:#0d1117;box-shadow:0 2px 8px rgba(0,217,163,.25);}
+  body.light .dash-tab-btn.active{color:white;}
+  .dash-month-label{font-size:12px;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+  .dash-month-label span{background:rgba(0,217,163,.1);color:var(--accent);padding:2px 9px;border-radius:20px;font-weight:600;font-size:11px;}
+
   .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;}
   .card-title{font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
   .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
@@ -97,7 +107,7 @@
   .form-group.full{grid-column:1/-1;}
   label{font-size:12px;color:var(--muted);}
   input,select,textarea{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:14px;outline:none;transition:border-color .2s;width:100%;}
-  input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,217,163,.1);}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,217,163,.1);}
   select option{background:var(--surface2);}
   .btn{padding:9px 16px;border-radius:8px;border:none;cursor:pointer;font-size:14px;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
   .btn-primary{background:var(--accent);color:#0d1117;}
@@ -186,6 +196,25 @@
   .sec-notice{background:rgba(0,217,163,.07);border:1px solid rgba(0,217,163,.2);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--muted);margin-top:10px;text-align:center;}
   .advance-info{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--accent3);margin-top:10px;display:none;}
   .advance-info.show{display:block;}
+
+  /* ===== NOTES SECTION ===== */
+  .notes-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .notes-add-btn{width:34px;height:34px;border-radius:50%;background:var(--accent);border:none;color:#0d1117;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;line-height:1;}
+  body.light .notes-add-btn{color:white;}
+  .notes-add-btn:hover{background:#00c492;transform:scale(1.08);}
+  .note-compose{background:var(--surface2);border:1px solid var(--accent);border-radius:10px;padding:13px;margin-bottom:12px;display:none;animation:fadeIn .2s ease;}
+  .note-compose.open{display:block;}
+  .note-compose textarea{width:100%;background:transparent;border:none;outline:none;color:var(--text);font-size:14px;font-family:'Inter',sans-serif;resize:none;min-height:80px;line-height:1.6;}
+  .note-compose-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;}
+  .note-item{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px 14px;margin-bottom:9px;position:relative;transition:border-color .2s,transform .15s;}
+  .note-item:hover{border-color:rgba(0,217,163,.3);transform:translateY(-1px);}
+  .note-item-text{font-size:13px;line-height:1.65;color:var(--text);white-space:pre-wrap;word-break:break-word;}
+  .note-item-meta{display:flex;justify-content:space-between;align-items:center;margin-top:9px;}
+  .note-item-date{font-size:11px;color:var(--muted);}
+  .note-item-user{font-size:11px;color:var(--accent3);font-weight:600;}
+  .note-del-btn{background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;padding:2px 5px;border-radius:5px;transition:color .15s;}
+  .note-del-btn:hover{color:var(--expense);}
+  .notes-empty{text-align:center;padding:24px;color:var(--muted);font-size:13px;}
 
   /* ===== CAMPAIGN STYLES ===== */
   .campaign-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;}
@@ -381,6 +410,7 @@
       <div class="nav-item" onclick="go('donations',this)"><span class="icon">🤝</span> Donations</div>
       <div class="nav-item" onclick="go('expenses',this)"><span class="icon">💸</span> Expenses</div>
       <div class="nav-item" onclick="go('campaigns',this)"><span class="icon">📢</span> Campaigns</div>
+      <div class="nav-item" onclick="go('notes',this)"><span class="icon">📝</span> Notes</div>
       <div class="nav-item" onclick="go('report',this)"><span class="icon">📄</span> Reports</div>
       <div class="nav-item" id="nav-auditlog" onclick="go('auditlog',this)"><span class="icon">🔍</span> Audit Log</div>
     </nav>
@@ -394,12 +424,24 @@
     <!-- DASHBOARD -->
     <div id="page-dashboard" class="page active">
       <div class="page-header"><h2>📊 Dashboard</h2><p>Overall financial status of the organization</p></div>
-      <div class="stats-grid">
-        <div class="stat-card green"><div class="stat-label">Total Fund (Balance)</div><div class="stat-value" id="s-bal">৳0</div><div class="stat-sub">Income − Expense</div></div>
-        <div class="stat-card blue"><div class="stat-label">Total Income</div><div class="stat-value" id="s-inc">৳0</div><div class="stat-sub">Subscriptions + Donations</div></div>
-        <div class="stat-card red"><div class="stat-label">Total Expenses</div><div class="stat-value" id="s-exp">৳0</div><div class="stat-sub">All expenditures</div></div>
-        <div class="stat-card yellow"><div class="stat-label">Active Members</div><div class="stat-value" id="s-mem">0</div><div class="stat-sub">Registered</div></div>
+
+      <!-- TAB SWITCH -->
+      <div class="dash-tab-row">
+        <button class="dash-tab-btn active" id="tab-thismonth" onclick="switchDashTab('month')">📅 এই মাস</button>
+        <button class="dash-tab-btn" id="tab-alltime" onclick="switchDashTab('all')">🗂️ সর্বমোট</button>
       </div>
+      <div class="dash-month-label" id="dash-mode-label">
+        <span id="dash-mode-text">মে ২০২৬</span>
+        <span style="color:var(--muted);background:none;font-size:11px" id="dash-total-hint"></span>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card green"><div class="stat-label">ব্যালেন্স</div><div class="stat-value" id="s-bal">৳0</div><div class="stat-sub" id="s-bal-sub">Income − Expense</div><div class="stat-total-hint" id="s-bal-hint" style="display:none"></div></div>
+        <div class="stat-card blue"><div class="stat-label">মোট আয়</div><div class="stat-value" id="s-inc">৳0</div><div class="stat-sub" id="s-inc-sub">Subscriptions + Donations</div><div class="stat-total-hint" id="s-inc-hint" style="display:none"></div></div>
+        <div class="stat-card red"><div class="stat-label">মোট খরচ</div><div class="stat-value" id="s-exp">৳0</div><div class="stat-sub" id="s-exp-sub">All expenditures</div><div class="stat-total-hint" id="s-exp-hint" style="display:none"></div></div>
+        <div class="stat-card yellow"><div class="stat-label">সক্রিয় সদস্য</div><div class="stat-value" id="s-mem">0</div><div class="stat-sub">Registered</div></div>
+      </div>
+
       <div class="two-col">
         <div class="card">
           <div class="card-title">📈 Income vs Expense Ratio</div>
@@ -474,21 +516,18 @@
     <div id="page-campaigns" class="page">
       <div class="page-header"><h2>📢 Campaigns</h2><p>ক্যাম্পেইন পরিচালনা ও বাজেট ট্র্যাকিং</p></div>
       <div class="viewer-notice" id="vn-c">👁️ Viewer mode — view only.</div>
-
-      <!-- Add Campaign Form -->
       <div class="card admin-only" id="add-camp-form">
         <div class="card-title">➕ নতুন ক্যাম্পেইন তৈরি করো</div>
         <div class="form-grid">
           <div class="form-group full"><label>Campaign Name *</label><input type="text" id="camp-name" placeholder="e.g., Ramadan Food Drive 2026" maxlength="150"></div>
           <div class="form-group"><label>Category *</label><select id="camp-cat">
-            <option>Service</option>
-            <option>Awareness</option>
-            <option>Education & Skill Development</option>
-            <option>Fundraising</option>
-            <option>Membership Recruitment</option>
-            <option>Advocacy</option>
-            <option>Promotional</option>
-            <option>Event</option>
+            <option>শিক্ষা ও দক্ষতা উন্নয়ন</option>
+            <option>ফান্ডরেইজিং</option>
+            <option>সদস্য সংগ্রহ</option>
+            <option>অ্যাডভোকেসি</option>
+            <option>প্রচার ও ব্র্যান্ডিং</option>
+            <option>ইভেন্ট-ভিত্তিক</option>
+            <option>অন্যান্য</option>
           </select></div>
           <div class="form-group"><label>Responsible Person</label><input type="text" id="camp-person" placeholder="দায়িত্বশীল ব্যক্তির নাম" maxlength="100"></div>
           <div class="form-group"><label>Start Date *</label><input type="date" id="camp-start"></div>
@@ -499,24 +538,42 @@
         <br>
         <button class="btn btn-primary" onclick="addCampaign()">✅ ক্যাম্পেইন তৈরি করো</button>
       </div>
-
-      <!-- Campaign Stats -->
       <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
         <div class="stat-card blue"><div class="stat-label">চলমান ক্যাম্পেইন</div><div class="stat-value" id="camp-stat-active">0</div><div class="stat-sub">Active now</div></div>
         <div class="stat-card green"><div class="stat-label">সম্পন্ন</div><div class="stat-value" id="camp-stat-done">0</div><div class="stat-sub">Completed</div></div>
         <div class="stat-card yellow"><div class="stat-label">মোট বাজেট</div><div class="stat-value" id="camp-stat-budget">৳0</div><div class="stat-sub">All campaigns</div></div>
       </div>
-
-      <!-- Active Campaigns -->
       <div class="card">
         <div class="card-title">🟢 চলমান ক্যাম্পেইন</div>
         <div id="camp-active-list"><div class="empty"><div class="emoji">📢</div>কোনো চলমান ক্যাম্পেইন নেই</div></div>
       </div>
-
-      <!-- Completed / Cancelled -->
       <div class="card">
         <div class="card-title">📁 সম্পন্ন / বাতিল ক্যাম্পেইন</div>
         <div id="camp-done-list"><div class="empty"><div class="emoji">📁</div>কোনো রেকর্ড নেই</div></div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div id="page-notes" class="page">
+      <div class="page-header"><h2>📝 Notes</h2><p>দ্রুত নোট রাখো — যেকোনো তথ্য, সিদ্ধান্ত, মনে রাখার বিষয়</p></div>
+      <div class="card">
+        <div class="notes-header">
+          <div class="card-title" style="margin-bottom:0">📝 আমার নোটস</div>
+          <button class="notes-add-btn" onclick="openNoteCompose()" title="নতুন নোট">+</button>
+        </div>
+
+        <!-- Compose Box -->
+        <div class="note-compose" id="note-compose">
+          <textarea id="note-text" placeholder="নোট লিখো এখানে..." maxlength="1000" rows="4"></textarea>
+          <div class="note-compose-foot">
+            <button class="btn btn-ghost btn-sm" onclick="closeNoteCompose()">বাতিল</button>
+            <button class="btn btn-primary btn-sm" onclick="saveNote()">✅ সেভ করো</button>
+          </div>
+        </div>
+
+        <div id="notes-list">
+          <div class="notes-empty">📝 কোনো নোট নেই। + বাটন চাপো নোট যোগ করতে।</div>
+        </div>
       </div>
     </div>
 
@@ -531,7 +588,7 @@
     <!-- AUDIT LOG -->
     <div id="page-auditlog" class="page">
       <div class="page-header"><h2>🔍 Audit Log</h2><p>কে কখন কী করেছে — সম্পূর্ণ ইতিহাস</p></div>
-      <div class="filter-row"><select id="al-filter" onchange="renderAudit()"><option value="">All Actions</option><option value="add">✅ Added</option><option value="edit">✏️ Edited</option><option value="delete">🗑️ Deleted</option></select><select id="al-section" onchange="renderAudit()"><option value="">All Sections</option><option value="Subscription">Subscription</option><option value="Member">Member</option><option value="Donation">Donation</option><option value="Expense">Expense</option><option value="Campaign">Campaign</option></select><select id="al-user" onchange="renderAudit()"><option value="">All Users</option><option value="Tamim">Tamim</option><option value="Rifat">Rifat</option><option value="Zishan">Zishan</option><option value="Admin">Admin</option></select><button class="btn btn-ghost btn-sm" onclick="document.getElementById('al-filter').value='';document.getElementById('al-section').value='';document.getElementById('al-user').value='';renderAudit()">🗑️ Reset</button></div>
+      <div class="filter-row"><select id="al-filter" onchange="renderAudit()"><option value="">All Actions</option><option value="add">✅ Added</option><option value="edit">✏️ Edited</option><option value="delete">🗑️ Deleted</option></select><select id="al-section" onchange="renderAudit()"><option value="">All Sections</option><option value="Subscription">Subscription</option><option value="Member">Member</option><option value="Donation">Donation</option><option value="Expense">Expense</option><option value="Campaign">Campaign</option><option value="Note">Note</option></select><select id="al-user" onchange="renderAudit()"><option value="">All Users</option><option value="Tamim">Tamim</option><option value="Rifat">Rifat</option><option value="Zishan">Zishan</option><option value="Admin">Admin</option></select><button class="btn btn-ghost btn-sm" onclick="document.getElementById('al-filter').value='';document.getElementById('al-section').value='';document.getElementById('al-user').value='';renderAudit()">🗑️ Reset</button></div>
       <div class="card"><div class="card-title">🔍 Activity History</div><div class="table-wrap desktop-table"><table><thead><tr><th>#</th><th>Time</th><th>User</th><th>Action</th><th>Section</th><th>Details</th><th>Change</th></tr></thead><tbody id="al-tb"></tbody></table></div><div class="mobile-card-list" id="al-mobile"></div><div id="al-pager" class="pagination"></div></div>
     </div>
   </main>
@@ -563,8 +620,11 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTHS_BN = ['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
 
 let loginAttempts = 0, lockUntil = 0;
+let _dashMode = 'month'; // 'month' or 'all'
+
 function esc(str){ if(str==null)return ''; return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');}
 function fmt(n){ const num=Number(n); return isNaN(num)?'৳0':'৳'+num.toLocaleString('en-IN');}
 function validYear(y){ return Number.isInteger(y) && y>=2020 && y<=2099; }
@@ -574,7 +634,7 @@ window.toggleTheme = () => { document.body.classList.toggle('light'); localStora
 if(localStorage.getItem('theme')==='light') document.body.classList.add('light');
 
 let CU = null;
-let D = {members:[], subscriptions:[], donations:[], expenses:[], campaigns:[]};
+let D = {members:[], subscriptions:[], donations:[], expenses:[], campaigns:[], notes:[]};
 let unsubscribers = [];
 let _auditLogs = [];
 const _auditPages = {al:1};
@@ -612,6 +672,19 @@ function showSync(on){ document.getElementById('sync-bar').style.display = on?'b
 function setSyncStatus(msg){ const el=document.getElementById('sync-status'); el.style.display=msg?'block':'none'; el.textContent=msg; }
 window.closeModal = (id)=> document.getElementById(id).classList.remove('open');
 
+// ===== DASHBOARD TAB SWITCH =====
+window.switchDashTab = (mode) => {
+  _dashMode = mode;
+  document.getElementById('tab-thismonth').classList.toggle('active', mode==='month');
+  document.getElementById('tab-alltime').classList.toggle('active', mode==='all');
+  updateDB();
+};
+
+function getMonthLabel(){
+  const now = new Date();
+  return MONTHS_BN[now.getMonth()] + ' ' + now.getFullYear();
+}
+
 window.doLogin = async () => {
   const now=Date.now();
   if(now<lockUntil){ const secs=Math.ceil((lockUntil-now)/1000); return toast(`🔒 অনেকবার ভুল হয়েছে। ${secs} সেকেন্ড অপেক্ষা করো।`,1); }
@@ -643,7 +716,7 @@ window.doLogin = async () => {
 
 window.doLogout = () => {
   unsubscribers.forEach(u=>u()); unsubscribers=[];
-  CU=null; D={members:[], subscriptions:[], donations:[], expenses:[], campaigns:[]};
+  CU=null; D={members:[], subscriptions:[], donations:[], expenses:[], campaigns:[], notes:[]};
   _unpaidData={unpaid:[], paid:[], month:'', year:0};
   document.getElementById('tracker-body').style.display='none';
   document.getElementById('app').style.display='none';
@@ -670,12 +743,13 @@ function startListeners(){
   const u4=onSnapshot(collection(db,'expenses'), snap=>{ D.expenses=snap.docs.map(d=>({id:d.id,...d.data()})); renderExp(); updateDB(); renderCampExpSel(); });
   const u5=onSnapshot(query(collection(db,'audit_logs'),orderBy('timestamp','desc'),limit(200)), snap=>{ _auditLogs=snap.docs.map(d=>({id:d.id,...d.data()})); if(document.getElementById('page-auditlog').classList.contains('active')) renderAudit(); });
   const u6=onSnapshot(collection(db,'campaigns'), snap=>{ D.campaigns=snap.docs.map(d=>({id:d.id,...d.data()})); renderCampaigns(); renderCampExpSel(); updateDB(); });
-  unsubscribers=[u1,u2,u3,u4,u5,u6];
+  const u7=onSnapshot(query(collection(db,'notes'),orderBy('timestamp','desc')), snap=>{ D.notes=snap.docs.map(d=>({id:d.id,...d.data()})); renderNotes(); });
+  unsubscribers=[u1,u2,u3,u4,u5,u6,u7];
 }
 
 window.toggleSB=()=>{ document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); };
 window.closeSB=()=>{ document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); };
-window.go=(id,el)=>{ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); document.getElementById('page-'+id).classList.add('active'); if(el) el.classList.add('active'); closeSB(); if(id==='dashboard') updateDB(); if(id==='report') genReport(); if(id==='auditlog') renderAudit(); if(id==='campaigns') renderCampaigns(); };
+window.go=(id,el)=>{ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); document.getElementById('page-'+id).classList.add('active'); if(el) el.classList.add('active'); closeSB(); if(id==='dashboard') updateDB(); if(id==='report') genReport(); if(id==='auditlog') renderAudit(); if(id==='campaigns') renderCampaigns(); if(id==='notes') renderNotes(); };
 function toast(msg,err){ const t=document.getElementById('toast'); t.textContent=msg; t.style.borderColor=err?'var(--expense)':'var(--accent)'; t.style.color=err?'var(--expense)':'var(--accent)'; t.style.display='block'; clearTimeout(t._t); t._t=setTimeout(()=>t.style.display='none',2800); }
 function td(){ return new Date().toISOString().split('T')[0]; }
 window.togglePasswordVisibility=()=>{ const pw=document.getElementById('lp'), btn=event.currentTarget; if(pw.type==='password'){ pw.type='text'; btn.textContent='🙈'; }else{ pw.type='password'; btn.textContent='👁️'; } };
@@ -696,6 +770,81 @@ window.checkAdvanceStatus = () => {
     infoBox.classList.remove('show');
   }
 };
+
+// ===== NOTES FUNCTIONS =====
+window.openNoteCompose = () => {
+  const c = document.getElementById('note-compose');
+  c.classList.add('open');
+  document.getElementById('note-text').focus();
+};
+window.closeNoteCompose = () => {
+  document.getElementById('note-compose').classList.remove('open');
+  document.getElementById('note-text').value = '';
+};
+window.saveNote = async () => {
+  const text = document.getElementById('note-text').value.trim();
+  if(!text) return toast('⚠️ কিছু লিখো আগে!', 1);
+  if(text.length > 1000) return toast('⚠️ নোট সর্বোচ্চ ১০০০ অক্ষর!', 1);
+  showSync(true);
+  try {
+    await addDoc(collection(db, 'notes'), {
+      text,
+      user: CU ? CU.label : 'Unknown',
+      userId: CU ? CU.u : '',
+      timestamp: serverTimestamp(),
+      ts: new Date().toISOString()
+    });
+    closeNoteCompose();
+    await logAudit('add','Note',`নোট যোগ করা হয়েছে`);
+    toast('✅ নোট সেভ হয়েছে!');
+  } catch(e) { toast('❌ সেভ করতে সমস্যা!', 1); }
+  showSync(false);
+};
+window.deleteNote = async (id) => {
+  if(!confirm('এই নোট মুছে ফেলবো?')) return;
+  showSync(true);
+  try {
+    await deleteDoc(doc(db, 'notes', id));
+    await logAudit('delete','Note',`নোট মুছে ফেলা হয়েছে`);
+    toast('🗑️ নোট মুছে ফেলা হয়েছে');
+  } catch(e) { toast('❌ সমস্যা হয়েছে!', 1); }
+  showSync(false);
+};
+function formatNoteDate(note){
+  if(note.ts){
+    const d = new Date(note.ts);
+    return d.toLocaleDateString('bn-BD',{day:'numeric',month:'short',year:'numeric'}) + ' ' + d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  }
+  return '—';
+}
+function renderNotes(){
+  const el = document.getElementById('notes-list');
+  if(!el) return;
+  if(!D.notes.length){
+    el.innerHTML = '<div class="notes-empty">📝 কোনো নোট নেই। + বাটন চাপো নোট যোগ করতে।</div>';
+    return;
+  }
+  el.innerHTML = D.notes.map(n => `
+    <div class="note-item">
+      <div class="note-item-text">${esc(n.text)}</div>
+      <div class="note-item-meta">
+        <div>
+          <span class="note-item-user">👤 ${esc(n.user||'?')}</span>
+          <span class="note-item-date" style="margin-left:10px">🕒 ${esc(formatNoteDate(n))}</span>
+        </div>
+        ${(isA() || (CU && n.userId === CU.u)) ? `<button class="note-del-btn" onclick="deleteNote('${n.id}')" title="মুছে ফেলো">🗑️</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// Keyboard shortcut: Ctrl+Enter to save note
+document.addEventListener('keydown', (e) => {
+  if((e.ctrlKey || e.metaKey) && e.key === 'Enter'){
+    const compose = document.getElementById('note-compose');
+    if(compose && compose.classList.contains('open')) saveNote();
+  }
+});
 
 window.deleteMemberPermanently = async (id) => {
   if(!isA()){ toast("⛔ শুধু অ্যাডমিন ডিলিট করতে পারেন!",1); return; }
@@ -791,9 +940,7 @@ window.delExp=async(id)=>{ if(!isA()||!confirm('Delete expense?'))return; showSy
 window.renderExpenses=()=>{ _pages.etb=1; renderExp(); };
 function renderExp(){ const f=document.getElementById('ef')?.value||''; const list=(f?D.expenses.filter(e=>e.cat===f):[...D.expenses]).reverse(); const p=_pages.etb, start=(p-1)*PAGE_SIZE, end=start+PAGE_SIZE, page=list.slice(start,end); document.getElementById('etb').innerHTML=page.length?page.map((e,i)=>`<tr><td>${list.length-start-i}</td><td><strong>${esc(e.desc)}</strong>${e.note?'<br><small style="color:var(--muted)">'+esc(e.note)+'</small>':''}</td><td><span class="badge badge-expense">${esc(e.cat)}</span></td><td class="amount-negative">${fmt(e.amount)}</td><td>${esc(e.date)||'—'}</td><td>${esc(e.person)||'—'}</td><td>${e.campaignName?`<span style="font-size:11px;color:var(--accent3)">📢 ${esc(e.campaignName)}</span>`:'—'}</td><td>${isA()?`<button class="btn btn-danger" onclick="delExp('${e.id}')">🗑️</button>`:'—'}</td></tr>`).join(''):'<tr><td colspan="8"><div class="empty"><div class="emoji">💸</div>No expenses</div></td></tr>'; document.getElementById('etb-mobile').innerHTML=page.length?page.map((e)=>`<div class="m-card"><div class="m-card-name">${esc(e.desc)}</div><div class="m-card-row"><span>ক্যাটাগরি:</span><span><span class="badge badge-expense">${esc(e.cat)}</span></span></div><div class="m-card-row"><span>পরিমাণ:</span><span class="amount-negative">${fmt(e.amount)}</span></div><div class="m-card-row"><span>তারিখ:</span><span>${esc(e.date)||'—'}</span></div>${e.person?`<div class="m-card-row"><span>দায়িত্বশীল:</span><span>${esc(e.person)}</span></div>`:''}${e.campaignName?`<div class="m-card-row"><span>ক্যাম্পেইন:</span><span style="color:var(--accent3)">📢 ${esc(e.campaignName)}</span></div>`:''}${e.note?`<div class="m-card-row"><span>নোট:</span><span>${esc(e.note)}</span></div>`:''}${isA()?`<div class="m-card-actions"><button class="btn btn-danger btn-sm" onclick="delExp('${e.id}')">🗑️ Delete</button></div>`:''}</div>`).join(''):'<div class="empty"><div class="emoji">💸</div>No expenses</div>'; buildPager(list.length,p,'etb','goPageE'); }
 
-// =============================================
-// CAMPAIGN FUNCTIONS
-// =============================================
+// ===== CAMPAIGN FUNCTIONS =====
 window.addCampaign = async () => {
   if(!isA()) return;
   const name = document.getElementById('camp-name').value.trim();
@@ -805,39 +952,18 @@ window.addCampaign = async () => {
   if(end < start) return toast('⚠️ শেষ তারিখ শুরুর পরে হতে হবে!', 1);
   showSync(true);
   try {
-    await addDoc(collection(db,'campaigns'), {
-      name, budget,
-      cat: document.getElementById('camp-cat').value,
-      person: document.getElementById('camp-person').value.trim(),
-      start, end,
-      desc: document.getElementById('camp-desc').value.trim(),
-      status: 'active',
-      createdAt: serverTimestamp()
-    });
-    document.getElementById('camp-name').value='';
-    document.getElementById('camp-budget').value='';
-    document.getElementById('camp-person').value='';
-    document.getElementById('camp-desc').value='';
+    await addDoc(collection(db,'campaigns'), { name, budget, cat: document.getElementById('camp-cat').value, person: document.getElementById('camp-person').value.trim(), start, end, desc: document.getElementById('camp-desc').value.trim(), status: 'active', createdAt: serverTimestamp() });
+    document.getElementById('camp-name').value=''; document.getElementById('camp-budget').value=''; document.getElementById('camp-person').value=''; document.getElementById('camp-desc').value='';
     await logAudit('add','Campaign',`ক্যাম্পেইন তৈরি: ${name} (বাজেট: ${fmt(budget)})`, {field:'budget',oldVal:'—',newVal:fmt(budget)});
     toast('✅ ক্যাম্পেইন তৈরি হয়েছে!');
   } catch(e) { toast('❌ সমস্যা হয়েছে!', 1); }
   showSync(false);
 };
-
 window.openEditCamp = (id) => {
   const c = D.campaigns.find(x=>x.id===id); if(!c) return;
-  document.getElementById('ec-id').value = id;
-  document.getElementById('ec-name').value = c.name;
-  document.getElementById('ec-cat').value = c.cat||'অন্যান্য';
-  document.getElementById('ec-status').value = c.status||'active';
-  document.getElementById('ec-start').value = c.start||'';
-  document.getElementById('ec-end').value = c.end||'';
-  document.getElementById('ec-budget').value = c.budget||'';
-  document.getElementById('ec-person').value = c.person||'';
-  document.getElementById('ec-desc').value = c.desc||'';
+  document.getElementById('ec-id').value = id; document.getElementById('ec-name').value = c.name; document.getElementById('ec-cat').value = c.cat||'অন্যান্য'; document.getElementById('ec-status').value = c.status||'active'; document.getElementById('ec-start').value = c.start||''; document.getElementById('ec-end').value = c.end||''; document.getElementById('ec-budget').value = c.budget||''; document.getElementById('ec-person').value = c.person||''; document.getElementById('ec-desc').value = c.desc||'';
   document.getElementById('editCampModal').classList.add('open');
 };
-
 window.saveEditCamp = async () => {
   const id = document.getElementById('ec-id').value;
   const name = document.getElementById('ec-name').value.trim();
@@ -845,178 +971,112 @@ window.saveEditCamp = async () => {
   if(!name||!budget||budget<=0) return toast('⚠️ নাম ও বাজেট দিতে হবে!',1);
   showSync(true);
   try {
-    await updateDoc(doc(db,'campaigns',id),{
-      name, budget,
-      cat: document.getElementById('ec-cat').value,
-      status: document.getElementById('ec-status').value,
-      start: document.getElementById('ec-start').value,
-      end: document.getElementById('ec-end').value,
-      person: document.getElementById('ec-person').value.trim(),
-      desc: document.getElementById('ec-desc').value.trim()
-    });
+    await updateDoc(doc(db,'campaigns',id),{ name, budget, cat: document.getElementById('ec-cat').value, status: document.getElementById('ec-status').value, start: document.getElementById('ec-start').value, end: document.getElementById('ec-end').value, person: document.getElementById('ec-person').value.trim(), desc: document.getElementById('ec-desc').value.trim() });
     await logAudit('edit','Campaign',`ক্যাম্পেইন সম্পাদনা: ${name}`);
-    closeModal('editCampModal');
-    toast('✅ ক্যাম্পেইন আপডেট হয়েছে!');
+    closeModal('editCampModal'); toast('✅ ক্যাম্পেইন আপডেট হয়েছে!');
   } catch(e){ toast('❌ Error!',1); }
   showSync(false);
 };
-
 window.deleteCampaign = async (id) => {
   if(!isA()||!confirm('এই ক্যাম্পেইন ডিলিট করবো?')) return;
   showSync(true);
-  try {
-    const c = D.campaigns.find(x=>x.id===id);
-    await deleteDoc(doc(db,'campaigns',id));
-    await logAudit('delete','Campaign',`ক্যাম্পেইন মুছে ফেলা: ${c?c.name:id}`);
-    toast('🗑️ ক্যাম্পেইন মুছে ফেলা হয়েছে');
-  } catch(e){ toast('❌ Error!',1); }
+  try { const c = D.campaigns.find(x=>x.id===id); await deleteDoc(doc(db,'campaigns',id)); await logAudit('delete','Campaign',`ক্যাম্পেইন মুছে ফেলা: ${c?c.name:id}`); toast('🗑️ ক্যাম্পেইন মুছে ফেলা হয়েছে'); } catch(e){ toast('❌ Error!',1); }
   showSync(false);
 };
-
 window.completeCampaign = async (id) => {
   if(!isA()) return;
   showSync(true);
-  try {
-    const c = D.campaigns.find(x=>x.id===id);
-    await updateDoc(doc(db,'campaigns',id),{status:'completed'});
-    await logAudit('edit','Campaign',`ক্যাম্পেইন সম্পন্ন: ${c?c.name:id}`);
-    toast('✅ ক্যাম্পেইন সম্পন্ন হিসেবে চিহ্নিত!');
-  } catch(e){ toast('❌ Error!',1); }
+  try { const c = D.campaigns.find(x=>x.id===id); await updateDoc(doc(db,'campaigns',id),{status:'completed'}); await logAudit('edit','Campaign',`ক্যাম্পেইন সম্পন্ন: ${c?c.name:id}`); toast('✅ ক্যাম্পেইন সম্পন্ন হিসেবে চিহ্নিত!'); } catch(e){ toast('❌ Error!',1); }
   showSync(false);
 };
-
-function getCampSpent(campId){
-  return D.expenses.filter(e=>e.campaignId===campId).reduce((a,e)=>a+(e.amount||0),0);
-}
-
-function campDaysLeft(endDate){
-  if(!endDate) return null;
-  const diff = Math.ceil((new Date(endDate) - new Date()) / (1000*60*60*24));
-  return diff;
-}
-
+function getCampSpent(campId){ return D.expenses.filter(e=>e.campaignId===campId).reduce((a,e)=>a+(e.amount||0),0); }
+function campDaysLeft(endDate){ if(!endDate) return null; return Math.ceil((new Date(endDate) - new Date()) / (1000*60*60*24)); }
 function renderCampaignCard(c){
-  const spent = getCampSpent(c.id);
-  const budget = c.budget||0;
+  const spent = getCampSpent(c.id), budget = c.budget||0;
   const pct = budget>0 ? Math.min(Math.round(spent/budget*100),100) : 0;
-  const overBudget = spent > budget;
-  const daysLeft = campDaysLeft(c.end);
-  const isActive = c.status==='active';
-
-  let fillClass = 'safe';
-  if(pct>=90) fillClass='over';
-  else if(pct>=70) fillClass='warn';
-
+  const overBudget = spent > budget, daysLeft = campDaysLeft(c.end), isActive = c.status==='active';
+  let fillClass = pct>=90?'over':pct>=70?'warn':'safe';
   let daysHtml = '';
-  if(daysLeft !== null){
-    if(daysLeft < 0) daysHtml = `<span class="camp-days done">✅ শেষ হয়েছে</span>`;
-    else if(daysLeft <= 3) daysHtml = `<span class="camp-days urgent">🔴 ${daysLeft} দিন বাকি</span>`;
-    else if(daysLeft <= 7) daysHtml = `<span class="camp-days urgent">⚠️ ${daysLeft} দিন বাকি</span>`;
-    else daysHtml = `<span class="camp-days">📅 ${daysLeft} দিন বাকি</span>`;
-  }
-
-  const statusBadge = c.status==='completed'
-    ? '<span class="badge badge-completed">✅ সম্পন্ন</span>'
-    : c.status==='cancelled'
-    ? '<span class="badge badge-cancelled">❌ বাতিল</span>'
-    : '<span class="badge badge-active">🟢 চলমান</span>';
-
-  return `<div class="campaign-card ${c.status==='active'?'active-camp':c.status==='completed'?'completed-camp':'cancelled-camp'}">
-    <div class="camp-header">
-      <div>
-        <div class="camp-name">${esc(c.name)}</div>
-        <div class="camp-meta">
-          <span>📂 ${esc(c.cat||'অন্যান্য')}</span>
-          ${c.person?`<span>👤 ${esc(c.person)}</span>`:''}
-          <span>📅 ${esc(c.start||'—')} → ${esc(c.end||'—')}</span>
-        </div>
-        ${c.desc?`<div style="font-size:12px;color:var(--muted);margin-top:5px">${esc(c.desc)}</div>`:''}
-      </div>
-      <div>${statusBadge}</div>
-    </div>
-    <div class="camp-budget-row">
-      <span class="camp-budget-label">খরচ হয়েছে</span>
-      <span class="camp-budget-val ${overBudget?'amount-negative':'amount-positive'}">${fmt(spent)} / ${fmt(budget)}</span>
-    </div>
-    <div class="camp-progress">
-      <div class="camp-progress-fill ${fillClass}" style="width:${pct}%"></div>
-    </div>
-    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px">
-      <span>${overBudget?'⚠️ বাজেট অতিক্রম!':pct+'% ব্যবহার'}</span>
-      <span>বাকি: ${fmt(Math.max(0,budget-spent))}</span>
-    </div>
-    <div class="camp-footer">
-      ${daysHtml}
-      ${isA()?`<div class="action-btns">
-        <button class="btn btn-edit" onclick="openEditCamp('${c.id}')">✏️</button>
-        ${isActive?`<button class="btn btn-complete" onclick="completeCampaign('${c.id}')">✅ সম্পন্ন</button>`:''}
-        <button class="btn btn-danger" onclick="deleteCampaign('${c.id}')">🗑️</button>
-      </div>`:''}
-    </div>
-  </div>`;
+  if(daysLeft !== null){ if(daysLeft < 0) daysHtml=`<span class="camp-days done">✅ শেষ হয়েছে</span>`; else if(daysLeft<=3) daysHtml=`<span class="camp-days urgent">🔴 ${daysLeft} দিন বাকি</span>`; else if(daysLeft<=7) daysHtml=`<span class="camp-days urgent">⚠️ ${daysLeft} দিন বাকি</span>`; else daysHtml=`<span class="camp-days">📅 ${daysLeft} দিন বাকি</span>`; }
+  const statusBadge = c.status==='completed'?'<span class="badge badge-completed">✅ সম্পন্ন</span>':c.status==='cancelled'?'<span class="badge badge-cancelled">❌ বাতিল</span>':'<span class="badge badge-active">🟢 চলমান</span>';
+  return `<div class="campaign-card ${c.status==='active'?'active-camp':c.status==='completed'?'completed-camp':'cancelled-camp'}"><div class="camp-header"><div><div class="camp-name">${esc(c.name)}</div><div class="camp-meta"><span>📂 ${esc(c.cat||'অন্যান্য')}</span>${c.person?`<span>👤 ${esc(c.person)}</span>`:''}<span>📅 ${esc(c.start||'—')} → ${esc(c.end||'—')}</span></div>${c.desc?`<div style="font-size:12px;color:var(--muted);margin-top:5px">${esc(c.desc)}</div>`:''}</div><div>${statusBadge}</div></div><div class="camp-budget-row"><span class="camp-budget-label">খরচ হয়েছে</span><span class="camp-budget-val ${overBudget?'amount-negative':'amount-positive'}">${fmt(spent)} / ${fmt(budget)}</span></div><div class="camp-progress"><div class="camp-progress-fill ${fillClass}" style="width:${pct}%"></div></div><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px"><span>${overBudget?'⚠️ বাজেট অতিক্রম!':pct+'% ব্যবহার'}</span><span>বাকি: ${fmt(Math.max(0,budget-spent))}</span></div><div class="camp-footer">${daysHtml}${isA()?`<div class="action-btns"><button class="btn btn-edit" onclick="openEditCamp('${c.id}')">✏️</button>${isActive?`<button class="btn btn-complete" onclick="completeCampaign('${c.id}')">✅ সম্পন্ন</button>`:''}<button class="btn btn-danger" onclick="deleteCampaign('${c.id}')">🗑️</button></div>`:''}</div></div>`;
 }
-
 function renderCampaigns(){
   const active = D.campaigns.filter(c=>c.status==='active'||!c.status);
   const done = D.campaigns.filter(c=>c.status==='completed'||c.status==='cancelled');
-
   document.getElementById('camp-stat-active').textContent = active.length;
   document.getElementById('camp-stat-done').textContent = done.length;
-  const totalBudget = D.campaigns.reduce((a,c)=>a+(c.budget||0),0);
-  document.getElementById('camp-stat-budget').textContent = fmt(totalBudget);
-
-  document.getElementById('camp-active-list').innerHTML = active.length
-    ? `<div class="camp-grid">${active.map(c=>renderCampaignCard(c)).join('')}</div>`
-    : '<div class="empty"><div class="emoji">📢</div>কোনো চলমান ক্যাম্পেইন নেই</div>';
-
-  document.getElementById('camp-done-list').innerHTML = done.length
-    ? `<div class="camp-grid">${done.map(c=>renderCampaignCard(c)).join('')}</div>`
-    : '<div class="empty"><div class="emoji">📁</div>কোনো রেকর্ড নেই</div>';
-
+  document.getElementById('camp-stat-budget').textContent = fmt(D.campaigns.reduce((a,c)=>a+(c.budget||0),0));
+  document.getElementById('camp-active-list').innerHTML = active.length ? `<div class="camp-grid">${active.map(c=>renderCampaignCard(c)).join('')}</div>` : '<div class="empty"><div class="emoji">📢</div>কোনো চলমান ক্যাম্পেইন নেই</div>';
+  document.getElementById('camp-done-list').innerHTML = done.length ? `<div class="camp-grid">${done.map(c=>renderCampaignCard(c)).join('')}</div>` : '<div class="empty"><div class="emoji">📁</div>কোনো রেকর্ড নেই</div>';
   const dashEl = document.getElementById('dash-campaigns');
-  if(dashEl){
-    if(active.length===0){
-      dashEl.innerHTML = '<div style="font-size:12px;color:var(--muted)">কোনো চলমান ক্যাম্পেইন নেই</div>';
-    } else {
-      dashEl.innerHTML = active.slice(0,3).map(c=>{
-        const spent = getCampSpent(c.id);
-        const pct = c.budget>0 ? Math.min(Math.round(spent/c.budget*100),100) : 0;
-        const daysLeft = campDaysLeft(c.end);
-        return `<div class="dashboard-camp-mini">
-          <div class="dcm-name">${esc(c.name)}</div>
-          <div class="dcm-meta">${fmt(spent)} / ${fmt(c.budget)} &nbsp;•&nbsp; ${daysLeft!==null?(daysLeft<0?'শেষ হয়েছে':daysLeft+' দিন বাকি'):'—'}</div>
-          <div class="dcm-progress"><div class="dcm-progress-fill" style="width:${pct}%;background:${pct>=90?'var(--expense)':pct>=70?'var(--accent3)':'var(--accent)'}"></div></div>
-        </div>`;
-      }).join('');
-    }
-  }
+  if(dashEl){ if(active.length===0){ dashEl.innerHTML='<div style="font-size:12px;color:var(--muted)">কোনো চলমান ক্যাম্পেইন নেই</div>'; } else { dashEl.innerHTML=active.slice(0,3).map(c=>{ const spent=getCampSpent(c.id), pct=c.budget>0?Math.min(Math.round(spent/c.budget*100),100):0, daysLeft=campDaysLeft(c.end); return `<div class="dashboard-camp-mini"><div class="dcm-name">${esc(c.name)}</div><div class="dcm-meta">${fmt(spent)} / ${fmt(c.budget)} &nbsp;•&nbsp; ${daysLeft!==null?(daysLeft<0?'শেষ হয়েছে':daysLeft+' দিন বাকি'):'—'}</div><div class="dcm-progress"><div class="dcm-progress-fill" style="width:${pct}%;background:${pct>=90?'var(--expense)':pct>=70?'var(--accent3)':'var(--accent)'}"></div></div></div>`; }).join(''); } }
 }
 
-function tots(){ const s=D.subscriptions.reduce((a,x)=>a+(x.amount||0),0), don=D.donations.reduce((a,x)=>a+(x.amount||0),0), exp=D.expenses.reduce((a,x)=>a+(x.amount||0),0); return {s,don,income:s+don,exp,bal:s+don-exp}; }
+// ===== DASHBOARD UPDATE WITH MONTH/ALL TOGGLE =====
+function totsAll(){
+  const s=D.subscriptions.reduce((a,x)=>a+(x.amount||0),0), don=D.donations.reduce((a,x)=>a+(x.amount||0),0), exp=D.expenses.reduce((a,x)=>a+(x.amount||0),0);
+  return {s, don, income:s+don, exp, bal:s+don-exp};
+}
+function totsMonth(){
+  const now = new Date(), m = MONTHS[now.getMonth()], y = now.getFullYear();
+  const subs = D.subscriptions.filter(x=>x.month===m && x.year===y);
+  const dons = D.donations.filter(x=>{ const dd=new Date(x.date); return dd.getMonth()===now.getMonth()&&dd.getFullYear()===y; });
+  const exps = D.expenses.filter(x=>{ const dd=new Date(x.date); return dd.getMonth()===now.getMonth()&&dd.getFullYear()===y; });
+  const s=subs.reduce((a,x)=>a+(x.amount||0),0), don=dons.reduce((a,x)=>a+(x.amount||0),0), exp=exps.reduce((a,x)=>a+(x.amount||0),0);
+  return {s, don, income:s+don, exp, bal:s+don-exp};
+}
 
 function updateDB(){
-  const t=tots(), activeCnt=D.members.filter(m=>m.active!==false).length;
-  document.getElementById('s-bal').textContent=fmt(t.bal);
-  document.getElementById('s-bal').style.color=t.bal>=0?'var(--income)':'var(--expense)';
-  document.getElementById('s-inc').textContent=fmt(t.income);
-  document.getElementById('s-exp').textContent=fmt(t.exp);
-  document.getElementById('s-mem').textContent=activeCnt;
-  document.getElementById('d-sub').textContent=fmt(t.s);
-  document.getElementById('d-don').textContent=fmt(t.don);
-  const total=t.income+t.exp, ip=total>0?Math.round(t.income/total*100):0;
-  document.getElementById('ipct').textContent=ip+'%';
-  document.getElementById('epct').textContent=(100-ip)+'%';
-  document.getElementById('ibar').style.width=ip+'%';
+  const isMonth = _dashMode === 'month';
+  const t = isMonth ? totsMonth() : totsAll();
+  const tAll = totsAll(); // always compute total for hints
+  const activeCnt = D.members.filter(m=>m.active!==false).length;
+
+  document.getElementById('s-bal').textContent = fmt(t.bal);
+  document.getElementById('s-bal').style.color = t.bal>=0?'var(--income)':'var(--expense)';
+  document.getElementById('s-inc').textContent = fmt(t.income);
+  document.getElementById('s-exp').textContent = fmt(t.exp);
+  document.getElementById('s-mem').textContent = activeCnt;
+  document.getElementById('d-sub').textContent = fmt(t.s);
+  document.getElementById('d-don').textContent = fmt(t.don);
+
+  // Update labels
+  if(isMonth){
+    const now = new Date();
+    document.getElementById('dash-mode-text').textContent = MONTHS_BN[now.getMonth()] + ' ' + now.getFullYear();
+    document.getElementById('dash-total-hint').textContent = '  •  সর্বমোট ব্যালেন্স: ' + fmt(tAll.bal);
+    document.getElementById('s-bal-sub').textContent = 'এই মাসে আয় − খরচ';
+    document.getElementById('s-inc-sub').textContent = 'এই মাসে';
+    document.getElementById('s-exp-sub').textContent = 'এই মাসে';
+    // Show total hints under cards
+    document.getElementById('s-bal-hint').textContent = 'সর্বমোট: ' + fmt(tAll.bal);
+    document.getElementById('s-inc-hint').textContent = 'সর্বমোট: ' + fmt(tAll.income);
+    document.getElementById('s-exp-hint').textContent = 'সর্বমোট: ' + fmt(tAll.exp);
+    document.getElementById('s-bal-hint').style.display = 'block';
+    document.getElementById('s-inc-hint').style.display = 'block';
+    document.getElementById('s-exp-hint').style.display = 'block';
+  } else {
+    document.getElementById('dash-mode-text').textContent = 'সর্বমোট হিসেব';
+    document.getElementById('dash-total-hint').textContent = '';
+    document.getElementById('s-bal-sub').textContent = 'মোট আয় − মোট খরচ';
+    document.getElementById('s-inc-sub').textContent = 'Subscriptions + Donations';
+    document.getElementById('s-exp-sub').textContent = 'All expenditures';
+    document.getElementById('s-bal-hint').style.display = 'none';
+    document.getElementById('s-inc-hint').style.display = 'none';
+    document.getElementById('s-exp-hint').style.display = 'none';
+  }
+
+  const total = t.income + t.exp, ip = total>0 ? Math.round(t.income/total*100) : 0;
+  document.getElementById('ipct').textContent = ip+'%';
+  document.getElementById('epct').textContent = (100-ip)+'%';
+  document.getElementById('ibar').style.width = ip+'%';
 
   const all=[
     ...D.subscriptions.map(s=>({date:s.date, createdAt:s.createdAt, desc:esc(s.memberName)+' — '+esc(s.month)+' contribution'+(s.isAdvance?' ⚡':''), amount:s.amount, t:'income'})),
     ...D.donations.map(d=>({date:d.date, createdAt:d.createdAt, desc:esc(d.name)+' — Donation', amount:d.amount, t:'income'})),
     ...D.expenses.map(e=>({date:e.date, createdAt:e.createdAt, desc:esc(e.desc), amount:e.amount, t:'expense'}))
-  ].sort((a,b)=>{
-    const ta = a.createdAt?.toMillis?.() || new Date(a.date||0).getTime();
-    const tb = b.createdAt?.toMillis?.() || new Date(b.date||0).getTime();
-    return tb - ta;
-  }).slice(0,6);
+  ].sort((a,b)=>{ const ta=a.createdAt?.toMillis?.() || new Date(a.date||0).getTime(); const tb=b.createdAt?.toMillis?.() || new Date(b.date||0).getTime(); return tb-ta; }).slice(0,6);
 
   document.getElementById('recent').innerHTML=all.length
     ?all.map(r=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><div style="flex:1;min-width:0"><div style="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.desc}</div><div style="font-size:11px;color:var(--muted)">${esc(r.date)||''}</div></div><div class="${r.t==='income'?'amount-positive':'amount-negative'}" style="white-space:nowrap;margin-left:10px">${r.t==='income'?'+':'-'}${fmt(r.amount)}</div></div>`).join('')
